@@ -3,17 +3,13 @@ name: 'JavaScript Action Template'
 description: 'Add description here'
 
 inputs:
-  input-1:
-    description: 'Add a description here'
+  scope:
+    description: The selection filter of the vars to be set.
     required: true
-  input-2:
-    description: 'Add a description here'
+  input-file:
+    description: A file containg possible environment variable candidatas with their associated scopes
     required: false
-
-outputs:
-  output-1:
-    description: 'Add a description here'
 
 runs:
   using: 'node12'
-  main: 'dist/index.js'
+  main:  'dist/index.js'
