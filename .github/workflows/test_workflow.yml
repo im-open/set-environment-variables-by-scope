@@ -35,4 +35,7 @@ jobs:
       - name: Verify Environment periods Vars
         uses: actions/github-script@v5
         with:
-          script: console.log(process.env["something.with.periods"])
+          script: |
+            console.log("something.with.periods", process.env["something.with.periods"])
+            console.log("how now", process.env["how now"])
+            console.log("comma,comma,chameleon", process.env["comma,comma,chameleon"])
