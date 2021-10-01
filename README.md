@@ -1,79 +1,119 @@
-# javascript-action-template
+# Set Environment Variables by Scope
 
-This template can be used to quickly start a new custom js action repository.  Click the `Use this template` button at the top to get started.
+This action takes specially formatted environment variables and/or an input file to emit scoped environment variables.
+
+## Index <!-- omit in toc -->
+
+- [TODOs](#todos)
+- [Inputs](#inputs)
+- [Usage Examples](#usage-examples)
+  - [Usage Instructions](#usage-instructions)
+    - [`key-name`](#key-name)
+    - [`scope-array`](#scope-array)
+    - [`key-value`](#key-value)
+- [Recompiling](#recompiling)
+- [Code of Conduct](#code-of-conduct)
+- [License](#license)
 
 ## TODOs
-- Readme
-  - [ ] Update the Inputs section with the correct action inputs
-  - [ ] Update the Outputs section with the correct action outputs
-  - [ ] Update the Usage Example section with the correct usage   
-- package.json
-  - [ ] Update the `name` with the new action value
-- src/main.js
-  - [ ] Implement your custom javascript action
-- action.yml
-  - [ ] Fill in the correct name, description, inputs and outputs
-- .prettierrc.json
-  - [ ] Update any preferences you might have
-- CODEOWNERS
-  - [ ] Update as appropriate
-- Repository Settings
-  - [ ] On the *Options* tab check the box to *Automatically delete head branches*
-  - [ ] On the *Options* tab update the repository's visibility (must be done by an org owner)
-  - [ ] On the *Branches* tab add a branch protection rule
-    - [ ] Check *Require pull request reviews before merging*
-    - [ ] Check *Dismiss stale pull request approvals when new commits are pushed*
-    - [ ] Check *Require review from Code Owners*
-    - [ ] Check *Include Administrators*
   - [ ] On the *Manage Access* tab add the appropriate groups
-- About Section (accessed on the main page of the repo, click the gear icon to edit)
-  - [ ] The repo should have a short description of what it is for
-  - [ ] Add one of the following topic tags:
-    | Topic Tag       | Usage                                    |
-    | --------------- | ---------------------------------------- |
-    | az              | For actions related to Azure             |
-    | code            | For actions related to building code     |
-    | certs           | For actions related to certificates      |
-    | db              | For actions related to databases         |
-    | git             | For actions related to Git               |
-    | iis             | For actions related to IIS               |
-    | microsoft-teams | For actions related to Microsoft Teams   |
-    | svc             | For actions related to Windows Services  |
-    | jira            | For actions related to Jira              |
-    | meta            | For actions related to running workflows |
-    | pagerduty       | For actions related to PagerDuty         |
-    | test            | For actions related to testing           |
-    | tf              | For actions related to Terraform         |
-  - [ ] Add any additional topics for an action if they apply    
-  - [ ] The Packages and Environments boxes can be unchecked
-    
-
 ## Inputs
-| Parameter | Is Required | Default | Description           |
-| --------- | ----------- | ------- | --------------------- |
-| `input-1` | true        |         | Description goes here |
-| `input-2` | false       |         | Description goes here |
 
-## Outputs
-| Output     | Description           |
-| ---------- | --------------------- |
-| `output-1` | Description goes here |
+| Parameter    | Is Required | Description                                                                           |
+| ------------ | ----------- | ------------------------------------------------------------------------------------- |
+| `scope`      | true        | The selection filter of the vars to be set.                                           |
+| `input-file` | false       | A file containg possible environment variable candidatas with their associated scopes |
 
 ## Usage Examples
 
 ```yml
-# TODO: Fill in the correct usage
+...
+input:
+  environment:
+    description: The environment to deploy to.
+    required: true
+
 jobs:
   job1:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Add Step Here
-        uses: im-open/this-repo@v1.0.0
+      - name: Set environment scope
+        uses: im-open/set-environment-variables-by-scope@v1.0.0
         with:
-          input-1: 'abc'
-          input-2: '123
+          scope: ${{ workflow.inputs.environement }}
+        env:
+          ENVIRONMENT@dev d development: dev
+          ENVIRONMENT@qa a: qa
+          ENVIRONMENT@stage s stg: stage
+          ENVIRONMENT@prod p production: prod
+
+      - run: echo "The current environment is ${{ env.ENVIRONMENT }}.
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build Workflow Environment Variables
+        uses: im-open/set-environment-variables-by-scope@v1.0.0
+        with:
+          scope: ${{ env.ENVIRONMENT }}
+          input-file: ./env-vars.yml
+        env:
+          keyName1@dev qa stage prod: 'key value 1'
+          keyName2@dev qa: 'key value 2 lower'
+          keyName2@stage prod: 'key value 2 upper'
+
+      - name: Display Env Var
+        uses: actions/github-script@v5
+        with:
+          script: |
+            console.log("Env", ${{ env.ENVIRONMENT }})
+            console.log("keyName1", ${{ env.keyName1 }})
+            console.log("keyName2", ${{ env.keyName2 }})
+...
+```
+
+### Usage Instructions
+
+The format of the `env` variable and the `input-file` contents are the same and follows this format:
+
+`[key-name]@[scope-array]: [key-value]`
+
+#### `key-name`
+
+The resulting environment variable name. It does accept a wide variety of name convention formats including spaces, dashes, periods, and underscores. While it's been tested and found to be fairly flexible, it is possible to make environment variable names that aren't usable by one or more of the target action runner operating systems.
+
+#### `scope-array`
+
+A space delimited array of scope strings that the environment variable could be valid for.  The filter for which keys/values will be select from is the `scope` action input.
+
+#### `key-value`
+
+The value that the environment variable will be set to if it's found to meet the scope criteria.
+
+This set environment variable or input file entries:
+
+```yml
+env:
+  db_server@dev qa: lower-env.db-server.domain.com
+  db_server@stage prod: db-server.domain.com
+```
+
+Would produce an environment variable, `${{ env.db_server }}`, with a value of `db-server.domain.com`, if the action `scope` is set to `stage`.
+
+The contents of an `input-file` is YAML based and has all the elements at the root level.  It's contents would be formatted like this:
+
+```yaml
+db_server@dev qa: lower-env.db-server.domain.com
+db_server@stage: stage.db-server.domain.com
+db_server@prod: db-server.domain.com
+public_endpoint@dev: dev.app-end.com
+public_endpoint@qa: qa.app-end.com
+public_endpoint@stage: stage.app-end.com
+public_endpoint@prod: prod.app-end.com
+something.used.in.build@dev: dev-value
+something.used.in.build@qa: qa-value
+something.used.in.build@stage: stage-value
+something.used.in.build@prod: prod-value
 ```
 
 ## Recompiling

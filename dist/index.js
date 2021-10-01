@@ -70,9 +70,7 @@ var require_command = __commonJS({
         if (mod && mod.__esModule) return mod;
         var result = {};
         if (mod != null) {
-          for (var k in mod)
-            if (k !== 'default' && Object.hasOwnProperty.call(mod, k))
-              __createBinding(result, mod, k);
+          for (var k in mod) if (k !== 'default' && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
         }
         __setModuleDefault(result, mod);
         return result;
@@ -124,20 +122,10 @@ var require_command = __commonJS({
       }
     };
     function escapeData(s) {
-      return utils_1
-        .toCommandValue(s)
-        .replace(/%/g, '%25')
-        .replace(/\r/g, '%0D')
-        .replace(/\n/g, '%0A');
+      return utils_1.toCommandValue(s).replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A');
     }
     function escapeProperty(s) {
-      return utils_1
-        .toCommandValue(s)
-        .replace(/%/g, '%25')
-        .replace(/\r/g, '%0D')
-        .replace(/\n/g, '%0A')
-        .replace(/:/g, '%3A')
-        .replace(/,/g, '%2C');
+      return utils_1.toCommandValue(s).replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A').replace(/:/g, '%3A').replace(/,/g, '%2C');
     }
   }
 });
@@ -177,9 +165,7 @@ var require_file_command = __commonJS({
         if (mod && mod.__esModule) return mod;
         var result = {};
         if (mod != null) {
-          for (var k in mod)
-            if (k !== 'default' && Object.hasOwnProperty.call(mod, k))
-              __createBinding(result, mod, k);
+          for (var k in mod) if (k !== 'default' && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
         }
         __setModuleDefault(result, mod);
         return result;
@@ -325,11 +311,7 @@ var require_tunnel = __commonJS({
     util.inherits(TunnelingAgent, events.EventEmitter);
     TunnelingAgent.prototype.addRequest = function addRequest(req, host, port, localAddress) {
       var self = this;
-      var options = mergeOptions(
-        { request: req },
-        self.options,
-        toOptions(host, port, localAddress)
-      );
+      var options = mergeOptions({ request: req }, self.options, toOptions(host, port, localAddress));
       if (self.sockets.length >= this.maxSockets) {
         self.requests.push(options);
         return;
@@ -367,8 +349,7 @@ var require_tunnel = __commonJS({
       }
       if (connectOptions.proxyAuth) {
         connectOptions.headers = connectOptions.headers || {};
-        connectOptions.headers['Proxy-Authorization'] =
-          'Basic ' + new Buffer(connectOptions.proxyAuth).toString('base64');
+        connectOptions.headers['Proxy-Authorization'] = 'Basic ' + new Buffer(connectOptions.proxyAuth).toString('base64');
       }
       debug('making CONNECT request');
       var connectReq = self.request(connectOptions);
@@ -392,9 +373,7 @@ var require_tunnel = __commonJS({
         if (res.statusCode !== 200) {
           debug('tunneling socket could not be established, statusCode=%d', res.statusCode);
           socket.destroy();
-          var error = new Error(
-            'tunneling socket could not be established, statusCode=' + res.statusCode
-          );
+          var error = new Error('tunneling socket could not be established, statusCode=' + res.statusCode);
           error.code = 'ECONNRESET';
           options.request.emit('error', error);
           self.removeSocket(placeholder);
@@ -558,11 +537,7 @@ var require_http_client = __commonJS({
       HttpCodes.TemporaryRedirect,
       HttpCodes.PermanentRedirect
     ];
-    var HttpResponseRetryCodes = [
-      HttpCodes.BadGateway,
-      HttpCodes.ServiceUnavailable,
-      HttpCodes.GatewayTimeout
-    ];
+    var HttpResponseRetryCodes = [HttpCodes.BadGateway, HttpCodes.ServiceUnavailable, HttpCodes.GatewayTimeout];
     var RetryableHttpVerbs = ['OPTIONS', 'GET', 'DELETE', 'HEAD'];
     var ExponentialBackoffCeiling = 10;
     var ExponentialBackoffTimeSlice = 5;
@@ -660,56 +635,28 @@ var require_http_client = __commonJS({
         return this.request(verb, requestUrl, stream, additionalHeaders);
       }
       async getJson(requestUrl, additionalHeaders = {}) {
-        additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(
-          additionalHeaders,
-          Headers.Accept,
-          MediaTypes.ApplicationJson
-        );
+        additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
         let res = await this.get(requestUrl, additionalHeaders);
         return this._processResponse(res, this.requestOptions);
       }
       async postJson(requestUrl, obj, additionalHeaders = {}) {
         let data = JSON.stringify(obj, null, 2);
-        additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(
-          additionalHeaders,
-          Headers.Accept,
-          MediaTypes.ApplicationJson
-        );
-        additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultHeader(
-          additionalHeaders,
-          Headers.ContentType,
-          MediaTypes.ApplicationJson
-        );
+        additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
+        additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.ContentType, MediaTypes.ApplicationJson);
         let res = await this.post(requestUrl, data, additionalHeaders);
         return this._processResponse(res, this.requestOptions);
       }
       async putJson(requestUrl, obj, additionalHeaders = {}) {
         let data = JSON.stringify(obj, null, 2);
-        additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(
-          additionalHeaders,
-          Headers.Accept,
-          MediaTypes.ApplicationJson
-        );
-        additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultHeader(
-          additionalHeaders,
-          Headers.ContentType,
-          MediaTypes.ApplicationJson
-        );
+        additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
+        additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.ContentType, MediaTypes.ApplicationJson);
         let res = await this.put(requestUrl, data, additionalHeaders);
         return this._processResponse(res, this.requestOptions);
       }
       async patchJson(requestUrl, obj, additionalHeaders = {}) {
         let data = JSON.stringify(obj, null, 2);
-        additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(
-          additionalHeaders,
-          Headers.Accept,
-          MediaTypes.ApplicationJson
-        );
-        additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultHeader(
-          additionalHeaders,
-          Headers.ContentType,
-          MediaTypes.ApplicationJson
-        );
+        additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
+        additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.ContentType, MediaTypes.ApplicationJson);
         let res = await this.patch(requestUrl, data, additionalHeaders);
         return this._processResponse(res, this.requestOptions);
       }
@@ -719,17 +666,12 @@ var require_http_client = __commonJS({
         }
         let parsedUrl = new URL(requestUrl);
         let info = this._prepareRequest(verb, parsedUrl, headers);
-        let maxTries =
-          this._allowRetries && RetryableHttpVerbs.indexOf(verb) != -1 ? this._maxRetries + 1 : 1;
+        let maxTries = this._allowRetries && RetryableHttpVerbs.indexOf(verb) != -1 ? this._maxRetries + 1 : 1;
         let numTries = 0;
         let response;
         while (numTries < maxTries) {
           response = await this.requestRaw(info, data);
-          if (
-            response &&
-            response.message &&
-            response.message.statusCode === HttpCodes.Unauthorized
-          ) {
+          if (response && response.message && response.message.statusCode === HttpCodes.Unauthorized) {
             let authenticationHandler;
             for (let i = 0; i < this.handlers.length; i++) {
               if (this.handlers[i].canHandleAuthentication(response)) {
@@ -744,21 +686,13 @@ var require_http_client = __commonJS({
             }
           }
           let redirectsRemaining = this._maxRedirects;
-          while (
-            HttpRedirectCodes.indexOf(response.message.statusCode) != -1 &&
-            this._allowRedirects &&
-            redirectsRemaining > 0
-          ) {
+          while (HttpRedirectCodes.indexOf(response.message.statusCode) != -1 && this._allowRedirects && redirectsRemaining > 0) {
             const redirectUrl = response.message.headers['location'];
             if (!redirectUrl) {
               break;
             }
             let parsedRedirectUrl = new URL(redirectUrl);
-            if (
-              parsedUrl.protocol == 'https:' &&
-              parsedUrl.protocol != parsedRedirectUrl.protocol &&
-              !this._allowRedirectDowngrade
-            ) {
+            if (parsedUrl.protocol == 'https:' && parsedUrl.protocol != parsedRedirectUrl.protocol && !this._allowRedirectDowngrade) {
               throw new Error(
                 'Redirect from HTTPS to HTTP protocol. This downgrade is not allowed for security reasons. If you want to allow this behavior, set the allowRedirectDowngrade option to true.'
               );
@@ -871,20 +805,14 @@ var require_http_client = __commonJS({
         return info;
       }
       _mergeHeaders(headers) {
-        const lowercaseKeys = obj =>
-          Object.keys(obj).reduce((c, k) => ((c[k.toLowerCase()] = obj[k]), c), {});
+        const lowercaseKeys = obj => Object.keys(obj).reduce((c, k) => ((c[k.toLowerCase()] = obj[k]), c), {});
         if (this.requestOptions && this.requestOptions.headers) {
-          return Object.assign(
-            {},
-            lowercaseKeys(this.requestOptions.headers),
-            lowercaseKeys(headers)
-          );
+          return Object.assign({}, lowercaseKeys(this.requestOptions.headers), lowercaseKeys(headers));
         }
         return lowercaseKeys(headers || {});
       }
       _getExistingOrDefaultHeader(additionalHeaders, header, _default) {
-        const lowercaseKeys = obj =>
-          Object.keys(obj).reduce((c, k) => ((c[k.toLowerCase()] = obj[k]), c), {});
+        const lowercaseKeys = obj => Object.keys(obj).reduce((c, k) => ((c[k.toLowerCase()] = obj[k]), c), {});
         let clientHeader;
         if (this.requestOptions && this.requestOptions.headers) {
           clientHeader = lowercaseKeys(this.requestOptions.headers)[header];
@@ -1021,8 +949,7 @@ var require_auth = __commonJS({
         this.password = password;
       }
       prepareRequest(options) {
-        options.headers['Authorization'] =
-          'Basic ' + Buffer.from(this.username + ':' + this.password).toString('base64');
+        options.headers['Authorization'] = 'Basic ' + Buffer.from(this.username + ':' + this.password).toString('base64');
       }
       canHandleAuthentication(response) {
         return false;
@@ -1052,8 +979,7 @@ var require_auth = __commonJS({
         this.token = token;
       }
       prepareRequest(options) {
-        options.headers['Authorization'] =
-          'Basic ' + Buffer.from('PAT:' + this.token).toString('base64');
+        options.headers['Authorization'] = 'Basic ' + Buffer.from('PAT:' + this.token).toString('base64');
       }
       canHandleAuthentication(response) {
         return false;
@@ -1207,9 +1133,7 @@ var require_core = __commonJS({
         if (mod && mod.__esModule) return mod;
         var result = {};
         if (mod != null) {
-          for (var k in mod)
-            if (k !== 'default' && Object.hasOwnProperty.call(mod, k))
-              __createBinding(result, mod, k);
+          for (var k in mod) if (k !== 'default' && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
         }
         __setModuleDefault(result, mod);
         return result;
@@ -1358,27 +1282,15 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
     }
     exports2.debug = debug;
     function error(message, properties = {}) {
-      command_1.issueCommand(
-        'error',
-        utils_1.toCommandProperties(properties),
-        message instanceof Error ? message.toString() : message
-      );
+      command_1.issueCommand('error', utils_1.toCommandProperties(properties), message instanceof Error ? message.toString() : message);
     }
     exports2.error = error;
     function warning(message, properties = {}) {
-      command_1.issueCommand(
-        'warning',
-        utils_1.toCommandProperties(properties),
-        message instanceof Error ? message.toString() : message
-      );
+      command_1.issueCommand('warning', utils_1.toCommandProperties(properties), message instanceof Error ? message.toString() : message);
     }
     exports2.warning = warning;
     function notice(message, properties = {}) {
-      command_1.issueCommand(
-        'notice',
-        utils_1.toCommandProperties(properties),
-        message instanceof Error ? message.toString() : message
-      );
+      command_1.issueCommand('notice', utils_1.toCommandProperties(properties), message instanceof Error ? message.toString() : message);
     }
     exports2.notice = notice;
     function info(message) {
@@ -1654,11 +1566,7 @@ ${offset}${err}${errEnd}`;
       }
       static normalizeOffset(src, offset) {
         const ch = src[offset];
-        return !ch
-          ? offset
-          : ch !== '\n' && src[offset - 1] === '\n'
-          ? offset - 1
-          : Node.endOfWhiteSpace(src, offset);
+        return !ch ? offset : ch !== '\n' && src[offset - 1] === '\n' ? offset - 1 : Node.endOfWhiteSpace(src, offset);
       }
       static foldNewline(src, offset, indent) {
         let inCount = 0;
@@ -1707,9 +1615,7 @@ ${offset}${err}${errEnd}`;
         if (!this.context) return null;
         const { src } = this.context;
         const prop = this.props[idx];
-        return prop && src[prop.start] === key
-          ? src.slice(prop.start + (skipKey ? 1 : 0), prop.end)
-          : null;
+        return prop && src[prop.start] === key ? src.slice(prop.start + (skipKey ? 1 : 0), prop.end) : null;
       }
       get anchor() {
         for (let i = 0; i < this.props.length; ++i) {
@@ -1830,8 +1736,7 @@ ${offset}${err}${errEnd}`;
     };
     var YAMLError = class extends Error {
       constructor(name, source, message) {
-        if (!message || !(source instanceof Node))
-          throw new Error(`Invalid arguments for new ${name}`);
+        if (!message || !(source instanceof Node)) throw new Error(`Invalid arguments for new ${name}`);
         super();
         this.name = name;
         this.message = message;
@@ -1912,11 +1817,7 @@ ${ctx}
         while (ch && ch !== '\n') {
           if (inFlow && (ch === '[' || ch === ']' || ch === '{' || ch === '}' || ch === ',')) break;
           const next = src[offset + 1];
-          if (
-            ch === ':' &&
-            (!next || next === '\n' || next === '	' || next === ' ' || (inFlow && next === ','))
-          )
-            break;
+          if (ch === ':' && (!next || next === '\n' || next === '	' || next === ' ' || (inFlow && next === ','))) break;
           if ((ch === ' ' || ch === '	') && next === '#') break;
           offset += 1;
           ch = next;
@@ -2054,10 +1955,7 @@ var require_parse_cst = __commonJS({
         const { parseNode, src } = context;
         let { atLineStart, lineStart } = context;
         if (!atLineStart && this.type === PlainValue.Type.SEQ_ITEM)
-          this.error = new PlainValue.YAMLSemanticError(
-            this,
-            'Sequence items must not have preceding content on the same line'
-          );
+          this.error = new PlainValue.YAMLSemanticError(this, 'Sequence items must not have preceding content on the same line');
         const indent = atLineStart ? start - lineStart : context.indent;
         let offset = PlainValue.Node.endOfWhiteSpace(src, start + 1);
         let ch = src[offset];
@@ -2086,13 +1984,7 @@ var require_parse_cst = __commonJS({
           }
           ch = src[offset];
         }
-        if (
-          PlainValue.Node.nextNodeIsIndented(
-            ch,
-            offset - (lineStart + indent),
-            this.type !== PlainValue.Type.SEQ_ITEM
-          )
-        ) {
+        if (PlainValue.Node.nextNodeIsIndented(ch, offset - (lineStart + indent), this.type !== PlainValue.Type.SEQ_ITEM)) {
           this.node = parseNode(
             {
               atLineStart,
@@ -2138,9 +2030,7 @@ var require_parse_cst = __commonJS({
           value
         } = this;
         if (value != null) return value;
-        const str = node
-          ? src.slice(range.start, node.range.start) + String(node)
-          : src.slice(range.start, range.end);
+        const str = node ? src.slice(range.start, node.range.start) + String(node) : src.slice(range.start, range.end);
         return PlainValue.Node.addStringTerminator(src, range.end, str);
       }
     };
@@ -2192,9 +2082,7 @@ var require_parse_cst = __commonJS({
         return Collection.nextContentHasIndent(src, offset, indent);
       }
       constructor(firstItem) {
-        super(
-          firstItem.type === PlainValue.Type.SEQ_ITEM ? PlainValue.Type.SEQ : PlainValue.Type.MAP
-        );
+        super(firstItem.type === PlainValue.Type.SEQ_ITEM ? PlainValue.Type.SEQ : PlainValue.Type.MAP);
         for (let i = firstItem.props.length - 1; i >= 0; --i) {
           if (firstItem.props[i].start < firstItem.context.lineStart) {
             this.props = firstItem.props.slice(0, i + 1);
@@ -2242,10 +2130,7 @@ var require_parse_cst = __commonJS({
               this.items.push(blankLine);
               offset -= 1;
             } else if (ch === '#') {
-              if (
-                offset < lineStart + indent &&
-                !Collection.nextContentHasIndent(src, offset, indent)
-              ) {
+              if (offset < lineStart + indent && !Collection.nextContentHasIndent(src, offset, indent)) {
                 return offset;
               }
               const comment = new Comment();
@@ -2459,10 +2344,7 @@ var require_parse_cst = __commonJS({
               break;
             default:
               if (hasDirectives) {
-                this.error = new PlainValue.YAMLSemanticError(
-                  this,
-                  'Missing directives-end indicator line'
-                );
+                this.error = new PlainValue.YAMLSemanticError(this, 'Missing directives-end indicator line');
               } else if (this.directives.length > 0) {
                 this.contents = this.directives;
                 this.directives = [];
@@ -2475,10 +2357,7 @@ var require_parse_cst = __commonJS({
           return offset + 3;
         }
         if (hasDirectives) {
-          this.error = new PlainValue.YAMLSemanticError(
-            this,
-            'Missing directives-end indicator line'
-          );
+          this.error = new PlainValue.YAMLSemanticError(this, 'Missing directives-end indicator line');
         } else if (this.directives.length > 0) {
           this.contents = this.directives;
           this.directives = [];
@@ -2570,10 +2449,7 @@ var require_parse_cst = __commonJS({
               case void 0:
                 break;
               default:
-                this.error = new PlainValue.YAMLSyntaxError(
-                  this,
-                  'Document end marker line cannot have a non-comment suffix'
-                );
+                this.error = new PlainValue.YAMLSyntaxError(this, 'Document end marker line cannot have a non-comment suffix');
             }
           }
         }
@@ -2747,8 +2623,7 @@ var require_parse_cst = __commonJS({
           if (!this.blockIndent) {
             if (src[end] !== '\n') {
               if (lineIndent < minBlockIndent) {
-                const msg =
-                  'Block scalars with more-indented leading empty lines must use an explicit indentation indicator';
+                const msg = 'Block scalars with more-indented leading empty lines must use an explicit indentation indicator';
                 this.error = new PlainValue.YAMLSemanticError(this, msg);
               }
               this.blockIndent = lineIndent;
@@ -2796,11 +2671,7 @@ var require_parse_cst = __commonJS({
       }
       prevNodeIsJsonLike(idx = this.items.length) {
         const node = this.items[idx - 1];
-        return (
-          !!node &&
-          (node.jsonLike ||
-            (node.type === PlainValue.Type.COMMENT && this.prevNodeIsJsonLike(idx - 1)))
-        );
+        return !!node && (node.jsonLike || (node.type === PlainValue.Type.COMMENT && this.prevNodeIsJsonLike(idx - 1)));
       }
       parse(context, start) {
         this.context = context;
@@ -2865,13 +2736,7 @@ var require_parse_cst = __commonJS({
             case '?':
             case ':': {
               const next = src[offset + 1];
-              if (
-                next === '\n' ||
-                next === '	' ||
-                next === ' ' ||
-                next === ',' ||
-                (char === ':' && this.prevNodeIsJsonLike())
-              ) {
+              if (next === '\n' || next === '	' || next === ' ' || next === ',' || (char === ':' && this.prevNodeIsJsonLike())) {
                 this.items.push({
                   char,
                   offset
@@ -2970,29 +2835,17 @@ var require_parse_cst = __commonJS({
         const errors = [];
         const { start, end } = this.valueRange;
         const { indent, src } = this.context;
-        if (src[end - 1] !== '"')
-          errors.push(new PlainValue.YAMLSyntaxError(this, 'Missing closing "quote'));
+        if (src[end - 1] !== '"') errors.push(new PlainValue.YAMLSyntaxError(this, 'Missing closing "quote'));
         let str = '';
         for (let i = start + 1; i < end - 1; ++i) {
           const ch = src[i];
           if (ch === '\n') {
             if (PlainValue.Node.atDocumentBoundary(src, i + 1))
-              errors.push(
-                new PlainValue.YAMLSemanticError(
-                  this,
-                  'Document boundary indicators are not allowed within string values'
-                )
-              );
+              errors.push(new PlainValue.YAMLSemanticError(this, 'Document boundary indicators are not allowed within string values'));
             const { fold, offset, error } = PlainValue.Node.foldNewline(src, i, indent);
             str += fold;
             i = offset;
-            if (error)
-              errors.push(
-                new PlainValue.YAMLSemanticError(
-                  this,
-                  'Multi-line double-quoted string needs to be sufficiently indented'
-                )
-              );
+            if (error) errors.push(new PlainValue.YAMLSemanticError(this, 'Multi-line double-quoted string needs to be sufficiently indented'));
           } else if (ch === '\\') {
             i += 1;
             switch (src[i]) {
@@ -3066,12 +2919,7 @@ var require_parse_cst = __commonJS({
                 while (src[i + 1] === ' ' || src[i + 1] === '	') i += 1;
                 break;
               default:
-                errors.push(
-                  new PlainValue.YAMLSyntaxError(
-                    this,
-                    `Invalid escape sequence ${src.substr(i - 1, 2)}`
-                  )
-                );
+                errors.push(new PlainValue.YAMLSyntaxError(this, `Invalid escape sequence ${src.substr(i - 1, 2)}`));
                 str += '\\' + src[i];
             }
           } else if (ch === ' ' || ch === '	') {
@@ -3099,12 +2947,7 @@ var require_parse_cst = __commonJS({
         const ok = cc.length === length && /^[0-9a-fA-F]+$/.test(cc);
         const code = ok ? parseInt(cc, 16) : NaN;
         if (isNaN(code)) {
-          errors.push(
-            new PlainValue.YAMLSyntaxError(
-              this,
-              `Invalid escape sequence ${src.substr(offset - 2, length + 2)}`
-            )
-          );
+          errors.push(new PlainValue.YAMLSyntaxError(this, `Invalid escape sequence ${src.substr(offset - 2, length + 2)}`));
           return src.substr(offset - 2, length + 2);
         }
         return String.fromCodePoint(code);
@@ -3137,39 +2980,21 @@ var require_parse_cst = __commonJS({
         const errors = [];
         const { start, end } = this.valueRange;
         const { indent, src } = this.context;
-        if (src[end - 1] !== "'")
-          errors.push(new PlainValue.YAMLSyntaxError(this, "Missing closing 'quote"));
+        if (src[end - 1] !== "'") errors.push(new PlainValue.YAMLSyntaxError(this, "Missing closing 'quote"));
         let str = '';
         for (let i = start + 1; i < end - 1; ++i) {
           const ch = src[i];
           if (ch === '\n') {
             if (PlainValue.Node.atDocumentBoundary(src, i + 1))
-              errors.push(
-                new PlainValue.YAMLSemanticError(
-                  this,
-                  'Document boundary indicators are not allowed within string values'
-                )
-              );
+              errors.push(new PlainValue.YAMLSemanticError(this, 'Document boundary indicators are not allowed within string values'));
             const { fold, offset, error } = PlainValue.Node.foldNewline(src, i, indent);
             str += fold;
             i = offset;
-            if (error)
-              errors.push(
-                new PlainValue.YAMLSemanticError(
-                  this,
-                  'Multi-line single-quoted string needs to be sufficiently indented'
-                )
-              );
+            if (error) errors.push(new PlainValue.YAMLSemanticError(this, 'Multi-line single-quoted string needs to be sufficiently indented'));
           } else if (ch === "'") {
             str += ch;
             i += 1;
-            if (src[i] !== "'")
-              errors.push(
-                new PlainValue.YAMLSyntaxError(
-                  this,
-                  'Unescaped single quote? This should not happen.'
-                )
-              );
+            if (src[i] !== "'") errors.push(new PlainValue.YAMLSyntaxError(this, 'Unescaped single quote? This should not happen.'));
           } else if (ch === ' ' || ch === '	') {
             const wsStart = i;
             let next = src[i + 1];
@@ -3238,17 +3063,11 @@ var require_parse_cst = __commonJS({
           case '[':
             return PlainValue.Type.FLOW_SEQ;
           case '?':
-            return !inFlow && PlainValue.Node.atBlank(src, offset + 1, true)
-              ? PlainValue.Type.MAP_KEY
-              : PlainValue.Type.PLAIN;
+            return !inFlow && PlainValue.Node.atBlank(src, offset + 1, true) ? PlainValue.Type.MAP_KEY : PlainValue.Type.PLAIN;
           case ':':
-            return !inFlow && PlainValue.Node.atBlank(src, offset + 1, true)
-              ? PlainValue.Type.MAP_VALUE
-              : PlainValue.Type.PLAIN;
+            return !inFlow && PlainValue.Node.atBlank(src, offset + 1, true) ? PlainValue.Type.MAP_VALUE : PlainValue.Type.PLAIN;
           case '-':
-            return !inFlow && PlainValue.Node.atBlank(src, offset + 1, true)
-              ? PlainValue.Type.SEQ_ITEM
-              : PlainValue.Type.PLAIN;
+            return !inFlow && PlainValue.Node.atBlank(src, offset + 1, true) ? PlainValue.Type.SEQ_ITEM : PlainValue.Type.PLAIN;
           case '"':
             return PlainValue.Type.QUOTE_DOUBLE;
           case "'":
@@ -3257,10 +3076,7 @@ var require_parse_cst = __commonJS({
             return PlainValue.Type.PLAIN;
         }
       }
-      constructor(
-        orig = {},
-        { atLineStart, inCollection, inFlow, indent, lineStart, parent } = {}
-      ) {
+      constructor(orig = {}, { atLineStart, inCollection, inFlow, indent, lineStart, parent } = {}) {
         PlainValue._defineProperty(this, 'parseNode', (overlay, start) => {
           if (PlainValue.Node.atDocumentBoundary(this.src, start)) return null;
           const context = new ParseContext(this, overlay);
@@ -3275,11 +3091,7 @@ var require_parse_cst = __commonJS({
             node.range.end = start + 1;
           }
           if (context.nodeStartsCollection(node)) {
-            if (
-              !node.error &&
-              !context.atLineStart &&
-              context.parent.type === PlainValue.Type.DOCUMENT
-            ) {
+            if (!node.error && !context.atLineStart && context.parent.type === PlainValue.Type.DOCUMENT) {
               node.error = new PlainValue.YAMLSyntaxError(
                 node,
                 'Block collection must not have preceding content here (e.g. directives-end indicator)'
@@ -3314,16 +3126,9 @@ var require_parse_cst = __commonJS({
         const { inFlow, parent, src } = this;
         const props = [];
         let lineHasProps = false;
-        offset = this.atLineStart
-          ? PlainValue.Node.endOfIndent(src, offset)
-          : PlainValue.Node.endOfWhiteSpace(src, offset);
+        offset = this.atLineStart ? PlainValue.Node.endOfIndent(src, offset) : PlainValue.Node.endOfWhiteSpace(src, offset);
         let ch = src[offset];
-        while (
-          ch === PlainValue.Char.ANCHOR ||
-          ch === PlainValue.Char.COMMENT ||
-          ch === PlainValue.Char.TAG ||
-          ch === '\n'
-        ) {
+        while (ch === PlainValue.Char.ANCHOR || ch === PlainValue.Char.COMMENT || ch === PlainValue.Char.TAG || ch === '\n') {
           if (ch === '\n') {
             let inEnd = offset;
             let lineStart;
@@ -3332,13 +3137,8 @@ var require_parse_cst = __commonJS({
               inEnd = PlainValue.Node.endOfIndent(src, lineStart);
             } while (src[inEnd] === '\n');
             const indentDiff = inEnd - (lineStart + this.indent);
-            const noIndicatorAsIndent =
-              parent.type === PlainValue.Type.SEQ_ITEM && parent.context.atLineStart;
-            if (
-              src[inEnd] !== '#' &&
-              !PlainValue.Node.nextNodeIsIndented(src[inEnd], indentDiff, !noIndicatorAsIndent)
-            )
-              break;
+            const noIndicatorAsIndent = parent.type === PlainValue.Type.SEQ_ITEM && parent.context.atLineStart;
+            if (src[inEnd] !== '#' && !PlainValue.Node.nextNodeIsIndented(src[inEnd], indentDiff, !noIndicatorAsIndent)) break;
             this.atLineStart = true;
             this.lineStart = lineStart;
             lineHasProps = false;
@@ -3352,9 +3152,7 @@ var require_parse_cst = __commonJS({
             if (
               ch === PlainValue.Char.TAG &&
               src[end] === ',' &&
-              /^[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+,\d\d\d\d(-\d\d){0,2}\/\S/.test(
-                src.slice(offset + 1, end + 13)
-              )
+              /^[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+,\d\d\d\d(-\d\d){0,2}\/\S/.test(src.slice(offset + 1, end + 13))
             ) {
               end = PlainValue.Node.endOfIdentifier(src, end + 5);
             }
@@ -3364,8 +3162,7 @@ var require_parse_cst = __commonJS({
           }
           ch = src[offset];
         }
-        if (lineHasProps && ch === ':' && PlainValue.Node.atBlank(src, offset + 1, true))
-          offset -= 1;
+        if (lineHasProps && ch === ':' && PlainValue.Node.atBlank(src, offset + 1, true)) offset -= 1;
         const type = ParseContext.parseType(src, offset, inFlow);
         return {
           props,
@@ -3478,8 +3275,7 @@ ${indent}${str}`;
       }
       return schema.createNode(v, false);
     }
-    var isEmptyPath = path =>
-      path == null || (typeof path === 'object' && path[Symbol.iterator]().next().done);
+    var isEmptyPath = path => path == null || (typeof path === 'object' && path[Symbol.iterator]().next().done);
     var Collection = class extends Node {
       constructor(schema) {
         super();
@@ -3492,8 +3288,7 @@ ${indent}${str}`;
           const [key, ...rest] = path;
           const node = this.get(key, true);
           if (node instanceof Collection) node.addIn(rest, value);
-          else if (node === void 0 && this.schema)
-            this.set(key, collectionFromPath(this.schema, rest, value));
+          else if (node === void 0 && this.schema) this.set(key, collectionFromPath(this.schema, rest, value));
           else throw new Error(`Expected YAML collection at ${key}. Remaining path: ${rest}`);
         }
       }
@@ -3512,10 +3307,7 @@ ${indent}${str}`;
         return this.items.every(node => {
           if (!node || node.type !== 'PAIR') return false;
           const n = node.value;
-          return (
-            n == null ||
-            (n instanceof Scalar && n.value == null && !n.commentBefore && !n.comment && !n.tag)
-          );
+          return n == null || (n instanceof Scalar && n.value == null && !n.commentBefore && !n.comment && !n.tag);
         });
       }
       hasIn([key, ...rest]) {
@@ -3529,8 +3321,7 @@ ${indent}${str}`;
         } else {
           const node = this.get(key, true);
           if (node instanceof Collection) node.setIn(rest, value);
-          else if (node === void 0 && this.schema)
-            this.set(key, collectionFromPath(this.schema, rest, value));
+          else if (node === void 0 && this.schema) this.set(key, collectionFromPath(this.schema, rest, value));
           else throw new Error(`Expected YAML collection at ${key}. Remaining path: ${rest}`);
         }
       }
@@ -3539,10 +3330,7 @@ ${indent}${str}`;
       }
       toString(ctx, { blockItem, flowChars, isMap, itemIndent }, onComment, onChompKeep) {
         const { indent, indentStep, stringify } = ctx;
-        const inFlow =
-          this.type === PlainValue.Type.FLOW_MAP ||
-          this.type === PlainValue.Type.FLOW_SEQ ||
-          ctx.inFlow;
+        const inFlow = this.type === PlainValue.Type.FLOW_MAP || this.type === PlainValue.Type.FLOW_SEQ || ctx.inFlow;
         if (inFlow) itemIndent += indentStep;
         const allNullValues = isMap && this.hasAllNullValues();
         ctx = Object.assign({}, ctx, {
@@ -3602,11 +3390,7 @@ ${indent}${str}`;
         } else if (inFlow) {
           const { start, end } = flowChars;
           const strings = nodes.map(n => n.str);
-          if (
-            hasItemWithNewLine ||
-            strings.reduce((sum, str2) => sum + str2.length + 2, 2) >
-              Collection.maxFlowStringSingleLineLength
-          ) {
+          if (hasItemWithNewLine || strings.reduce((sum, str2) => sum + str2.length + 2, 2) > Collection.maxFlowStringSingleLineLength) {
             str = start;
             for (const s of strings) {
               str += s
@@ -3720,8 +3504,7 @@ ${indent}${s}`
         if (this.key == null) this.key = new Scalar(null);
         if (this.key instanceof Node) this.key.commentBefore = cb;
         else {
-          const msg =
-            'Pair.commentBefore is an alias for Pair.key.commentBefore. To set it, the key must be a Node.';
+          const msg = 'Pair.commentBefore is an alias for Pair.key.commentBefore. To set it, the key must be a Node.';
           throw new Error(msg);
         }
       }
@@ -3769,9 +3552,7 @@ ${indent}${s}`
           (!key ||
             keyComment ||
             (key instanceof Node
-              ? key instanceof Collection ||
-                key.type === PlainValue.Type.BLOCK_FOLDED ||
-                key.type === PlainValue.Type.BLOCK_LITERAL
+              ? key instanceof Collection || key.type === PlainValue.Type.BLOCK_FOLDED || key.type === PlainValue.Type.BLOCK_LITERAL
               : typeof key === 'object'));
         const { doc, indent, indentStep, stringify } = ctx;
         ctx = Object.assign({}, ctx, {
@@ -3787,10 +3568,7 @@ ${indent}${s}`
         );
         str = addComment(str, ctx.indent, keyComment);
         if (!explicitKey && str.length > 1024) {
-          if (simpleKeys)
-            throw new Error(
-              'With simple keys, single line scalar must not span more than 1024 characters'
-            );
+          if (simpleKeys) throw new Error('With simple keys, single line scalar must not span more than 1024 characters');
           explicitKey = true;
         }
         if (ctx.allNullValues && !simpleKeys) {
@@ -3822,8 +3600,7 @@ ${cs}`;
           value = doc.schema.createNode(value, true);
         }
         ctx.implicitKey = false;
-        if (!explicitKey && !this.comment && value instanceof Scalar)
-          ctx.indentAtStart = str.length + 1;
+        if (!explicitKey && !this.comment && value instanceof Scalar) ctx.indentAtStart = str.length + 1;
         chompKeep = false;
         if (
           !indentSeq &&
@@ -3882,12 +3659,9 @@ ${ctx.indent}`;
     var Alias = class extends Node {
       static stringify({ range, source }, { anchors, doc, implicitKey, inStringifyKey }) {
         let anchor = Object.keys(anchors).find(a => anchors[a] === source);
-        if (!anchor && inStringifyKey)
-          anchor = doc.anchors.getName(source) || doc.anchors.newName();
+        if (!anchor && inStringifyKey) anchor = doc.anchors.getName(source) || doc.anchors.newName();
         if (anchor) return `*${anchor}${implicitKey ? ' ' : ''}`;
-        const msg = doc.anchors.getName(source)
-          ? 'Alias node must be after source node'
-          : 'Source node not found for alias node';
+        const msg = doc.anchors.getName(source) ? 'Alias node must be after source node' : 'Source node not found for alias node';
         throw new Error(`${msg} [${range}]`);
       }
       constructor(source) {
@@ -3976,8 +3750,7 @@ ${ctx.indent}`;
       toString(ctx, onComment, onChompKeep) {
         if (!ctx) return JSON.stringify(this);
         for (const item of this.items) {
-          if (!(item instanceof Pair))
-            throw new Error(`Map items must all be pairs; found ${JSON.stringify(item)} instead`);
+          if (!(item instanceof Pair)) throw new Error(`Map items must all be pairs; found ${JSON.stringify(item)} instead`);
         }
         return super.toString(
           ctx,
@@ -4095,12 +3868,7 @@ ${ctx.indent}`;
       }
       return i;
     };
-    function foldFlowLines(
-      text,
-      indent,
-      mode,
-      { indentAtStart, lineWidth = 80, minContentWidth = 20, onFold, onOverflow }
-    ) {
+    function foldFlowLines(text, indent, mode, { indentAtStart, lineWidth = 80, minContentWidth = 20, onFold, onOverflow }) {
       if (!lineWidth || lineWidth < 0) return text;
       const endStep = Math.max(1 + minContentWidth, 1 + lineWidth - indent.length);
       if (text.length <= endStep) return text;
@@ -4311,8 +4079,7 @@ ${indent}`
       if (/\n[\t ]+$/.test(value) || /^\s*$/.test(value)) {
         return doubleQuotedString(value, ctx);
       }
-      const indent =
-        ctx.indent || (ctx.forceBlockIndent || containsDocumentMarker(value) ? '  ' : '');
+      const indent = ctx.indent || (ctx.forceBlockIndent || containsDocumentMarker(value) ? '  ' : '');
       const indentSize = indent ? '2' : '1';
       const literal =
         type === PlainValue.Type.BLOCK_FOLDED
@@ -4375,12 +4142,7 @@ ${indent}${body}`;
       if ((implicitKey && /[\n[\]{},]/.test(value)) || (inFlow && /[[\]{},]/.test(value))) {
         return doubleQuotedString(value, ctx);
       }
-      if (
-        !value ||
-        /^[\n\t ,[\]{}#&*!|>'"%@`]|^[?-]$|^[?-][ \t]|[\n:][ \t]|[ \t]\n|[\n\t ]#|[\n\t :]$/.test(
-          value
-        )
-      ) {
+      if (!value || /^[\n\t ,[\]{}#&*!|>'"%@`]|^[?-]$|^[?-][ \t]|[\n:][ \t]|[ \t]\n|[\n\t ]#|[\n\t :]$/.test(value)) {
         return implicitKey || inFlow || value.indexOf('\n') === -1
           ? value.indexOf('"') !== -1 && value.indexOf("'") === -1
             ? singleQuotedString(value, ctx)
@@ -4438,10 +4200,7 @@ ${indent}`
       };
       if (type !== PlainValue.Type.QUOTE_DOUBLE && /[\x00-\x08\x0b-\x1f\x7f-\x9f]/.test(value)) {
         type = PlainValue.Type.QUOTE_DOUBLE;
-      } else if (
-        (implicitKey || inFlow) &&
-        (type === PlainValue.Type.BLOCK_FOLDED || type === PlainValue.Type.BLOCK_LITERAL)
-      ) {
+      } else if ((implicitKey || inFlow) && (type === PlainValue.Type.BLOCK_FOLDED || type === PlainValue.Type.BLOCK_LITERAL)) {
         type = PlainValue.Type.QUOTE_DOUBLE;
       }
       let res = _stringify(type);
@@ -4455,12 +4214,7 @@ ${indent}`
       if (typeof value === 'bigint') return String(value);
       if (!isFinite(value)) return isNaN(value) ? '.nan' : value < 0 ? '-.inf' : '.inf';
       let n = JSON.stringify(value);
-      if (
-        !format &&
-        minFractionDigits &&
-        (!tag || tag === 'tag:yaml.org,2002:float') &&
-        /^\d/.test(n)
-      ) {
+      if (!format && minFractionDigits && (!tag || tag === 'tag:yaml.org,2002:float') && /^\d/.test(n)) {
         let i = n.indexOf('.');
         if (i < 0) {
           i = n.length;
@@ -4502,8 +4256,7 @@ ${indent}`
           err.offset = lastItem.offset + 1;
         } else {
           err = new PlainValue.YAMLSemanticError(lastItem, msg);
-          if (lastItem.range && lastItem.range.end)
-            err.offset = lastItem.range.end - lastItem.range.start;
+          if (lastItem.range && lastItem.range.end) err.offset = lastItem.range.end - lastItem.range.start;
         }
         errors.push(err);
       }
@@ -4555,18 +4308,12 @@ ${indent}`
       if (!prefix) {
         const dtp = doc.getDefaults().tagPrefixes;
         if (dtp) prefix = dtp.find(p => p.handle === handle);
-        if (!prefix)
-          throw new PlainValue.YAMLSemanticError(
-            node,
-            `The ${handle} tag handle is non-default and was not declared.`
-          );
+        if (!prefix) throw new PlainValue.YAMLSemanticError(node, `The ${handle} tag handle is non-default and was not declared.`);
       }
       if (!suffix) throw new PlainValue.YAMLSemanticError(node, `The ${handle} tag has no suffix.`);
       if (handle === '!' && (doc.version || doc.options.version) === '1.0') {
         if (suffix[0] === '^') {
-          doc.warnings.push(
-            new PlainValue.YAMLWarning(node, 'YAML 1.0 ^ tag expansion is not supported')
-          );
+          doc.warnings.push(new PlainValue.YAMLWarning(node, 'YAML 1.0 ^ tag expansion is not supported'));
           return suffix;
         }
         if (/[:/]/.test(suffix)) {
@@ -4626,8 +4373,7 @@ ${indent}`
         }
       }
       const str = resolveString(doc, node);
-      if (typeof str === 'string' && matchWithTest.length > 0)
-        return resolveScalar(str, matchWithTest, tags.scalarFallback);
+      if (typeof str === 'string' && matchWithTest.length > 0) return resolveScalar(str, matchWithTest, tags.scalarFallback);
       return null;
     }
     function getFallbackTagName({ type }) {
@@ -4672,11 +4418,7 @@ ${indent}`
     var isCollectionItem = node => {
       if (!node) return false;
       const { type } = node;
-      return (
-        type === PlainValue.Type.MAP_KEY ||
-        type === PlainValue.Type.MAP_VALUE ||
-        type === PlainValue.Type.SEQ_ITEM
-      );
+      return type === PlainValue.Type.MAP_KEY || type === PlainValue.Type.MAP_VALUE || type === PlainValue.Type.SEQ_ITEM;
     };
     function resolveNodeProps(errors, node) {
       const comments = {
@@ -4685,9 +4427,7 @@ ${indent}`
       };
       let hasAnchor = false;
       let hasTag = false;
-      const props = isCollectionItem(node.context.parent)
-        ? node.context.parent.props.concat(node.props)
-        : node.props;
+      const props = isCollectionItem(node.context.parent) ? node.context.parent.props.concat(node.props) : node.props;
       for (const { start, end } of props) {
         switch (node.context.src[start]) {
           case PlainValue.Char.COMMENT: {
@@ -4696,10 +4436,7 @@ ${indent}`
               errors.push(new PlainValue.YAMLSemanticError(node, msg));
             }
             const { header, valueRange } = node;
-            const cc =
-              valueRange && (start > valueRange.start || (header && start > header.start))
-                ? comments.after
-                : comments.before;
+            const cc = valueRange && (start > valueRange.start || (header && start > header.start)) ? comments.after : comments.before;
             cc.push(node.context.src.slice(start + 1, end));
             break;
           }
@@ -4797,10 +4534,7 @@ ${ca}`
         doc.errors.push(new PlainValue.YAMLSyntaxError(cst, msg));
         return null;
       }
-      const { comments, items } =
-        cst.type === PlainValue.Type.FLOW_MAP
-          ? resolveFlowMapItems(doc, cst)
-          : resolveBlockMapItems(doc, cst);
+      const { comments, items } = cst.type === PlainValue.Type.FLOW_MAP ? resolveFlowMapItems(doc, cst) : resolveBlockMapItems(doc, cst);
       const map = new YAMLMap();
       map.items = items;
       resolveComments(map, comments);
@@ -4824,13 +4558,7 @@ ${ca}`
         } else {
           for (let j = i + 1; j < items.length; ++j) {
             const { key: jKey } = items[j];
-            if (
-              iKey === jKey ||
-              (iKey &&
-                jKey &&
-                Object.prototype.hasOwnProperty.call(iKey, 'value') &&
-                iKey.value === jKey.value)
-            ) {
+            if (iKey === jKey || (iKey && jKey && Object.prototype.hasOwnProperty.call(iKey, 'value') && iKey.value === jKey.value)) {
               const msg = `Map keys must be unique; "${iKey}" is repeated`;
               doc.errors.push(new PlainValue.YAMLSemanticError(cst, msg));
               break;
@@ -4839,8 +4567,7 @@ ${ca}`
         }
       }
       if (hasCollectionKey && !doc.options.mapAsMap) {
-        const warn =
-          'Keys with collection values will be stringified as YAML due to JS Object restrictions. Use mapAsMap: true to avoid this.';
+        const warn = 'Keys with collection values will be stringified as YAML due to JS Object restrictions. Use mapAsMap: true to avoid this.';
         doc.warnings.push(new PlainValue.YAMLWarning(cst, warn));
       }
       cst.resolved = map;
@@ -4902,12 +4629,7 @@ ${ca}`
             {
               if (key === void 0) key = null;
               if (item.error) doc.errors.push(item.error);
-              if (
-                !item.context.atLineStart &&
-                item.node &&
-                item.node.type === PlainValue.Type.MAP &&
-                !item.node.context.atLineStart
-              ) {
+              if (!item.context.atLineStart && item.node && item.node.type === PlainValue.Type.MAP && !item.node.context.atLineStart) {
                 const msg = 'Nested mappings are not allowed in compact mappings';
                 doc.errors.push(new PlainValue.YAMLSemanticError(item.node, msg));
               }
@@ -5033,16 +4755,10 @@ ${ca}`
             comment: item.comment
           });
         } else if (key === void 0) {
-          if (next === ',')
-            doc.errors.push(
-              new PlainValue.YAMLSemanticError(item, 'Separator , missing in flow map')
-            );
+          if (next === ',') doc.errors.push(new PlainValue.YAMLSemanticError(item, 'Separator , missing in flow map'));
           key = resolveNode(doc, item);
         } else {
-          if (next !== ',')
-            doc.errors.push(
-              new PlainValue.YAMLSemanticError(item, 'Indicator : missing in flow map entry')
-            );
+          if (next !== ',') doc.errors.push(new PlainValue.YAMLSemanticError(item, 'Indicator : missing in flow map entry'));
           items.push(new Pair(key, resolveNode(doc, item)));
           key = void 0;
           explicitKey = false;
@@ -5061,19 +4777,12 @@ ${ca}`
         doc.errors.push(new PlainValue.YAMLSyntaxError(cst, msg));
         return null;
       }
-      const { comments, items } =
-        cst.type === PlainValue.Type.FLOW_SEQ
-          ? resolveFlowSeqItems(doc, cst)
-          : resolveBlockSeqItems(doc, cst);
+      const { comments, items } = cst.type === PlainValue.Type.FLOW_SEQ ? resolveFlowSeqItems(doc, cst) : resolveBlockSeqItems(doc, cst);
       const seq = new YAMLSeq();
       seq.items = items;
       resolveComments(seq, comments);
-      if (
-        !doc.options.mapAsMap &&
-        items.some(it => it instanceof Pair && it.key instanceof Collection)
-      ) {
-        const warn =
-          'Keys with collection values will be stringified as YAML due to JS Object restrictions. Use mapAsMap: true to avoid this.';
+      if (!doc.options.mapAsMap && items.some(it => it instanceof Pair && it.key instanceof Collection)) {
+        const warn = 'Keys with collection values will be stringified as YAML due to JS Object restrictions. Use mapAsMap: true to avoid this.';
         doc.warnings.push(new PlainValue.YAMLWarning(cst, warn));
       }
       cst.resolved = seq;
@@ -5106,9 +4815,7 @@ ${ca}`
             break;
           default:
             if (item.error) doc.errors.push(item.error);
-            doc.errors.push(
-              new PlainValue.YAMLSyntaxError(item, `Unexpected ${item.type} node in sequence`)
-            );
+            doc.errors.push(new PlainValue.YAMLSyntaxError(item, `Unexpected ${item.type} node in sequence`));
         }
       }
       return {
@@ -5251,8 +4958,7 @@ var require_warnings_1000a372 = __commonJS({
           for (let i = 0; i < str.length; ++i) buffer[i] = str.charCodeAt(i);
           return buffer;
         } else {
-          const msg =
-            'This environment does not support reading binary tags; either Buffer or atob is required';
+          const msg = 'This environment does not support reading binary tags; either Buffer or atob is required';
           doc.errors.push(new PlainValue.YAMLReferenceError(node, msg));
           return null;
         }
@@ -5261,18 +4967,13 @@ var require_warnings_1000a372 = __commonJS({
       stringify: ({ comment, type, value }, ctx, onComment, onChompKeep) => {
         let src;
         if (typeof Buffer === 'function') {
-          src =
-            value instanceof Buffer
-              ? value.toString('base64')
-              : Buffer.from(value.buffer).toString('base64');
+          src = value instanceof Buffer ? value.toString('base64') : Buffer.from(value.buffer).toString('base64');
         } else if (typeof btoa === 'function') {
           let s = '';
           for (let i = 0; i < value.length; ++i) s += String.fromCharCode(value[i]);
           src = btoa(s);
         } else {
-          throw new Error(
-            'This environment does not support writing binary tags; either Buffer or btoa is required'
-          );
+          throw new Error('This environment does not support writing binary tags; either Buffer or btoa is required');
         }
         if (!type) type = resolveSeq.binaryOptions.defaultType;
         if (type === PlainValue.Type.QUOTE_DOUBLE) {
@@ -5424,17 +5125,10 @@ ${pair.comment}`
       }
       get(key, keepPair) {
         const pair = resolveSeq.findPair(this.items, key);
-        return !keepPair && pair instanceof resolveSeq.Pair
-          ? pair.key instanceof resolveSeq.Scalar
-            ? pair.key.value
-            : pair.key
-          : pair;
+        return !keepPair && pair instanceof resolveSeq.Pair ? (pair.key instanceof resolveSeq.Scalar ? pair.key.value : pair.key) : pair;
       }
       set(key, value) {
-        if (typeof value !== 'boolean')
-          throw new Error(
-            `Expected boolean value for set(key, value) in a YAML set, not ${typeof value}`
-          );
+        if (typeof value !== 'boolean') throw new Error(`Expected boolean value for set(key, value) in a YAML set, not ${typeof value}`);
         const prev = resolveSeq.findPair(this.items, key);
         if (prev && !value) {
           this.items.splice(this.items.indexOf(prev), 1);
@@ -5454,8 +5148,7 @@ ${pair.comment}`
     PlainValue._defineProperty(YAMLSet, 'tag', 'tag:yaml.org,2002:set');
     function parseSet(doc, cst) {
       const map = resolveSeq.resolveMap(doc, cst);
-      if (!map.hasAllNullValues())
-        throw new PlainValue.YAMLSemanticError(cst, 'Set items must all have null values');
+      if (!map.hasAllNullValues()) throw new PlainValue.YAMLSemanticError(cst, 'Set items must all have null values');
       return Object.assign(new YAMLSet(), map);
     }
     function createSet(schema, iterable, ctx) {
@@ -5528,15 +5221,7 @@ ${pair.comment}`
       ),
       resolve: (str, year, month, day, hour, minute, second, millisec, tz) => {
         if (millisec) millisec = (millisec + '00').substr(1, 3);
-        let date = Date.UTC(
-          year,
-          month - 1,
-          day,
-          hour || 0,
-          minute || 0,
-          second || 0,
-          millisec || 0
-        );
+        let date = Date.UTC(year, month - 1, day, hour || 0, minute || 0, second || 0, millisec || 0);
         if (tz && tz !== 'Z') {
           let d = parseSexagesimal(tz[0], tz.slice(1));
           if (Math.abs(d) < 30) d *= 60;
@@ -5549,8 +5234,7 @@ ${pair.comment}`
     function shouldWarn(deprecation) {
       const env = (typeof process !== 'undefined' && process.env) || {};
       if (deprecation) {
-        if (typeof YAML_SILENCE_DEPRECATION_WARNINGS !== 'undefined')
-          return !YAML_SILENCE_DEPRECATION_WARNINGS;
+        if (typeof YAML_SILENCE_DEPRECATION_WARNINGS !== 'undefined') return !YAML_SILENCE_DEPRECATION_WARNINGS;
         return !env.YAML_SILENCE_DEPRECATION_WARNINGS;
       }
       if (typeof YAML_SILENCE_WARNINGS !== 'undefined') return !YAML_SILENCE_WARNINGS;
@@ -5571,10 +5255,7 @@ ${pair.comment}`
           .replace(/.*yaml[/\\]/i, '')
           .replace(/\.js$/, '')
           .replace(/\\/g, '/');
-        warn(
-          `The endpoint 'yaml/${path}' will be removed in a future release.`,
-          'DeprecationWarning'
-        );
+        warn(`The endpoint 'yaml/${path}' will be removed in a future release.`, 'DeprecationWarning');
       }
     }
     var warned = {};
@@ -5660,8 +5341,7 @@ var require_Schema_88e323a7 = __commonJS({
     };
     var failsafe = [map, seq, string];
     var intIdentify$2 = value => typeof value === 'bigint' || Number.isInteger(value);
-    var intResolve$1 = (src, part, radix) =>
-      resolveSeq.intOptions.asBigInt ? BigInt(src) : parseInt(part, radix);
+    var intResolve$1 = (src, part, radix) => (resolveSeq.intOptions.asBigInt ? BigInt(src) : parseInt(part, radix));
     function intStringify$1(node, radix, prefix) {
       const { value } = node;
       if (intIdentify$2(value) && value >= 0) return prefix + value.toString(radix);
@@ -5684,8 +5364,7 @@ var require_Schema_88e323a7 = __commonJS({
       test: /^(?:[Tt]rue|TRUE|[Ff]alse|FALSE)$/,
       resolve: str => str[0] === 't' || str[0] === 'T',
       options: resolveSeq.boolOptions,
-      stringify: ({ value }) =>
-        value ? resolveSeq.boolOptions.trueStr : resolveSeq.boolOptions.falseStr
+      stringify: ({ value }) => (value ? resolveSeq.boolOptions.trueStr : resolveSeq.boolOptions.falseStr)
     };
     var octObj = {
       identify: value => intIdentify$2(value) && value >= 0,
@@ -5721,8 +5400,7 @@ var require_Schema_88e323a7 = __commonJS({
       default: true,
       tag: 'tag:yaml.org,2002:float',
       test: /^(?:[-+]?\.inf|(\.nan))$/i,
-      resolve: (str, nan) =>
-        nan ? NaN : str[0] === '-' ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY,
+      resolve: (str, nan) => (nan ? NaN : str[0] === '-' ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY),
       stringify: resolveSeq.stringifyNumber
     };
     var expObj = {
@@ -5747,16 +5425,7 @@ var require_Schema_88e323a7 = __commonJS({
       },
       stringify: resolveSeq.stringifyNumber
     };
-    var core2 = failsafe.concat([
-      nullObj,
-      boolObj,
-      octObj,
-      intObj,
-      hexObj,
-      nanObj,
-      expObj,
-      floatObj
-    ]);
+    var core2 = failsafe.concat([nullObj, boolObj, octObj, intObj, hexObj, nanObj, expObj, floatObj]);
     var intIdentify$1 = value => typeof value === 'bigint' || Number.isInteger(value);
     var stringifyJSON = ({ value }) => JSON.stringify(value);
     var json = [
@@ -5806,8 +5475,7 @@ var require_Schema_88e323a7 = __commonJS({
     json.scalarFallback = str => {
       throw new SyntaxError(`Unresolved plain scalar ${JSON.stringify(str)}`);
     };
-    var boolStringify = ({ value }) =>
-      value ? resolveSeq.boolOptions.trueStr : resolveSeq.boolOptions.falseStr;
+    var boolStringify = ({ value }) => (value ? resolveSeq.boolOptions.trueStr : resolveSeq.boolOptions.falseStr);
     var intIdentify = value => typeof value === 'bigint' || Number.isInteger(value);
     function intResolve(sign, src, radix) {
       let str = src.replace(/_/g, '');
@@ -5841,8 +5509,7 @@ var require_Schema_88e323a7 = __commonJS({
       [
         {
           identify: value => value == null,
-          createNode: (schema, value, ctx) =>
-            ctx.wrapScalars ? new resolveSeq.Scalar(null) : null,
+          createNode: (schema, value, ctx) => (ctx.wrapScalars ? new resolveSeq.Scalar(null) : null),
           default: true,
           tag: 'tag:yaml.org,2002:null',
           test: /^(?:~|[Nn]ull|NULL)?$/,
@@ -5908,8 +5575,7 @@ var require_Schema_88e323a7 = __commonJS({
           default: true,
           tag: 'tag:yaml.org,2002:float',
           test: /^(?:[-+]?\.inf|(\.nan))$/i,
-          resolve: (str, nan) =>
-            nan ? NaN : str[0] === '-' ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY,
+          resolve: (str, nan) => (nan ? NaN : str[0] === '-' ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY),
           stringify: resolveSeq.stringifyNumber
         },
         {
@@ -5977,10 +5643,7 @@ var require_Schema_88e323a7 = __commonJS({
         if (!tagObj) throw new Error(`Tag ${tagName} not found`);
         return tagObj;
       }
-      return tags2.find(
-        t =>
-          ((t.identify && t.identify(value)) || (t.class && value instanceof t.class)) && !t.format
-      );
+      return tags2.find(t => ((t.identify && t.identify(value)) || (t.class && value instanceof t.class)) && !t.format);
     }
     function createNode(value, tagName, ctx) {
       if (value instanceof resolveSeq.Node) return value;
@@ -5989,8 +5652,7 @@ var require_Schema_88e323a7 = __commonJS({
       let tagObj = findTagObject(value, tagName, schema.tags);
       if (!tagObj) {
         if (typeof value.toJSON === 'function') value = value.toJSON();
-        if (!value || typeof value !== 'object')
-          return wrapScalars ? new resolveSeq.Scalar(value) : value;
+        if (!value || typeof value !== 'object') return wrapScalars ? new resolveSeq.Scalar(value) : value;
         tagObj = value instanceof Map ? map : value[Symbol.iterator] ? seq : map;
       }
       if (onTagObj) {
@@ -6011,11 +5673,7 @@ var require_Schema_88e323a7 = __commonJS({
         obj.value = value;
         prevObjects.set(value, obj);
       }
-      obj.node = tagObj.createNode
-        ? tagObj.createNode(ctx.schema, value, ctx)
-        : wrapScalars
-        ? new resolveSeq.Scalar(value)
-        : value;
+      obj.node = tagObj.createNode ? tagObj.createNode(ctx.schema, value, ctx) : wrapScalars ? new resolveSeq.Scalar(value) : value;
       if (tagName && obj.node instanceof resolveSeq.Node) obj.node.tag = tagName;
       return obj.node;
     }
@@ -6052,10 +5710,8 @@ var require_Schema_88e323a7 = __commonJS({
       constructor({ customTags, merge, schema, sortMapEntries, tags: deprecatedCustomTags }) {
         this.merge = !!merge;
         this.name = schema;
-        this.sortMapEntries =
-          sortMapEntries === true ? sortMapEntriesByKey : sortMapEntries || null;
-        if (!customTags && deprecatedCustomTags)
-          warnings.warnOptionDeprecation('tags', 'customTags');
+        this.sortMapEntries = sortMapEntries === true ? sortMapEntriesByKey : sortMapEntries || null;
+        if (!customTags && deprecatedCustomTags) warnings.warnOptionDeprecation('tags', 'customTags');
         this.tags = getSchemaTags(schemas, tags, customTags || deprecatedCustomTags, schema);
       }
       createNode(value, wrapScalars, tagName, ctx) {
@@ -6216,9 +5872,7 @@ var require_Document_9b4560a1 = __commonJS({
       let tagObj, obj;
       if (item instanceof resolveSeq.Scalar) {
         obj = item.value;
-        const match = tags.filter(
-          t => (t.identify && t.identify(obj)) || (t.class && obj instanceof t.class)
-        );
+        const match = tags.filter(t => (t.identify && t.identify(obj)) || (t.class && obj instanceof t.class));
         tagObj = match.find(t => t.format === item.format) || match.find(t => !t.format);
       } else {
         obj = item;
@@ -6281,11 +5935,7 @@ ${ctx.indent}${str}`;
     }
     var Anchors = class {
       static validAnchorNode(node) {
-        return (
-          node instanceof resolveSeq.Scalar ||
-          node instanceof resolveSeq.YAMLSeq ||
-          node instanceof resolveSeq.YAMLMap
-        );
+        return node instanceof resolveSeq.Scalar || node instanceof resolveSeq.YAMLSeq || node instanceof resolveSeq.YAMLMap;
       }
       constructor(prefix) {
         PlainValue._defineProperty(this, 'map', Object.create(null));
@@ -6414,8 +6064,7 @@ ${ctx.indent}${str}`;
       } else {
         const cb = comments.before.join('\n');
         if (cb) {
-          const cbNode =
-            body instanceof resolveSeq.Collection && body.items[0] ? body.items[0] : body;
+          const cbNode = body instanceof resolveSeq.Collection && body.items[0] ? body.items[0] : body;
           cbNode.commentBefore = cbNode.commentBefore
             ? `${cb}
 ${cbNode.commentBefore}`
@@ -6431,8 +6080,7 @@ ${cbNode.commentBefore}`
         throw new PlainValue.YAMLSemanticError(directive, msg);
       }
       if (tagPrefixes.some(p => p.handle === handle)) {
-        const msg =
-          'The %TAG directive must only be given at most once per handle in the same document.';
+        const msg = 'The %TAG directive must only be given at most once per handle in the same document.';
         throw new PlainValue.YAMLSemanticError(directive, msg);
       }
       return {
@@ -6489,11 +6137,7 @@ ${cbNode.commentBefore}`
         }
         if (comment) directiveComments.push(comment);
       }
-      if (
-        prevDoc &&
-        !hasDirectives &&
-        (doc.version || prevDoc.version || doc.options.version) === '1.1'
-      ) {
+      if (prevDoc && !hasDirectives && (doc.version || prevDoc.version || doc.options.version) === '1.1') {
         const copyTagPrefix = ({ handle, prefix }) => ({
           handle,
           prefix
@@ -6546,18 +6190,11 @@ ${cbNode.commentBefore}`
         return Document.defaults[this.version] || Document.defaults[this.options.version] || {};
       }
       get(key, keepScalar) {
-        return this.contents instanceof resolveSeq.Collection
-          ? this.contents.get(key, keepScalar)
-          : void 0;
+        return this.contents instanceof resolveSeq.Collection ? this.contents.get(key, keepScalar) : void 0;
       }
       getIn(path, keepScalar) {
-        if (resolveSeq.isEmptyPath(path))
-          return !keepScalar && this.contents instanceof resolveSeq.Scalar
-            ? this.contents.value
-            : this.contents;
-        return this.contents instanceof resolveSeq.Collection
-          ? this.contents.getIn(path, keepScalar)
-          : void 0;
+        if (resolveSeq.isEmptyPath(path)) return !keepScalar && this.contents instanceof resolveSeq.Scalar ? this.contents.value : this.contents;
+        return this.contents instanceof resolveSeq.Collection ? this.contents.getIn(path, keepScalar) : void 0;
       }
       has(key) {
         return this.contents instanceof resolveSeq.Collection ? this.contents.has(key) : false;
@@ -6607,21 +6244,16 @@ ${cbNode.commentBefore}`
         parseContents(this, contents);
         this.anchors.resolveNodes();
         if (this.options.prettyErrors) {
-          for (const error2 of this.errors)
-            if (error2 instanceof PlainValue.YAMLError) error2.makePretty();
-          for (const warn of this.warnings)
-            if (warn instanceof PlainValue.YAMLError) warn.makePretty();
+          for (const error2 of this.errors) if (error2 instanceof PlainValue.YAMLError) error2.makePretty();
+          for (const warn of this.warnings) if (warn instanceof PlainValue.YAMLError) warn.makePretty();
         }
         return this;
       }
       listNonDefaultTags() {
-        return listTagNames(this.contents).filter(
-          t => t.indexOf(Schema.Schema.defaultPrefix) !== 0
-        );
+        return listTagNames(this.contents).filter(t => t.indexOf(Schema.Schema.defaultPrefix) !== 0);
       }
       setTagPrefix(handle, prefix) {
-        if (handle[0] !== '!' || handle[handle.length - 1] !== '!')
-          throw new Error('Handle must start and end with !');
+        if (handle[0] !== '!' || handle[handle.length - 1] !== '!') throw new Error('Handle must start and end with !');
         if (prefix) {
           const prev = this.tagPrefixes.find(p => p.handle === handle);
           if (prev) prev.prefix = prefix;
@@ -6636,9 +6268,7 @@ ${cbNode.commentBefore}`
       }
       toJSON(arg, onAnchor) {
         const { keepBlobsInJSON, mapAsMap, maxAliasCount } = this.options;
-        const keep =
-          keepBlobsInJSON &&
-          (typeof arg !== 'string' || !(this.contents instanceof resolveSeq.Scalar));
+        const keep = keepBlobsInJSON && (typeof arg !== 'string' || !(this.contents instanceof resolveSeq.Scalar));
         const ctx = {
           doc: this,
           indentStep: '  ',
@@ -6660,8 +6290,7 @@ ${cbNode.commentBefore}`
             ])
           );
         const res = resolveSeq.toJSON(this.contents, arg, ctx);
-        if (typeof onAnchor === 'function' && ctx.anchors)
-          for (const { count, res: res2 } of ctx.anchors.values()) onAnchor(res2, count);
+        if (typeof onAnchor === 'function' && ctx.anchors) for (const { count, res: res2 } of ctx.anchors.values()) onAnchor(res2, count);
         return res;
       }
       toString() {
@@ -6706,10 +6335,8 @@ ${cbNode.commentBefore}`
         let contentComment = null;
         if (this.contents) {
           if (this.contents instanceof resolveSeq.Node) {
-            if (this.contents.spaceBefore && (hasDirectives || this.directivesEndMarker))
-              lines.push('');
-            if (this.contents.commentBefore)
-              lines.push(this.contents.commentBefore.replace(/^/gm, '#'));
+            if (this.contents.spaceBefore && (hasDirectives || this.directivesEndMarker)) lines.push('');
+            if (this.contents.commentBefore) lines.push(this.contents.commentBefore.replace(/^/gm, '#'));
             ctx.forceBlockIndent = !!this.comment;
             contentComment = this.contents.comment;
           }
@@ -6748,11 +6375,7 @@ var require_dist = __commonJS({
         tag = wrapScalars;
         wrapScalars = true;
       }
-      const options = Object.assign(
-        {},
-        Document$1.Document.defaults[Document$1.defaultOptions.version],
-        Document$1.defaultOptions
-      );
+      const options = Object.assign({}, Document$1.Document.defaults[Document$1.defaultOptions.version], Document$1.defaultOptions);
       const schema = new Schema.Schema(options);
       return schema.createNode(value, wrapScalars, tag);
     }
@@ -6840,8 +6463,7 @@ var require_action_library = __commonJS({
               [returnKey]: filterObject[key]
             };
           }, {});
-      getCurrentEnvironmentVars = () =>
-        this.filterObjectByKeyPart(process.env, k => k.includes('@'));
+      getCurrentEnvironmentVars = () => this.filterObjectByKeyPart(process.env, k => k.includes('@'));
       keyName = key => key.split('@')[0];
       keyIsPartOfScope = (scope2, key) => {
         let scopes = key.split('@')[1].split(' ');
@@ -6849,24 +6471,14 @@ var require_action_library = __commonJS({
       };
       buildEnvironmentDictionary = (scope2, input, environment) => {
         let environmentDictionary2 = {};
-        let inputScoped = this.filterObjectByKeyPart(
-          input,
-          k => this.keyIsPartOfScope(scope2, k),
-          this.keyName
-        );
-        let environmentScoped = this.filterObjectByKeyPart(
-          environment,
-          k => this.keyIsPartOfScope(scope2, k),
-          this.keyName
-        );
+        let inputScoped = this.filterObjectByKeyPart(input, k => this.keyIsPartOfScope(scope2, k), this.keyName);
+        let environmentScoped = this.filterObjectByKeyPart(environment, k => this.keyIsPartOfScope(scope2, k), this.keyName);
         for (let i in inputScoped) {
           environmentDictionary2[i] = inputScoped[i];
         }
         for (let e in environmentScoped) {
           if (environmentDictionary2[e]) {
-            core2.warning(
-              `<<${e}>>: key and scope specified specifed as env and input file var. env var will be used.`
-            );
+            core2.warning(`<<${e}>>: key and scope specified specifed as env and input file var. env var will be used.`);
           }
           environmentDictionary2[e] = environmentScoped[e];
         }

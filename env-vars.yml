@@ -1,8 +1,0 @@
-where@dev qa stage prod: in the world
-is@dev qa stage prod: Carmen San Diego
-world@dev qa: class dev
-world@stage prod: starts here!
-in_both@dev qa stage prod: Vars wins!
-sort_of_in_both@qa stage prod: Vars wins!
-another_in_both@dev: Vars Wins!
-comma,comma,chameleon@dev: red, gold and green.

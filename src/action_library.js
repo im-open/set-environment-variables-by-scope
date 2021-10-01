@@ -36,16 +36,8 @@ class action_library {
 
   buildEnvironmentDictionary = (scope, input, environment) => {
     let environmentDictionary = {};
-    let inputScoped = this.filterObjectByKeyPart(
-      input,
-      k => this.keyIsPartOfScope(scope, k),
-      this.keyName
-    );
-    let environmentScoped = this.filterObjectByKeyPart(
-      environment,
-      k => this.keyIsPartOfScope(scope, k),
-      this.keyName
-    );
+    let inputScoped = this.filterObjectByKeyPart(input, k => this.keyIsPartOfScope(scope, k), this.keyName);
+    let environmentScoped = this.filterObjectByKeyPart(environment, k => this.keyIsPartOfScope(scope, k), this.keyName);
 
     for (let i in inputScoped) {
       environmentDictionary[i] = inputScoped[i];
@@ -53,9 +45,7 @@ class action_library {
 
     for (let e in environmentScoped) {
       if (environmentDictionary[e]) {
-        core.warning(
-          `<<${e}>>: key and scope specified specifed as env and input file var. env var will be used.`
-        );
+        core.warning(`<<${e}>>: key and scope specified specifed as env and input file var. env var will be used.`);
       }
       environmentDictionary[e] = environmentScoped[e];
     }
