@@ -21,7 +21,7 @@ This action takes specially formatted environment variables and/or an input file
 | ------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | `scope`                   | true        | The selection filter of the vars to be set                                                                                                |
 | `input-file`              | false       | A file containing possible environment variable candidates with their associated scopes                                                   |
-| `create-output-variables` | false       | Create output variables (in addiction to environment variables) for use in other steps and jobs, accepts true or false, defaults to false |
+| `create-output-variables` | false       | Create output variables (in addition to environment variables) for use in other steps and jobs, accepts true or false, defaults to false |
 
 ## Outputs
 
@@ -97,7 +97,7 @@ The resulting environment variable name. It does accept a wide variety of name c
 
 #### `scope-array`
 
-A space delimited array of scope strings that the environment variable could be valid for.  The filter for which keys/values will be select from is the `scope` action input.
+A space delimited array of scope strings that the environment variable could be valid for.  The filter by which keys/values will be selected is the `scope` action input.
 
 #### `key-value`
 
