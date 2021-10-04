@@ -13,6 +13,7 @@ This action takes specially formatted environment variables and/or an input file
     - [`scope-array`](#scope-array)
     - [`key-value`](#key-value)
     - [Input File Format](#input-file-format)
+    - [Repository Secrets](#repository-secrets)
 - [Recompiling](#recompiling)
 - [Code of Conduct](#code-of-conduct)
 - [License](#license)
@@ -47,7 +48,7 @@ on:
 
 jobs:
   setup:
-    runs-on: ubuntu-20.04
+    runs-on: [ubuntu-20.04]
     output:
       env-scope: ${{ steps.env-scope.output.ENVIRONMENT }}
 
@@ -67,7 +68,7 @@ jobs:
       - run: echo "The current environment is ${{ env.ENVIRONMENT }}."
 
   build:
-    runs-on: ubuntu-20.04
+    runs-on: [ubuntu-20.04]
     needs: [setup]
       steps:
       - name: Checkout
@@ -119,7 +120,7 @@ The resulting environment variable name. It does accept a wide variety of name c
 
 #### `scope-array`
 
-A space delimited array of scope strings that the environment variable could be valid for.  The filter by which keys/values will be selected is the `scope` action input.
+A space delimited array of scope strings that the environment variable could be valid for.  The filter by which keys/values will be selected is the `scope` action input. The scope value comparison is _not_ case sensitive.
 
 #### `key-value`
 
@@ -134,6 +135,8 @@ env:
 ```
 
 Produces an environment variable, `${{ env.db_server }}`, with a value of `db-server.domain.com`, if the action `scope` is set to `stage`.
+
+
 
 #### Input File Format
 The contents of an `input-file` is YAML based and has all the elements at the root level.  It's contents would be formatted like this:
@@ -151,6 +154,33 @@ something.used.in.build@qa: qa-value
 something.used.in.build@stage: stage-value
 something.used.in.build@prod: prod-value
 ```
+
+#### Repository Secrets
+
+Repository secrets can be used with the environment variable creation action, but only through environment vars.  This is because the input file does not receive any secret replacement parsing during the action execution.
+
+An example of this would be the inclusion of a secret and user id in a SQL connection string:
+
+```yaml
+
+jobs:
+  deploy-db:
+    runs-on: [ubuntu-20.04]
+    environment: ${{ needs.setup.outputs.env-scope }}
+
+    steps:
+      - name: Build DB Connection
+        uses: im-open/set-environment-variables-by-scope@v1.0.0
+        with:
+          scope: ${{ needs.setup.outputs.env-scope }}
+        env:
+          SQL_CONNECTION_STRING@dev: 'Data Source=dev.sql-server.domain.com;Initial Catalog=dev-demo-db;User Id=dev-db-sa-user;Password=${{ env.SQL_USER_SECRET }};'
+          SQL_CONNECTION_STRING@qa: 'Data Source=qa.sql-server.domain.com;Initial Catalog=qa-demo-db;User Id=qa-db-sa-user;Password=${{ env.SQL_USER_SECRET }};'
+          SQL_CONNECTION_STRING@stage: 'Data Source=stage.sql-server.domain.com;Initial Catalog=stage-demo-db;User Id=stage-db-sa-user;Password=${{ env.SQL_USER_SECRET }};'
+          SQL_CONNECTION_STRING@prod: 'Data Source=sql-server.domain.com;Initial Catalog=demo-db;User Id=db-sa-user;Password=${{ env.SQL_USER_SECRET }};'
+```
+
+If the scope of `QA` were specified, an environment variable `SQL_CONNECTION_STRING` with the specified value containing a replacement for the `SQL_USER_SECRET` from GitHub Repository's `QA` secret environment.
 
 ## Recompiling
 

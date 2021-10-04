@@ -26,8 +26,11 @@ class action_library {
   keyName = key => key.split('@')[0];
 
   keyIsPartOfScope = (scope, key) => {
-    let scopes = key.split('@')[1].split(' ');
-    return scopes.includes(scope);
+    let scopes = key
+      .split('@')[1]
+      .split(' ')
+      .map(s => s.toUpperCase());
+    return scopes.includes(scope.toUpperCase());
   };
 
   buildEnvironmentDictionary = (scope, input, environment) => {

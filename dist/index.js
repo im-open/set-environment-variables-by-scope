@@ -6463,8 +6463,11 @@ var require_action_library = __commonJS({
       getCurrentEnvironmentVars = () => this.filterObjectByKeyPart(process.env, k => k.includes('@'));
       keyName = key => key.split('@')[0];
       keyIsPartOfScope = (scope2, key) => {
-        let scopes = key.split('@')[1].split(' ');
-        return scopes.includes(scope2);
+        let scopes = key
+          .split('@')[1]
+          .split(' ')
+          .map(s => s.toUpperCase());
+        return scopes.includes(scope2.toUpperCase());
       };
       buildEnvironmentDictionary = (scope2, input, environment) => {
         let environmentDictionary2 = {};
