@@ -14,8 +14,8 @@ let environmentDictionary = library.buildEnvironmentDictionary(scope, inputYaml,
 
 console.log('Scoped Variables:', environmentDictionary);
 for (envVar in environmentDictionary) {
-  library.setEnvironmentVar(`${envVar}`, environmentDictionary[envVar]);
+  library.setEnvironmentVar(envVar, environmentDictionary[envVar]);
   if (createOutputVariables) {
-    action_library.setOutputVar(`${envVar}`, environmentDictionary[envVar]);
+    library.setOutputVar(envVar, environmentDictionary[envVar]);
   }
 }
