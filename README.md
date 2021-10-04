@@ -93,7 +93,7 @@ The format of the `env` variable and the `input-file` contents are the same and 
 
 The resulting environment variable name. It does accept a wide variety of name convention formats including spaces, dashes, periods, and underscores. While it's been tested and found to be fairly flexible, it is possible to make environment variable names that aren't usable by one or more of the target action runner operating systems.
 
-**_Key names intended for use as output variables for in workflow references can only contain letters, numbers, dashes and underscores._** Any other punctuation or space characters cannot processed and will cause errors when attempting to reference them later in a workflow.
+**_Key names intended for use as output variables that are referenced in the workflow can only contain letters, numbers, dashes and underscores._** Any other punctuation or space characters cannot be processed and will cause errors when attempting to reference them later in a workflow.
 
 #### `scope-array`
 
@@ -103,7 +103,7 @@ A space delimited array of scope strings that the environment variable could be 
 
 The value that the environment variable will be set to if it's found to meet the scope criteria.
 
-This set environment variable or input file entries:
+This set of environment variable or input file entries:
 
 ```yml
 env:
