@@ -5,23 +5,29 @@ This action takes specially formatted environment variables and/or an input file
 ## Index <!-- omit in toc -->
 
 - [Inputs](#inputs)
+  - [Environment Variables](#environment-variables)
 - [Outputs](#outputs)
 - [Usage Examples](#usage-examples)
   - [Usage Instructions](#usage-instructions)
     - [`key-name`](#key-name)
     - [`scope-array`](#scope-array)
     - [`key-value`](#key-value)
+    - [Input File Format](#input-file-format)
 - [Recompiling](#recompiling)
 - [Code of Conduct](#code-of-conduct)
 - [License](#license)
 
 ## Inputs
 
-| Parameter                 | Is Required | Description                                                                                                                               |
-| ------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `scope`                   | true        | The selection filter of the vars to be set                                                                                                |
-| `input-file`              | false       | A file containing possible environment variable candidates with their associated scopes                                                   |
-| `create-output-variables` | false       | Create output variables (in addition to environment variables) for use in other steps and jobs, accepts true or false, defaults to false |
+| Parameter                 | Is Required | Description                                                                                                                                  |
+| ------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `scope`                   | true        | The scope is used to select key names and values to be set as environment vars, key names that do not contain the scope will not be exported |
+| `input-file`              | false       | A specially formatted YAML file containing possible environment variable candidates with their associated scopes                             |
+| `create-output-variables` | false       | Create output variables (in addition to environment variables) for use in other steps and jobs, accepts true or false, defaults to false     |
+
+### Environment Variables
+
+This action relies heavily on environment variables as part of its inputs. _Any_ environment variable with an [`@` in it's key name](#key-name) is used as a possible candidate for scoped output.  More information is included in the [usage instructions](#usage-instructions) section.
 
 ## Outputs
 
@@ -31,10 +37,13 @@ Varies by usage, but is based on [`key-name`](#key-name) specified in environmen
 
 ```yml
 ...
-input:
-  environment:
-    description: The environment to deploy to.
-    required: true
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: The environment to deploy to.
+        required: true
 
 jobs:
   setup:
@@ -55,12 +64,17 @@ jobs:
           ENVIRONMENT@stage s stg: stage
           ENVIRONMENT@prod p production: prod
 
-      - run: echo "The current environment is ${{ env.ENVIRONMENT }}.
+      - run: echo "The current environment is ${{ env.ENVIRONMENT }}."
 
-    build:
+  build:
+    runs-on: ubuntu-20.04
+    needs: [setup]
+      steps:
       - name: Checkout
         uses: actions/checkout@v2
 
+      # The set-environment-variables-by-scope action uses both the input-file and
+      # the supplied env variables to create the resulting environment and output vars
       - name: Build Workflow Environment Variables
         uses: im-open/set-environment-variables-by-scope@v1.0.0
         with:
@@ -81,6 +95,14 @@ jobs:
             console.log("inFileName1", ${{ env.inFileName1 }})
             console.log("inFileName2", ${{ env.inFileName2 }})
 ...
+```
+
+```yaml
+# Example env-vars.yml file
+
+inFileName1@dev qa stage: 'lower env file value'
+inFileName1@prod demo: 'release env file value'
+inFileName2@dev qa stage prod demo: 'file value for all environments'
 ```
 
 ### Usage Instructions
@@ -113,6 +135,7 @@ env:
 
 Produces an environment variable, `${{ env.db_server }}`, with a value of `db-server.domain.com`, if the action `scope` is set to `stage`.
 
+#### Input File Format
 The contents of an `input-file` is YAML based and has all the elements at the root level.  It's contents would be formatted like this:
 
 ```yaml

@@ -4,10 +4,6 @@ const { env } = require('process');
 const yaml = require('yaml');
 
 class action_library {
-  constructor() {
-    this.currentEnvironmentPath = process.env['GITHUB_ENV'];
-  }
-
   getFileYaml = path => {
     let fileData = fs.readFileSync(path, 'utf8');
     let fileYaml = yaml.parse(fileData);

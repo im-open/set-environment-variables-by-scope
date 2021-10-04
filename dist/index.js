@@ -6445,9 +6445,6 @@ var require_action_library = __commonJS({
     var { env } = require('process');
     var yaml = require_yaml();
     var action_library2 = class {
-      constructor() {
-        this.currentEnvironmentPath = process.env['GITHUB_ENV'];
-      }
       getFileYaml = path => {
         let fileData = fs.readFileSync(path, 'utf8');
         let fileYaml = yaml.parse(fileData);
