@@ -1,14 +1,18 @@
-name: Set Environment Variables by Scope
+name: 'Set Environment Variables by Scope'
 
-description: This action takes specially formatted environment variables and/or an input file to emit scoped environment variables.
+description: 'This action takes specially formatted environment variables and/or an input file to emit scoped environment variables.'
 
 inputs:
   scope:
-    description: The selection filter of the vars to be set.
+    description: 'The selection filter of the vars to be set'
     required: true
   input-file:
-    description: A file containg possible environment variable candidatas with their associated scopes
+    description: 'A file containing possible environment variable candidates with their associated scopes'
     required: false
+  create-output-variables:
+    description: 'Create output variables (in addiction to environment variables) for use in other steps and jobs, accepts true or false, defaults to false'
+    required: false
+    default: 'false'
 
 runs:
   using: 'node12'

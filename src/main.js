@@ -4,6 +4,7 @@ const { action_library } = require('./action_library');
 let library = new action_library();
 
 let scope = core.getInput('scope');
+let createOutputVariables = core.getInput('create-output-variables') == 'true';
 
 let inputFilePath = core.getInput('input-file');
 let inputYaml = library.getFileYaml(inputFilePath);
@@ -14,4 +15,7 @@ let environmentDictionary = library.buildEnvironmentDictionary(scope, inputYaml,
 console.log('Scoped Variables:', environmentDictionary);
 for (envVar in environmentDictionary) {
   library.setEnvironmentVar(`${envVar}`, environmentDictionary[envVar]);
+  if (createOutputVariables) {
+    action_library.setOutputVar(`${envVar}`, environmentDictionary[envVar]);
+  }
 }

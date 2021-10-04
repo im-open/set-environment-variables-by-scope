@@ -55,7 +55,12 @@ class action_library {
 
   setEnvironmentVar = (key, value) => {
     core.exportVariable(key, value);
-    core.info(`Set ${key} = ${value}`);
+    core.info(`Set env var: ${key} = ${value}`);
+  };
+
+  setOutputVar = (key, value) => {
+    core.setOutput(key, value);
+    core.info(`Set output var: ${key} = ${value}`);
   };
 }
 

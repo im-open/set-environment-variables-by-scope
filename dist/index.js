@@ -6486,7 +6486,11 @@ var require_action_library = __commonJS({
       };
       setEnvironmentVar = (key, value) => {
         core2.exportVariable(key, value);
-        core2.info(`Set ${key} = ${value}`);
+        core2.info(`Set env var: ${key} = ${value}`);
+      };
+      setOutputVar = (key, value) => {
+        core2.setOutput(key, value);
+        core2.info(`Set output var: ${key} = ${value}`);
       };
     };
     module2.exports = { action_library: action_library2 };
@@ -6498,6 +6502,7 @@ var core = require_core();
 var { action_library } = require_action_library();
 var library = new action_library();
 var scope = core.getInput('scope');
+var createOutputVariables = core.getInput('create-output-variables') == 'true';
 var inputFilePath = core.getInput('input-file');
 var inputYaml = library.getFileYaml(inputFilePath);
 var environmentYaml = library.getCurrentEnvironmentVars();
@@ -6505,4 +6510,7 @@ var environmentDictionary = library.buildEnvironmentDictionary(scope, inputYaml,
 console.log('Scoped Variables:', environmentDictionary);
 for (envVar in environmentDictionary) {
   library.setEnvironmentVar(`${envVar}`, environmentDictionary[envVar]);
+  if (createOutputVariables) {
+    action_library.setOutputVar(`${envVar}`, environmentDictionary[envVar]);
+  }
 }

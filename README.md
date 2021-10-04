@@ -4,8 +4,8 @@ This action takes specially formatted environment variables and/or an input file
 
 ## Index <!-- omit in toc -->
 
-- [TODOs](#todos)
 - [Inputs](#inputs)
+- [Outputs](#outputs)
 - [Usage Examples](#usage-examples)
   - [Usage Instructions](#usage-instructions)
     - [`key-name`](#key-name)
@@ -15,14 +15,17 @@ This action takes specially formatted environment variables and/or an input file
 - [Code of Conduct](#code-of-conduct)
 - [License](#license)
 
-## TODOs
-  - [ ] On the *Manage Access* tab add the appropriate groups
 ## Inputs
 
-| Parameter    | Is Required | Description                                                                           |
-| ------------ | ----------- | ------------------------------------------------------------------------------------- |
-| `scope`      | true        | The selection filter of the vars to be set.                                           |
-| `input-file` | false       | A file containg possible environment variable candidatas with their associated scopes |
+| Parameter                 | Is Required | Description                                                                                                                               |
+| ------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `scope`                   | true        | The selection filter of the vars to be set                                                                                                |
+| `input-file`              | false       | A file containing possible environment variable candidates with their associated scopes                                                   |
+| `create-output-variables` | false       | Create output variables (in addiction to environment variables) for use in other steps and jobs, accepts true or false, defaults to false |
+
+## Outputs
+
+Varies by usage, but is based on [`key-name`](#key-name) specified in environment variables and the `input-file` specified.
 
 ## Usage Examples
 
@@ -34,13 +37,18 @@ input:
     required: true
 
 jobs:
-  job1:
+  setup:
     runs-on: ubuntu-20.04
+    output:
+      env-scope: ${{ steps.env-scope.output.ENVIRONMENT }}
+
     steps:
       - name: Set environment scope
+        id: env-scope
         uses: im-open/set-environment-variables-by-scope@v1.0.0
         with:
-          scope: ${{ workflow.inputs.environement }}
+          scope: ${{ workflow.inputs.environment }}
+          create-output-variables: true
         env:
           ENVIRONMENT@dev d development: dev
           ENVIRONMENT@qa a: qa
@@ -49,13 +57,14 @@ jobs:
 
       - run: echo "The current environment is ${{ env.ENVIRONMENT }}.
 
+    build:
       - name: Checkout
         uses: actions/checkout@v2
 
       - name: Build Workflow Environment Variables
         uses: im-open/set-environment-variables-by-scope@v1.0.0
         with:
-          scope: ${{ env.ENVIRONMENT }}
+          scope: ${{ needs.setup.outputs.env-scope }}
           input-file: ./env-vars.yml
         env:
           keyName1@dev qa stage prod: 'key value 1'
@@ -66,9 +75,11 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            console.log("Env", ${{ env.ENVIRONMENT }})
+            console.log("Env", ${{ needs.setup.outputs.env-scope }})
             console.log("keyName1", ${{ env.keyName1 }})
             console.log("keyName2", ${{ env.keyName2 }})
+            console.log("inFileName1", ${{ env.inFileName1 }})
+            console.log("inFileName2", ${{ env.inFileName2 }})
 ...
 ```
 
@@ -81,6 +92,8 @@ The format of the `env` variable and the `input-file` contents are the same and 
 #### `key-name`
 
 The resulting environment variable name. It does accept a wide variety of name convention formats including spaces, dashes, periods, and underscores. While it's been tested and found to be fairly flexible, it is possible to make environment variable names that aren't usable by one or more of the target action runner operating systems.
+
+**_Key names intended for use as output variables for in workflow references can only contain letters, numbers, dashes and underscores._** Any other punctuation or space characters cannot processed and will cause errors when attempting to reference them later in a workflow.
 
 #### `scope-array`
 
@@ -98,7 +111,7 @@ env:
   db_server@stage prod: db-server.domain.com
 ```
 
-Would produce an environment variable, `${{ env.db_server }}`, with a value of `db-server.domain.com`, if the action `scope` is set to `stage`.
+Produces an environment variable, `${{ env.db_server }}`, with a value of `db-server.domain.com`, if the action `scope` is set to `stage`.
 
 The contents of an `input-file` is YAML based and has all the elements at the root level.  It's contents would be formatted like this:
 
