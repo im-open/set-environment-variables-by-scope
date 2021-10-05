@@ -6504,7 +6504,7 @@ var library = new action_library();
 var scope = core.getInput('scope');
 var createOutputVariables = core.getInput('create-output-variables') == 'true';
 var inputFilePath = core.getInput('input-file');
-var inputYaml = library.getFileYaml(inputFilePath);
+var inputYaml = inputFilePath.length > 0 ? library.getFileYaml(inputFilePath) : {};
 var environmentYaml = library.getCurrentEnvironmentVars();
 var environmentDictionary = library.buildEnvironmentDictionary(scope, inputYaml, environmentYaml);
 console.log('Scoped Variables:', environmentDictionary);

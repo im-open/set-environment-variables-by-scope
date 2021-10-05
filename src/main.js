@@ -7,7 +7,7 @@ let scope = core.getInput('scope');
 let createOutputVariables = core.getInput('create-output-variables') == 'true';
 
 let inputFilePath = core.getInput('input-file');
-let inputYaml = library.getFileYaml(inputFilePath);
+let inputYaml = inputFilePath.length > 0 ? library.getFileYaml(inputFilePath) : {};
 
 let environmentYaml = library.getCurrentEnvironmentVars();
 let environmentDictionary = library.buildEnvironmentDictionary(scope, inputYaml, environmentYaml);
