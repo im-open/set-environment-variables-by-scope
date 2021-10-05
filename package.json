@@ -1,10 +1,10 @@
 {
-  "name": "custom-action-template",
+  "name": "set-environment-variable-by-scope",
   "version": "1.0.0",
-  "description": "",
+  "description": "This action takes specially formatted environment variables and/or an input file to emit scoped environment variables.",
   "main": "index.js",
   "scripts": {
-    "build": "npm ci && esbuild ./src/main.js --bundle --platform=node --outfile=dist/index.js ",
+    "build": "npm ci && esbuild ./src/main.js --bundle --platform=node --outfile=dist/index.js && npm run format",
     "bundle": "esbuild ./src/main.js --bundle --platform=node --outfile=dist/index.js",
     "format": "prettier --write **/*.js",
     "format-check": "prettier --check **/*.js"
@@ -19,7 +19,8 @@
   "author": "wtw",
   "license": "ISC",
   "dependencies": {
-    "@actions/core": "^1.2.7"
+    "@actions/core": "^1.2.7",
+    "yaml": "^1.10.2"
   },
   "devDependencies": {
     "esbuild": "^0.12.8",

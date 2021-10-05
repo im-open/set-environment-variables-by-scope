@@ -1,18 +1,18 @@
-name: 'JavaScript Action Template'
+name: 'Set Environment Variables by Scope'
 
-description: 'Add description here'
+description: 'This action takes specially formatted environment variables and/or an input file to emit scoped environment variables.'
 
 inputs:
-  input-1:
-    description: 'Add a description here'
+  scope:
+    description: 'The scope is used to select key names and values to be set as environment vars, key names that do not contain the scope will not be exported'
     required: true
-  input-2:
-    description: 'Add a description here'
+  input-file:
+    description: 'A specially formatted YAML file containing possible environment variable candidates with their associated scopes'
     required: false
-
-outputs:
-  output-1:
-    description: 'Add a description here'
+  create-output-variables:
+    description: 'Create output variables (in addiction to environment variables) for use in other steps and jobs, accepts true or false, defaults to false'
+    required: false
+    default: 'false'
 
 runs:
   using: 'node12'
