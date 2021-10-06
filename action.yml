@@ -13,6 +13,13 @@ inputs:
     description: 'Create output variables (in addiction to environment variables) for use in other steps and jobs, accepts true or false, defaults to false'
     required: false
     default: 'false'
+  error-on-no-match:
+    description: "An error will be throw if no env or output variables are created, a warning will appear for all keys that don't provide a value for the input scope"
+    required: false
+    default: 'false'
+  custom-error-meesage:
+    description: 'The error message that will be display if no environment or output variables are created, error_on_no_match must be set to true'
+    required: false
 
 runs:
   using: 'node12'
