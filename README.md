@@ -82,7 +82,7 @@ jobs:
       # The set-environment-variables-by-scope action uses both the input-file and
       # the supplied env variables to create the resulting environment and output vars
       - name: Build Workflow Environment Variables
-        uses: im-open/set-environment-variables-by-scope@v1.0.0
+        uses: im-open/set-environment-variables-by-scope@v1.0.2
         with:
           scope: ${{ needs.setup.outputs.env-scope }}
           input-file: ./env-vars.yml
