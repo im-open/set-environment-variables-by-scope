@@ -21,13 +21,13 @@ This action takes specially formatted environment variables and/or an input file
 
 ## Inputs
 
-| Parameter                 | Is Required | Description                                                                                                                                         |
-| ------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `scope`                   | true        | The scope is used to select key names and values to be set as environment vars, key names that do not contain the scope will not be exported        |
-| `input-file`              | false       | A specially formatted YAML file containing possible environment variable candidates with their associated scopes                                    |
-| `create-output-variables` | false       | Create output variables (in addiction to environment variables) for use in other steps and jobs, accepts true or false, defaults to false           |
-| `error-on-no-match`       | false       | An error will be throw if no env or output variables are created, a warning will appear for all keys that don't provide a value for the input scope |
-| `custom-error-meesage`    | false       | The error message that will be display if no environment or output variables are created, error_on_no_match must be set to true                     |
+| Parameter                 | Is Required | Description                                                                                                                                          |
+| ------------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `scope`                   | true        | The scope is used to select key names and values to be set as environment vars, key names that do not contain the scope will not be exported         |
+| `input-file`              | false       | A specially formatted YAML file containing possible environment variable candidates with their associated scopes                                     |
+| `create-output-variables` | false       | Create output variables (in addiction to environment variables) for use in other steps and jobs, accepts true or false, defaults to false            |
+| `error-on-no-match`       | false       | An error will be thrown if no env or output variables are created, a warning will appear for all keys that don't provide a value for the input scope |
+| `custom-error-meesage`    | false       | The error message that will be displayed if no environment or output variables are created, `error_on_no_match` must be set to true                  |
 
 ### Environment Variables
 

@@ -6446,15 +6446,15 @@ var require_action_library = __commonJS({
     var yaml = require_yaml();
     var action_library2 = class {
       getFileYaml = path => {
-        let fileData = fs.readFileSync(path, 'utf8');
-        let fileYaml = yaml.parse(fileData);
+        const fileData = fs.readFileSync(path, 'utf8');
+        const fileYaml = yaml.parse(fileData);
         return fileYaml;
       };
       filterObjectProperties = (filterObject, filterFunction, keyTransform) =>
         Object.keys(filterObject)
           .filter(k => filterFunction(k))
           .reduce((scoped, key) => {
-            let returnKey = keyTransform ? keyTransform(key) : key;
+            const returnKey = keyTransform ? keyTransform(key) : key;
             return {
               ...scoped,
               [returnKey]: filterObject[key]
@@ -6463,39 +6463,34 @@ var require_action_library = __commonJS({
       getCurrentEnvironmentVars = () => this.filterObjectProperties(process.env, k => k.includes('@'));
       keyName = key => key.split('@')[0];
       keyIsPartOfScope = (scope, key) => {
-        let scopes = key
+        const scopes = key
           .split('@')[1]
           .split(' ')
           .map(s => s.toUpperCase());
         return scopes.includes(scope.toUpperCase());
       };
-      buildAllKeysUsed = (oldItems, newItems) => {
-        let keys = Object.keys(newItems);
-        let items = {};
-        for (let key in newItems) {
-          items[this.keyName(key)] = false;
-        }
-        return {
-          ...oldItems,
-          ...items
-        };
-      };
+      buildAllKeysUsed = newItems =>
+        Object.keys(newItems).reduce((keys, key) => {
+          return {
+            ...keys,
+            [this.keyName(key)]: false
+          };
+        }, {});
       errorOnNoMatchProcessUnusedKeys(inputItems, environmentItems, scopedItems) {
-        let allKeys = this.buildAllKeysUsed({}, inputItems);
-        allKeys = this.buildAllKeysUsed(allKeys, environmentItems);
+        const allKeys = { ...this.buildAllKeysUsed(inputItems), ...this.buildAllKeysUsed(environmentItems) };
         Object.keys(scopedItems).forEach(key => {
           allKeys[key] = true;
         });
-        let unused = this.filterObjectProperties(allKeys, f => !allKeys[f]);
-        let unusedKeys = Object.keys(unused);
+        const unused = this.filterObjectProperties(allKeys, f => !allKeys[f]);
+        const unusedKeys = Object.keys(unused);
         for (let u in unusedKeys) {
           core2.warning(`<<${unusedKeys[u]}>>: env/input key unused by scope specified.`);
         }
       }
       buildEnvironmentDictionary = (input_scope2, inputItems, environmentItems, errorOnNoMatch2) => {
-        let scopedItems = {};
-        let inputScoped = this.filterObjectProperties(inputItems, k => this.keyIsPartOfScope(input_scope2, k), this.keyName);
-        let environmentScoped = this.filterObjectProperties(environmentItems, k => this.keyIsPartOfScope(input_scope2, k), this.keyName);
+        const scopedItems = {};
+        const inputScoped = this.filterObjectProperties(inputItems, k => this.keyIsPartOfScope(input_scope2, k), this.keyName);
+        const environmentScoped = this.filterObjectProperties(environmentItems, k => this.keyIsPartOfScope(input_scope2, k), this.keyName);
         for (let i in inputScoped) {
           scopedItems[i] = inputScoped[i];
         }
@@ -6539,7 +6534,7 @@ if (!errorOnNoMatch && customErrorMessage) {
 var environmentYaml = library.getCurrentEnvironmentVars();
 var environmentDictionary = library.buildEnvironmentDictionary(input_scope, inputYaml, environmentYaml, errorOnNoMatch);
 console.log('Scoped Variables:', environmentDictionary);
-for (envVar in environmentDictionary) {
+for (let envVar in environmentDictionary) {
   library.setEnvironmentVar(envVar, environmentDictionary[envVar]);
   if (createOutputVariables) {
     library.setOutputVar(envVar, environmentDictionary[envVar]);
