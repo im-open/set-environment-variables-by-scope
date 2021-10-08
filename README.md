@@ -160,7 +160,7 @@ something.used.in.build@prod: prod-value
 
 #### `error-on-no-match`
 
-`error-on-no-match` is intended to alert that no env or output variable has been found based on the input scope. This is beneficial in troubleshooting if a scope *should* product some form of output. Also a warning will show for any keys that have been included but doesn't provide a value for the input scope criteria.
+`error-on-no-match` is intended to alert that no env or output variable has been found based on the input scope. This is beneficial in troubleshooting if a scope *should* produce some form of output. Also a warning will show for any keys that have been included but doesn't provide a value for the input scope criteria.
 
 #### Repository Secrets
 
