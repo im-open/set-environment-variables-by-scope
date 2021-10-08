@@ -6446,43 +6446,64 @@ var require_action_library = __commonJS({
     var yaml = require_yaml();
     var action_library2 = class {
       getFileYaml = path => {
-        let fileData = fs.readFileSync(path, 'utf8');
-        let fileYaml = yaml.parse(fileData);
+        const fileData = fs.readFileSync(path, 'utf8');
+        const fileYaml = yaml.parse(fileData);
         return fileYaml;
       };
-      filterObjectByKeyPart = (filterObject, filterFunction, keyTransform) =>
+      filterObjectProperties = (filterObject, filterFunction, keyTransform) =>
         Object.keys(filterObject)
           .filter(k => filterFunction(k))
           .reduce((scoped, key) => {
-            let returnKey = keyTransform ? keyTransform(key) : key;
+            const returnKey = keyTransform ? keyTransform(key) : key;
             return {
               ...scoped,
               [returnKey]: filterObject[key]
             };
           }, {});
-      getCurrentEnvironmentVars = () => this.filterObjectByKeyPart(process.env, k => k.includes('@'));
+      getCurrentEnvironmentVars = () => this.filterObjectProperties(process.env, k => k.includes('@'));
       keyName = key => key.split('@')[0];
-      keyIsPartOfScope = (scope2, key) => {
-        let scopes = key
+      keyIsPartOfScope = (scope, key) => {
+        const scopes = key
           .split('@')[1]
           .split(' ')
           .map(s => s.toUpperCase());
-        return scopes.includes(scope2.toUpperCase());
+        return scopes.includes(scope.toUpperCase());
       };
-      buildEnvironmentDictionary = (scope2, input, environment) => {
-        let environmentDictionary2 = {};
-        let inputScoped = this.filterObjectByKeyPart(input, k => this.keyIsPartOfScope(scope2, k), this.keyName);
-        let environmentScoped = this.filterObjectByKeyPart(environment, k => this.keyIsPartOfScope(scope2, k), this.keyName);
+      buildAllKeysUsed = newItems =>
+        Object.keys(newItems).reduce((keys, key) => {
+          return {
+            ...keys,
+            [this.keyName(key)]: false
+          };
+        }, {});
+      errorOnNoMatchProcessUnusedKeys(inputItems, environmentItems, scopedItems) {
+        const allKeys = { ...this.buildAllKeysUsed(inputItems), ...this.buildAllKeysUsed(environmentItems) };
+        Object.keys(scopedItems).forEach(key => {
+          allKeys[key] = true;
+        });
+        const unused = this.filterObjectProperties(allKeys, f => !allKeys[f]);
+        const unusedKeys = Object.keys(unused);
+        for (let u in unusedKeys) {
+          core2.warning(`<<${unusedKeys[u]}>>: env/input key unused by scope specified.`);
+        }
+      }
+      buildEnvironmentDictionary = (input_scope2, inputItems, environmentItems, errorOnNoMatch2) => {
+        const scopedItems = {};
+        const inputScoped = this.filterObjectProperties(inputItems, k => this.keyIsPartOfScope(input_scope2, k), this.keyName);
+        const environmentScoped = this.filterObjectProperties(environmentItems, k => this.keyIsPartOfScope(input_scope2, k), this.keyName);
         for (let i in inputScoped) {
-          environmentDictionary2[i] = inputScoped[i];
+          scopedItems[i] = inputScoped[i];
         }
         for (let e in environmentScoped) {
-          if (environmentDictionary2[e]) {
-            core2.warning(`<<${e}>>: key and scope specified specifed as env and input file var. env var will be used.`);
+          if (scopedItems[e]) {
+            core2.warning(`<<${e}>>: key and scope specified as env and input file var, env var will be used.`);
           }
-          environmentDictionary2[e] = environmentScoped[e];
+          scopedItems[e] = environmentScoped[e];
         }
-        return environmentDictionary2;
+        if (errorOnNoMatch2) {
+          this.errorOnNoMatchProcessUnusedKeys(inputItems, environmentItems, scopedItems);
+        }
+        return scopedItems;
       };
       setEnvironmentVar = (key, value) => {
         core2.exportVariable(key, value);
@@ -6501,16 +6522,24 @@ var require_action_library = __commonJS({
 var core = require_core();
 var { action_library } = require_action_library();
 var library = new action_library();
-var scope = core.getInput('scope');
-var createOutputVariables = core.getInput('create-output-variables') == 'true';
+var input_scope = core.getInput('scope');
+var createOutputVariables = core.getBooleanInput('create-output-variables');
 var inputFilePath = core.getInput('input-file');
 var inputYaml = inputFilePath.length > 0 ? library.getFileYaml(inputFilePath) : {};
+var errorOnNoMatch = core.getBooleanInput('error-on-no-match');
+var customErrorMessage = core.getInput('custom-error-message');
+if (!errorOnNoMatch && customErrorMessage) {
+  core.info('custom-error-message is specified, but error-on-no-match is not.');
+}
 var environmentYaml = library.getCurrentEnvironmentVars();
-var environmentDictionary = library.buildEnvironmentDictionary(scope, inputYaml, environmentYaml);
+var environmentDictionary = library.buildEnvironmentDictionary(input_scope, inputYaml, environmentYaml, errorOnNoMatch);
 console.log('Scoped Variables:', environmentDictionary);
-for (envVar in environmentDictionary) {
+for (let envVar in environmentDictionary) {
   library.setEnvironmentVar(envVar, environmentDictionary[envVar]);
   if (createOutputVariables) {
     library.setOutputVar(envVar, environmentDictionary[envVar]);
   }
+}
+if (errorOnNoMatch && Object.keys(environmentDictionary).length == 0) {
+  core.setFailed(customErrorMessage.length > 0 ? customErrorMessage : 'No variable scope matches.');
 }

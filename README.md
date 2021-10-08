@@ -13,6 +13,7 @@ This action takes specially formatted environment variables and/or an input file
     - [`scope-array`](#scope-array)
     - [`key-value`](#key-value)
     - [Input File Format](#input-file-format)
+    - [`error-on-no-match`](#error-on-no-match)
     - [Repository Secrets](#repository-secrets)
 - [Recompiling](#recompiling)
 - [Code of Conduct](#code-of-conduct)
@@ -20,11 +21,13 @@ This action takes specially formatted environment variables and/or an input file
 
 ## Inputs
 
-| Parameter                 | Is Required | Description                                                                                                                                  |
-| ------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `scope`                   | true        | The scope is used to select key names and values to be set as environment vars, key names that do not contain the scope will not be exported |
-| `input-file`              | false       | A specially formatted YAML file containing possible environment variable candidates with their associated scopes                             |
-| `create-output-variables` | false       | Create output variables (in addition to environment variables) for use in other steps and jobs, accepts true or false, defaults to false     |
+| Parameter                 | Is Required | Description                                                                                                                                          |
+| ------------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `scope`                   | true        | The scope is used to select key names and values to be set as environment vars, key names that do not contain the scope will not be exported         |
+| `input-file`              | false       | A specially formatted YAML file containing possible environment variable candidates with their associated scopes                                     |
+| `create-output-variables` | false       | Create output variables (in addiction to environment variables) for use in other steps and jobs, accepts true or false, defaults to false            |
+| `error-on-no-match`       | false       | An error will be thrown if no env or output variables are created, a warning will appear for all keys that don't provide a value for the input scope |
+| `custom-error-meesage`    | false       | The error message that will be displayed if no environment or output variables are created, `error_on_no_match` must be set to true                  |
 
 ### Environment Variables
 
@@ -55,10 +58,12 @@ jobs:
     steps:
       - name: Set environment scope
         id: env-scope
-        uses: im-open/set-environment-variables-by-scope@v1.0.1
+        uses: im-open/set-environment-variables-by-scope@v1.0.2
         with:
           scope: ${{ workflow.inputs.environment }}
           create-output-variables: true
+          error_on_no_match: true
+          custom_error_message: 'The environment must be Dev, QA, Stage or Prod'
         env:
           ENVIRONMENT@dev d development: dev
           ENVIRONMENT@qa a: qa
@@ -77,7 +82,7 @@ jobs:
       # The set-environment-variables-by-scope action uses both the input-file and
       # the supplied env variables to create the resulting environment and output vars
       - name: Build Workflow Environment Variables
-        uses: im-open/set-environment-variables-by-scope@v1.0.0
+        uses: im-open/set-environment-variables-by-scope@v1.0.2
         with:
           scope: ${{ needs.setup.outputs.env-scope }}
           input-file: ./env-vars.yml
@@ -136,8 +141,6 @@ env:
 
 Produces an environment variable, `${{ env.db_server }}`, with a value of `db-server.domain.com`, if the action `scope` is set to `stage`.
 
-
-
 #### Input File Format
 The contents of an `input-file` is YAML based and has all the elements at the root level.  It's contents would be formatted like this:
 
@@ -154,6 +157,10 @@ something.used.in.build@qa: qa-value
 something.used.in.build@stage: stage-value
 something.used.in.build@prod: prod-value
 ```
+
+#### `error-on-no-match`
+
+`error-on-no-match` is intended to alert that no env or output variable has been found based on the input scope. This is beneficial in troubleshooting if a scope *should* produce some form of output. Also a warning will show for any keys that have been included but doesn't provide a value for the input scope criteria.
 
 #### Repository Secrets
 

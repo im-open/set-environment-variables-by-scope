@@ -11,7 +11,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run build && npm run format",
+      "pre-commit": "npm run build && git add dist/*",
       "pre-push": "npm run format-check"
     }
   },

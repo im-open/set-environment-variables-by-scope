@@ -5,51 +5,75 @@ const yaml = require('yaml');
 
 class action_library {
   getFileYaml = path => {
-    let fileData = fs.readFileSync(path, 'utf8');
-    let fileYaml = yaml.parse(fileData);
+    const fileData = fs.readFileSync(path, 'utf8');
+    const fileYaml = yaml.parse(fileData);
     return fileYaml;
   };
 
-  filterObjectByKeyPart = (filterObject, filterFunction, keyTransform) =>
+  filterObjectProperties = (filterObject, filterFunction, keyTransform) =>
     Object.keys(filterObject)
       .filter(k => filterFunction(k))
       .reduce((scoped, key) => {
-        let returnKey = keyTransform ? keyTransform(key) : key;
+        const returnKey = keyTransform ? keyTransform(key) : key;
         return {
           ...scoped,
           [returnKey]: filterObject[key]
         };
       }, {});
 
-  getCurrentEnvironmentVars = () => this.filterObjectByKeyPart(process.env, k => k.includes('@'));
+  getCurrentEnvironmentVars = () => this.filterObjectProperties(process.env, k => k.includes('@'));
 
   keyName = key => key.split('@')[0];
 
   keyIsPartOfScope = (scope, key) => {
-    let scopes = key
+    const scopes = key
       .split('@')[1]
       .split(' ')
       .map(s => s.toUpperCase());
     return scopes.includes(scope.toUpperCase());
   };
 
-  buildEnvironmentDictionary = (scope, input, environment) => {
-    let environmentDictionary = {};
-    let inputScoped = this.filterObjectByKeyPart(input, k => this.keyIsPartOfScope(scope, k), this.keyName);
-    let environmentScoped = this.filterObjectByKeyPart(environment, k => this.keyIsPartOfScope(scope, k), this.keyName);
+  buildAllKeysUsed = newItems =>
+    Object.keys(newItems).reduce((keys, key) => {
+      return {
+        ...keys,
+        [this.keyName(key)]: false
+      };
+    }, {});
+
+  errorOnNoMatchProcessUnusedKeys(inputItems, environmentItems, scopedItems) {
+    const allKeys = { ...this.buildAllKeysUsed(inputItems), ...this.buildAllKeysUsed(environmentItems) };
+
+    Object.keys(scopedItems).forEach(key => {
+      allKeys[key] = true;
+    });
+
+    const unused = this.filterObjectProperties(allKeys, f => !allKeys[f]);
+    const unusedKeys = Object.keys(unused);
+    for (let u in unusedKeys) {
+      core.warning(`<<${unusedKeys[u]}>>: env/input key unused by scope specified.`);
+    }
+  }
+
+  buildEnvironmentDictionary = (input_scope, inputItems, environmentItems, errorOnNoMatch) => {
+    const scopedItems = {};
+    const inputScoped = this.filterObjectProperties(inputItems, k => this.keyIsPartOfScope(input_scope, k), this.keyName);
+    const environmentScoped = this.filterObjectProperties(environmentItems, k => this.keyIsPartOfScope(input_scope, k), this.keyName);
 
     for (let i in inputScoped) {
-      environmentDictionary[i] = inputScoped[i];
+      scopedItems[i] = inputScoped[i];
     }
-
     for (let e in environmentScoped) {
-      if (environmentDictionary[e]) {
-        core.warning(`<<${e}>>: key and scope specified specifed as env and input file var. env var will be used.`);
+      if (scopedItems[e]) {
+        core.warning(`<<${e}>>: key and scope specified as env and input file var, env var will be used.`);
       }
-      environmentDictionary[e] = environmentScoped[e];
+      scopedItems[e] = environmentScoped[e];
     }
 
-    return environmentDictionary;
+    if (errorOnNoMatch) {
+      this.errorOnNoMatchProcessUnusedKeys(inputItems, environmentItems, scopedItems);
+    }
+    return scopedItems;
   };
 
   setEnvironmentVar = (key, value) => {
