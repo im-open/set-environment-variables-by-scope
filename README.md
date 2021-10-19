@@ -27,7 +27,7 @@ This action takes specially formatted environment variables and/or an input file
 | `input-file`              | false       | A specially formatted YAML file containing possible environment variable candidates with their associated scopes                                     |
 | `create-output-variables` | false       | Create output variables (in addiction to environment variables) for use in other steps and jobs, accepts true or false, defaults to false            |
 | `error-on-no-match`       | false       | An error will be thrown if no env or output variables are created, a warning will appear for all keys that don't provide a value for the input scope |
-| `custom-error-meesage`    | false       | The error message that will be displayed if no environment or output variables are created, `error_on_no_match` must be set to true                  |
+| `custom-error-message`    | false       | The error message that will be displayed if no environment or output variables are created, `error_on_no_match` must be set to true                  |
 
 ### Environment Variables
 
@@ -58,7 +58,7 @@ jobs:
     steps:
       - name: Set environment scope
         id: env-scope
-        uses: im-open/set-environment-variables-by-scope@v1.0.2
+        uses: im-open/set-environment-variables-by-scope@v1.0.3
         with:
           scope: ${{ workflow.inputs.environment }}
           create-output-variables: true
@@ -82,7 +82,7 @@ jobs:
       # The set-environment-variables-by-scope action uses both the input-file and
       # the supplied env variables to create the resulting environment and output vars
       - name: Build Workflow Environment Variables
-        uses: im-open/set-environment-variables-by-scope@v1.0.2
+        uses: im-open/set-environment-variables-by-scope@v1.0.3
         with:
           scope: ${{ needs.setup.outputs.env-scope }}
           input-file: ./env-vars.yml
@@ -177,7 +177,7 @@ jobs:
 
     steps:
       - name: Build DB Connection
-        uses: im-open/set-environment-variables-by-scope@v1.0.0
+        uses: im-open/set-environment-variables-by-scope@v1.0.3
         with:
           scope: ${{ needs.setup.outputs.env-scope }}
         env:
