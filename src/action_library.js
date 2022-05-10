@@ -4,6 +4,8 @@ const { env } = require('process');
 const yaml = require('yaml');
 
 class action_library {
+  #fallbackScope = 'fallback';
+  
   getFileYaml = path => {
     const fileData = fs.readFileSync(path, 'utf8');
     const fileYaml = yaml.parse(fileData);
@@ -30,7 +32,7 @@ class action_library {
       .split('@')[1]
       .split(' ')
       .map(s => s.toUpperCase());
-    return scopes.includes(scope.toUpperCase());
+    return scopes.includes(scope.toUpperCase()) || scopes.includes(this#.fallbackScope.toUpperCase());
   };
 
   buildAllKeysUsed = newItems =>
