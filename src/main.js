@@ -3,7 +3,7 @@ const { action_library } = require('./action_library');
 
 const library = new action_library();
 
-const input_scope = core.getInput('scope');
+const input_scope = core.getInput('scope', { required: true });
 const createOutputVariables = core.getBooleanInput('create-output-variables');
 
 const inputFilePath = core.getInput('input-file');
@@ -18,7 +18,7 @@ if (!errorOnNoMatch && customErrorMessage) {
 const environmentYaml = library.getCurrentEnvironmentVars();
 const environmentDictionary = library.buildEnvironmentDictionary(input_scope, inputYaml, environmentYaml, errorOnNoMatch);
 
-console.log('Scoped Variables:', environmentDictionary);
+console.log('Scoped Variables:', environmentDictionary); // This doesn't print right with JSON.stringify()
 for (let envVar in environmentDictionary) {
   library.setEnvironmentVar(envVar, environmentDictionary[envVar]);
   if (createOutputVariables) {
