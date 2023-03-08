@@ -1,6 +1,5 @@
-name: 'Set Environment Variables by Scope'
-
-description: 'This action takes specially formatted environment variables and/or an input file to emit scoped environment variables.'
+name: Set Environment Variables by Scope
+description: This action takes specially formatted environment variables and/or an input file to emit scoped environment variables.
 
 inputs:
   scope:
