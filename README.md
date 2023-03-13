@@ -60,7 +60,7 @@ jobs:
     steps:
       - name: Set environment scope
         id: env-scope
-        uses: im-open/set-environment-variables-by-scope@v1.1.2
+        uses: im-open/set-environment-variables-by-scope@v1.1.3
         with:
           scope: ${{ workflow.inputs.environment }}
           create-output-variables: true
@@ -84,7 +84,8 @@ jobs:
       # The set-environment-variables-by-scope action uses both the input-file and
       # the supplied env variables to create the resulting environment and output vars
       - name: Build Workflow Environment Variables
-        uses: im-open/set-environment-variables-by-scope@v1.1.2
+        # You may also reference just the major or major.minor version
+        uses: im-open/set-environment-variables-by-scope@v1.1.3
         with:
           scope: ${{ needs.setup.outputs.env-scope }}
           input-file: ./env-vars.yml
@@ -179,7 +180,7 @@ jobs:
 
     steps:
       - name: Build DB Connection
-        uses: im-open/set-environment-variables-by-scope@v1.1.2
+        uses: im-open/set-environment-variables-by-scope@v1.1.3
         with:
           scope: ${{ needs.setup.outputs.env-scope }}
         env:
