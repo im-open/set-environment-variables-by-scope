@@ -173,8 +173,6 @@ GitHub actions expressions can be used in the _`key-value`_ when supplying input
 
 The `input-file` must be YAML format and has all the elements at the root level.  It's contents would be formatted like this:
 
-The `input-file` must be YAML format and has all the elements at the root level.  It's contents would be formatted like this:
-
 ```yaml
 db_server@dev qa: lower-env.db-server.domain.com
 db_server@stage: stage.db-server.domain.com
@@ -189,11 +187,11 @@ something.used.in.build@stage: stage-value
 something.used.in.build@prod: prod-value
 ```
 
-**Note that _`key-value`_\s in input files do _not_ support GitHub action expressions, unlike envrionment variables described previously.**
+**Note that _`key-value`_\s in input files do _not_ support GitHub action expressions, unlike environment variables described previously.**
 
 #### `error-on-no-match`
 
-`error-on-no-match` is intended to alert that no env or output variable has been found based on the input scope. This is beneficial in troubleshooting if a scope _should_ produce some form of output. Also a warning will show for any keys that have been included but doesn't provide a value for the input scope criteria.
+`error-on-no-match` is intended to alert that no env or output variable has been found based on the input scope. This is beneficial in troubleshooting if a scope *should* produce some form of output. Also a warning will show for any keys that have been included but doesn't provide a value for the input scope criteria.
 
 ## Contributing
 
