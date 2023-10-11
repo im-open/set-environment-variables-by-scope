@@ -78,7 +78,7 @@ jobs:
       NO_MATCH_SETTING_4: ''
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       #---------------------------------------------------------
       # MATCHING SCOPE WITH CREATE-OUTPUT-VARIABLES SET TO FALSE
