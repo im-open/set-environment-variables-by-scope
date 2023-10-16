@@ -30,7 +30,7 @@ This action sets environment variables, (and optionally step outputs), to differ
 |---------------------------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `scope`                   | true        | The scope is used to identify which value to select for each key name. See the usage instructions below.                                                       |
 | `input-file`              | false       | A specially formatted YAML file containing possible environment variable candidates with their associated scopes.                                              |
-| `create-output-variables` | false       | Create output variables (in addiction to environment variables) for use in other steps and jobs. Accepts true or false. Defaults to false.                     |
+| `create-output-variables` | false       | Create output variables (in addition to environment variables) for use in other steps and jobs. Accepts true or false. Defaults to false.                     |
 | `error-on-no-match`       | false       | An error will be thrown if no environment variables or outputs are created, a warning will appear for all keys that don't provide a value for the input scope. |
 | `custom-error-message`    | false       | The error message that will be displayed if no environment or output variables are created. `error_on_no_match` must be set to true                            |
 
