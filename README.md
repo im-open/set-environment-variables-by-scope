@@ -1,3 +1,7 @@
+# Tests
+
+Force tests to run from a fork to see what happens
+
 # Set Environment Variables by Scope
 
 This action sets environment variables, (and optionally step outputs), to different values determined by a provided `scope`. The values for each variable and scope can be provided in specially-named environment variables or an input file.
