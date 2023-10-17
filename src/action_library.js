@@ -65,7 +65,7 @@ class action_library {
     }
     for (let e in environmentScoped) {
       if (scopedItems[e]) {
-        core.warning(`<<${e}>>: key and scope specified as env and input file var, env var will be used.`);
+        core.warning(`<<${e}>>:  was specified by both environment variable and input file. Environment variable will be used.`);
       }
       scopedItems[e] = environmentScoped[e];
     }

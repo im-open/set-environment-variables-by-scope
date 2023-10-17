@@ -8806,7 +8806,7 @@ var require_action_library = __commonJS({
         }
         for (let e in environmentScoped) {
           if (scopedItems[e]) {
-            core2.warning(`<<${e}>>: key and scope specified as env and input file var, env var will be used.`);
+            core2.warning(`<<${e}>>:  was specified by both environment variable and input file. Environment variable will be used.`);
           }
           scopedItems[e] = environmentScoped[e];
         }

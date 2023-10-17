@@ -20,6 +20,7 @@ This action sets environment variables, (and optionally step outputs), to differ
     - [Source Code Changes](#source-code-changes)
     - [Recompiling Manually](#recompiling-manually)
     - [Updating the README.md](#updating-the-readmemd)
+    - [Tests](#tests)
   - [Code of Conduct](#code-of-conduct)
   - [License](#license)
 
@@ -29,7 +30,7 @@ This action sets environment variables, (and optionally step outputs), to differ
 |---------------------------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `scope`                   | true        | The scope is used to identify which value to select for each key name. See the usage instructions below.                                                       |
 | `input-file`              | false       | A specially formatted YAML file containing possible environment variable candidates with their associated scopes.                                              |
-| `create-output-variables` | false       | Create output variables (in addiction to environment variables) for use in other steps and jobs. Accepts true or false. Defaults to false.                     |
+| `create-output-variables` | false       | Create output variables (in addition to environment variables) for use in other steps and jobs. Accepts true or false. Defaults to false.                     |
 | `error-on-no-match`       | false       | An error will be thrown if no environment variables or outputs are created, a warning will appear for all keys that don't provide a value for the input scope. |
 | `custom-error-message`    | false       | The error message that will be displayed if no environment or output variables are created. `error_on_no_match` must be set to true                            |
 
@@ -65,7 +66,7 @@ jobs:
     steps:
       - name: Set environment
         id: env-scope
-        uses: im-open/set-environment-variables-by-scope@v1.1.4
+        uses: im-open/set-environment-variables-by-scope@v1.1.5
         with:
           scope: ${{ workflow.inputs.environment }}
           create-output-variables: true
@@ -90,7 +91,7 @@ jobs:
       # the supplied env variables to create the resulting environment and output vars
       - name: Build Workflow Environment Variables
         # You may also reference just the major or major.minor version
-        uses: im-open/set-environment-variables-by-scope@v1.1.4
+        uses: im-open/set-environment-variables-by-scope@v1.1.5
         with:
           scope: ${{ needs.setup.outputs.env-scope }}
           input-file: ./env-vars.yml
@@ -157,7 +158,7 @@ GitHub actions expressions can be used in the _`key-value`_ when supplying input
 
 ```yaml
       - name: Build DB Connection
-        uses: im-open/set-environment-variables-by-scope@v1.1.4
+        uses: im-open/set-environment-variables-by-scope@v1.1.5
         with:
           scope: ${{ needs.setup.outputs.env-scope }}
         env:
@@ -201,6 +202,7 @@ When creating PRs, please review the following guidelines:
 - [ ] At least one of the commit messages contains the appropriate `+semver:` keywords listed under [Incrementing the Version] for major and minor increments.
 - [ ] The action has been recompiled.  See [Recompiling Manually] for details.
 - [ ] The README.md has been updated with the latest version of the action.  See [Updating the README.md] for details.
+- [ ] Any tests in the [build-and-review-pr] workflow are passing
 
 ### Incrementing the Version
 
@@ -234,6 +236,10 @@ npm run build
 ### Updating the README.md
 
 If changes are made to the action's [source code], the [usage examples] section of this file should be updated with the next version of the action.  Each instance of this action should be updated.  This helps users know what the latest tag is without having to navigate to the Tags page of the repository.  See [Incrementing the Version] for details on how to determine what the next version will be or consult the first workflow run for the PR which will also calculate the next version.
+
+### Tests
+
+The build and review PR workflow includes tests which are linked to a status check. That status check needs to succeed before a PR is merged to the default branch.  The tests do not need special permissions, so they should succeed whether they come from a branch or a fork.
 
 ## Code of Conduct
 

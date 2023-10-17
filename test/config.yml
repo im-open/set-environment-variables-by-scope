@@ -1,0 +1,3 @@
+LOG_LEVEL@dev: 'debug'
+LOG_LEVEL@prod: 'info'
+CACHE_EXP_IN_HOURS@dev prod: '1'

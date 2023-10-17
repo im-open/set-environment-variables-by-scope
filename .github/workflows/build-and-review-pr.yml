@@ -60,3 +60,184 @@ jobs:
       # The npm script to run to build the action.  This is typically 'npm run build' if the
       # action needs to be compiled.  For composite-run-steps actions this is typically empty.
       build-command: 'npm run build'
+
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      DB_NAME: ''
+      DB_SERVER: ''
+      TIMEOUT: ''
+      APP_NAME: ''
+      CUSTOM_ERROR: ''
+      LOG_LEVEL: ''
+      CACHE_EXP_IN_HOURS: ''
+      NO_MATCH_SETTING_1: ''
+      NO_MATCH_SETTING_2: ''
+      NO_MATCH_SETTING_3: ''
+      NO_MATCH_SETTING_4: ''
+
+    steps:
+      - uses: actions/checkout@v3
+
+      #---------------------------------------------------------
+      # MATCHING SCOPE WITH CREATE-OUTPUT-VARIABLES SET TO FALSE
+      #---------------------------------------------------------
+      - name: '-------------------------------------------------------------------------------------------------------'
+        run: echo ""
+
+      - name: When there are matching scopes and create-output-variables is false
+        uses: ./
+        if: always()
+        id: matching-scope-no-outputs
+        with:
+          scope: 'dev'
+          create-output-variables: false
+        env:
+          DB_NAME@dev: 'db-dev'
+          DB_NAME@prod: 'db-prod'
+          DB_SERVER@dev: 'server-dev'
+          DB_SERVER@prod: 'server-prod'
+          TIMEOUT@dev prod: '32'
+
+      - name: Then the outcome should be success
+        if: always()
+        run: |
+          ./test/assert-values-match.sh --name "step outcome" --expected "success" --actual "${{ steps.matching-scope-no-outputs.outcome }}"
+
+      - name: And the environment variables should be populated
+        if: always()
+        run: |
+          ./test/assert-values-match.sh --name "DB_NAME" --expected "db-dev" --actual "${{ env.DB_NAME }}"
+          ./test/assert-values-match.sh --name "DB_SERVER" --expected "server-dev" --actual "${{ env.DB_SERVER }}"
+          ./test/assert-values-match.sh --name "TIMEOUT" --expected "32" --actual "${{ env.TIMEOUT }}"
+
+      - name: And the outputs should not be populated
+        if: always()
+        run: |
+          ./test/assert-values-match.sh --name "DB_NAME output" --expected "" --actual "${{ steps.matching-scope-no-outputs.outputs.DB_NAME }}"
+          ./test/assert-values-match.sh --name "DB_SERVER output" --expected "" --actual "${{ steps.matching-scope-no-outputs.outputs.DB_SERVER }}"
+          ./test/assert-values-match.sh --name "TIMEOUT output" --expected "" --actual "${{ steps.matching-scope-no-outputs.outputs.TIMEOUT }}"
+
+      #--------------------------------------------------------
+      # MATCHING SCOPE WITH CREATE-OUTPUT-VARIABLES SET TO TRUE
+      #--------------------------------------------------------
+      - name: '-------------------------------------------------------------------------------------------------------'
+        run: echo ""
+
+      - name: When there are matching scopes and create-output-variables is true
+        uses: ./
+        if: always()
+        id: matching-scope-with-outputs
+        with:
+          scope: 'Dev' # This should not be case sensitive
+          create-output-variables: true
+        env:
+          APP_NAME@dev: 'db-dev'
+          APP_NAME@prod: 'db-prod'
+          CUSTOM_ERROR@dev prod: 'custom'
+
+      - name: Then the outcome should be success
+        if: always()
+        run: |
+          ./test/assert-values-match.sh --name "step outcome" --expected "success" --actual "${{ steps.matching-scope-with-outputs.outcome }}"
+
+      - name: And the environment variables and outputs should match
+        if: always()
+        run: |
+          ./test/assert-values-match.sh --name "APP_NAME" --expected "${{ env.APP_NAME }}" --actual "${{ steps.matching-scope-with-outputs.outputs.APP_NAME }}" 
+          ./test/assert-values-match.sh --name "CUSTOM_ERROR" --expected "${{ env.CUSTOM_ERROR }}" --actual "${{ steps.matching-scope-with-outputs.outputs.CUSTOM_ERROR }}"
+
+      #--------------------------------------------
+      # MATCHING SCOPE WHEN PROVIDING AN INPUT FILE
+      #--------------------------------------------
+      - name: '-------------------------------------------------------------------------------------------------------'
+        run: echo ""
+
+      - name: When there is a matching scope and an input file
+        uses: ./
+        if: always()
+        id: input-file
+        with:
+          scope: 'dev'
+          create-output-variables: true
+          input-file: ./test/config.yml
+
+      - name: Then the outcome should be success
+        if: always()
+        run: |
+          ./test/assert-values-match.sh --name "step outcome" --expected "success" --actual "${{ steps.input-file.outcome }}"
+
+      - name: And the environment variables and outputs should match
+        if: always()
+        run: |
+          ./test/assert-values-match.sh --name "LOG_LEVEL" --expected "${{ env.LOG_LEVEL }}" --actual "${{ steps.input-file.outputs.LOG_LEVEL }}" 
+          ./test/assert-values-match.sh --name "CACHE_EXP_IN_HOURS" --expected "${{ env.CACHE_EXP_IN_HOURS }}" --actual "${{ steps.input-file.outputs.CACHE_EXP_IN_HOURS }}"
+
+      #--------------------------------------------------------
+      # NO MATCHING SCOPE WITH ERROR-ON-NO-MATCH SET TO FALSE
+      #--------------------------------------------------------
+      - name: '-------------------------------------------------------------------------------------------------------'
+        run: echo ""
+
+      - name: When there are no matching scopes and error-on-no-match is false
+        uses: ./
+        if: always()
+        id: no-matching-scope-no-error
+        with:
+          scope: 'aScopeThatDoesNotMatchAnything'
+          create-output-variables: true
+          error-on-no-match: false
+        env:
+          SETTING_1@dev: 's1-d'
+          SETTING_1@prod: 's1-p'
+          SETTING_2@dev prod: 'setting2'
+
+      - name: Then the outcome should be success
+        if: always()
+        run: |
+          ./test/assert-values-match.sh --name "step outcome" --expected "success" --actual "${{ steps.no-matching-scope-no-error.outcome }}"
+
+      - name: And no environment variables or outputs should be created
+        if: always()
+        run: |
+          ./test/assert-values-match.sh --name "step outcome" --expected "" --actual "${{ env.NO_MATCH_SETTING_1 }}" 
+          ./test/assert-values-match.sh --name "step outcome" --expected "" --actual "${{ env.NO_MATCH_SETTING_2 }}"
+          ./test/assert-values-match.sh --name "step outcome" --expected "" --actual "${{ steps.no-matching-scope-no-error.outputs.NO_MATCH_SETTING_1 }}" 
+          ./test/assert-values-match.sh --name "step outcome" --expected "" --actual "${{ steps.no-matching-scope-no-error.outputs.NO_MATCH_SETTING_2 }}"
+
+      #--------------------------------------------------------
+      # NO MATCHING SCOPE WITH ERROR-ON-NO-MATCH SET TO TRUE
+      #--------------------------------------------------------
+      - name: '-------------------------------------------------------------------------------------------------------'
+        run: echo ""
+
+      - name: When there are no matching scopes and error-on-no-match is true
+        uses: ./
+        if: always()
+        continue-on-error: true # This is needed because we expect the step to fail.  It needs to "pass" in order for the test job to succeed.
+        id: no-matching-scope-with-error
+        with:
+          scope: 'aScopeThatDoesNotMatchAnything_part2'
+          create-output-variables: true
+          error-on-no-match: true
+        env:
+          SETTING_3@dev: 's3-d'
+          SETTING_3@prod: 's3-p'
+          SETTING_4@dev prod: 'setting4'
+
+      - name: Then the outcome should be failure
+        if: always()
+        run: |
+          ./test/assert-values-match.sh --name "step outcome" --expected "failure" --actual "${{ steps.no-matching-scope-with-error.outcome }}"
+
+      - name: And no environment variables or outputs should be created
+        if: always()
+        run: |
+          ./test/assert-values-match.sh --name "step outcome" --expected "" --actual "${{ env.NO_MATCH_SETTING_3 }}" 
+          ./test/assert-values-match.sh --name "step outcome" --expected "" --actual "${{ env.NO_MATCH_SETTING_4 }}"
+          ./test/assert-values-match.sh --name "step outcome" --expected "" --actual "${{ steps.no-matching-scope-with-error.outputs.NO_MATCH_SETTING_3 }}" 
+          ./test/assert-values-match.sh --name "step outcome" --expected "" --actual "${{ steps.no-matching-scope-with-error.outputs.NO_MATCH_SETTING_4 }}"
+
+      - name: '-------------------------------------------------------------------------------------------------------'
+        run: echo ""

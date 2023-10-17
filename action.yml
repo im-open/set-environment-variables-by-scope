@@ -9,7 +9,7 @@ inputs:
     description: 'A specially formatted YAML file containing possible environment variable candidates with their associated scopes'
     required: false
   create-output-variables:
-    description: 'Create output variables (in addiction to environment variables) for use in other steps and jobs, accepts true or false, defaults to false'
+    description: 'Create output variables (in addition to environment variables) for use in other steps and jobs, accepts true or false, defaults to false'
     required: false
     default: 'false'
   error-on-no-match:
