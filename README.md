@@ -158,7 +158,7 @@ GitHub actions expressions can be used in the _`key-value`_ when supplying input
 
 ```yaml
       - name: Build DB Connection
-        uses: im-open/set-environment-variables-by-scope@v1.1.5
+        uses: im-open/set-environment-variables-by-scope@v1.2.0
         with:
           scope: ${{ needs.setup.outputs.env-scope }}
         env:
