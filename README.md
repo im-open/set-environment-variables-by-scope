@@ -66,7 +66,7 @@ jobs:
     steps:
       - name: Set environment
         id: env-scope
-        uses: im-open/set-environment-variables-by-scope@v1.1.6
+        uses: im-open/set-environment-variables-by-scope@v1.2.0
         with:
           scope: ${{ workflow.inputs.environment }}
           create-output-variables: true
