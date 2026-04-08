@@ -27,10 +27,10 @@ This action sets environment variables, (and optionally step outputs), to differ
 ## Inputs
 
 | Parameter                 | Is Required | Description                                                                                                                                                    |
-|---------------------------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `scope`                   | true        | The scope is used to identify which value to select for each key name. See the usage instructions below.                                                       |
 | `input-file`              | false       | A specially formatted YAML file containing possible environment variable candidates with their associated scopes.                                              |
-| `create-output-variables` | false       | Create output variables (in addition to environment variables) for use in other steps and jobs. Accepts true or false. Defaults to false.                     |
+| `create-output-variables` | false       | Create output variables (in addition to environment variables) for use in other steps and jobs. Accepts true or false. Defaults to false.                      |
 | `error-on-no-match`       | false       | An error will be thrown if no environment variables or outputs are created, a warning will appear for all keys that don't provide a value for the input scope. |
 | `custom-error-message`    | false       | The error message that will be displayed if no environment or output variables are created. `error_on_no_match` must be set to true                            |
 
@@ -66,7 +66,7 @@ jobs:
     steps:
       - name: Set environment
         id: env-scope
-        uses: im-open/set-environment-variables-by-scope@v1.2.0
+        uses: im-open/set-environment-variables-by-scope@v1.2.1
         with:
           scope: ${{ workflow.inputs.environment }}
           create-output-variables: true
@@ -91,7 +91,7 @@ jobs:
       # the supplied env variables to create the resulting environment and output vars
       - name: Build Workflow Environment Variables
         # You may also reference just the major or major.minor version
-        uses: im-open/set-environment-variables-by-scope@v1.2.0
+        uses: im-open/set-environment-variables-by-scope@v1.2.1
         with:
           scope: ${{ needs.setup.outputs.env-scope }}
           input-file: ./env-vars.yml
@@ -157,22 +157,22 @@ When using environment variables for input, this action looks at all current env
 GitHub actions expressions can be used in the _`key-value`_ when supplying input environment variables in the step's `env` block as in the following example:
 
 ```yaml
-      - name: Build DB Connection
-        uses: im-open/set-environment-variables-by-scope@v1.2.0
-        with:
-          scope: ${{ needs.setup.outputs.env-scope }}
-        env:
-          SQL_CONNECTION_STRING@dev: 'Data Source=dev.sql-server.domain.com;Initial Catalog=dev-demo-db;User Id=dev-db-sa-user;Password=${{ secrets.SQL_USER_SECRET }};'
-          SQL_CONNECTION_STRING@qa: 'Data Source=qa.sql-server.domain.com;Initial Catalog=qa-demo-db;User Id=qa-db-sa-user;Password=${{ secrets.SQL_USER_SECRET }};'
-          SQL_CONNECTION_STRING@stage: 'Data Source=stage.sql-server.domain.com;Initial Catalog=stage-demo-db;User Id=stage-db-sa-user;Password=${{ secrets.SQL_USER_SECRET }};'
-          SQL_CONNECTION_STRING@prod: 'Data Source=sql-server.domain.com;Initial Catalog=demo-db;User Id=db-sa-user;Password=${{ secrets.SQL_USER_SECRET }};'
+- name: Build DB Connection
+  uses: im-open/set-environment-variables-by-scope@v1.2.1
+  with:
+    scope: ${{ needs.setup.outputs.env-scope }}
+  env:
+    SQL_CONNECTION_STRING@dev: 'Data Source=dev.sql-server.domain.com;Initial Catalog=dev-demo-db;User Id=dev-db-sa-user;Password=${{ secrets.SQL_USER_SECRET }};'
+    SQL_CONNECTION_STRING@qa: 'Data Source=qa.sql-server.domain.com;Initial Catalog=qa-demo-db;User Id=qa-db-sa-user;Password=${{ secrets.SQL_USER_SECRET }};'
+    SQL_CONNECTION_STRING@stage: 'Data Source=stage.sql-server.domain.com;Initial Catalog=stage-demo-db;User Id=stage-db-sa-user;Password=${{ secrets.SQL_USER_SECRET }};'
+    SQL_CONNECTION_STRING@prod: 'Data Source=sql-server.domain.com;Initial Catalog=demo-db;User Id=db-sa-user;Password=${{ secrets.SQL_USER_SECRET }};'
 ```
 
 **Note the resulting environment variables this step will set aren't yet available to expressions in the step's own `env` block.** The resulting environment variables are not available until the next step in the job. If you need scoped variable values to be based on the values of other scoped variables you can use this action in consecutive steps.
 
 #### Input File Format
 
-The `input-file` must be YAML format and has all the elements at the root level.  It's contents would be formatted like this:
+The `input-file` must be YAML format and has all the elements at the root level. It's contents would be formatted like this:
 
 ```yaml
 db_server@dev qa: lower-env.db-server.domain.com
@@ -192,7 +192,7 @@ something.used.in.build@prod: prod-value
 
 #### `error-on-no-match`
 
-`error-on-no-match` is intended to alert that no env or output variable has been found based on the input scope. This is beneficial in troubleshooting if a scope *should* produce some form of output. Also a warning will show for any keys that have been included but doesn't provide a value for the input scope criteria.
+`error-on-no-match` is intended to alert that no env or output variable has been found based on the input scope. This is beneficial in troubleshooting if a scope _should_ produce some form of output. Also a warning will show for any keys that have been included but doesn't provide a value for the input scope criteria.
 
 ## Contributing
 
@@ -200,16 +200,16 @@ When creating PRs, please review the following guidelines:
 
 - [ ] The action code does not contain sensitive information.
 - [ ] At least one of the commit messages contains the appropriate `+semver:` keywords listed under [Incrementing the Version] for major and minor increments.
-- [ ] The action has been recompiled.  See [Recompiling Manually] for details.
-- [ ] The README.md has been updated with the latest version of the action.  See [Updating the README.md] for details.
+- [ ] The action has been recompiled. See [Recompiling Manually] for details.
+- [ ] The README.md has been updated with the latest version of the action. See [Updating the README.md] for details.
 - [ ] Any tests in the [build-and-review-pr] workflow are passing
 
 ### Incrementing the Version
 
-This repo uses [git-version-lite] in its workflows to examine commit messages to determine whether to perform a major, minor or patch increment on merge if [source code] changes have been made.  The following table provides the fragment that should be included in a commit message to active different increment strategies.
+This repo uses [git-version-lite] in its workflows to examine commit messages to determine whether to perform a major, minor or patch increment on merge if [source code] changes have been made. The following table provides the fragment that should be included in a commit message to active different increment strategies.
 
 | Increment Type | Commit Message Fragment                     |
-|----------------|---------------------------------------------|
+| -------------- | ------------------------------------------- |
 | major          | +semver:breaking                            |
 | major          | +semver:major                               |
 | minor          | +semver:feature                             |
@@ -220,13 +220,13 @@ This repo uses [git-version-lite] in its workflows to examine commit messages to
 
 The files and directories that are considered source code are listed in the `files-with-code` and `dirs-with-code` arguments in both the [build-and-review-pr] and [increment-version-on-merge] workflows.
 
-If a PR contains source code changes, the README.md should be updated with the latest action version and the action should be recompiled.  The [build-and-review-pr] workflow will ensure these steps are performed when they are required.  The workflow will provide instructions for completing these steps if the PR Author does not initially complete them.
+If a PR contains source code changes, the README.md should be updated with the latest action version and the action should be recompiled. The [build-and-review-pr] workflow will ensure these steps are performed when they are required. The workflow will provide instructions for completing these steps if the PR Author does not initially complete them.
 
 If a PR consists solely of non-source code changes like changes to the `README.md` or workflows under `./.github/workflows`, version updates and recompiles do not need to be performed.
 
 ### Recompiling Manually
 
-This command utilizes [esbuild] to bundle the action and its dependencies into a single file located in the `dist` folder.  If changes are made to the action's [source code], the action must be recompiled by running the following command:
+This command utilizes [esbuild] to bundle the action and its dependencies into a single file located in the `dist` folder. If changes are made to the action's [source code], the action must be recompiled by running the following command:
 
 ```sh
 # Installs dependencies and bundles the code
@@ -235,11 +235,11 @@ npm run build
 
 ### Updating the README.md
 
-If changes are made to the action's [source code], the [usage examples] section of this file should be updated with the next version of the action.  Each instance of this action should be updated.  This helps users know what the latest tag is without having to navigate to the Tags page of the repository.  See [Incrementing the Version] for details on how to determine what the next version will be or consult the first workflow run for the PR which will also calculate the next version.
+If changes are made to the action's [source code], the [usage examples] section of this file should be updated with the next version of the action. Each instance of this action should be updated. This helps users know what the latest tag is without having to navigate to the Tags page of the repository. See [Incrementing the Version] for details on how to determine what the next version will be or consult the first workflow run for the PR which will also calculate the next version.
 
 ### Tests
 
-The build and review PR workflow includes tests which are linked to a status check. That status check needs to succeed before a PR is merged to the default branch.  The tests do not need special permissions, so they should succeed whether they come from a branch or a fork.
+The build and review PR workflow includes tests which are linked to a status check. That status check needs to succeed before a PR is merged to the default branch. The tests do not need special permissions, so they should succeed whether they come from a branch or a fork.
 
 ## Code of Conduct
 
@@ -250,6 +250,7 @@ This project has adopted the [im-open's Code of Conduct](https://github.com/im-o
 Copyright &copy; 2023, Extend Health, LLC. Code released under the [MIT license](LICENSE).
 
 <!-- Links -->
+
 [Incrementing the Version]: #incrementing-the-version
 [Recompiling Manually]: #recompiling-manually
 [Updating the README.md]: #updating-the-readmemd
