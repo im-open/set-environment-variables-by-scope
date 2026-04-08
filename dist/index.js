@@ -1,7 +1,40 @@
+var __create = Object.create;
+var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __esm = (fn, res) =>
+  function __init() {
+    return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])((fn = 0))), res;
+  };
 var __commonJS = (cb, mod) =>
   function __require() {
-    return mod || (0, cb[Object.keys(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+    return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
   };
+var __export = (target, all) => {
+  for (var name in all) __defProp(target, name, { get: all[name], enumerable: true });
+};
+var __copyProps = (to, from, except, desc) => {
+  if ((from && typeof from === 'object') || typeof from === 'function') {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+  }
+  return to;
+};
+var __toESM = (mod, isNodeMode, target) => (
+  (target = mod != null ? __create(__getProtoOf(mod)) : {}),
+  __copyProps(
+    // If the importer is in node compatibility mode or this is not an ESM
+    // file that has been converted to a CommonJS file using a Babel-
+    // compatible transform (i.e. "__esModule" has not been set), then set
+    // "default" to the CommonJS "module.exports" for node compatibility.
+    isNodeMode || !mod || !mod.__esModule ? __defProp(target, 'default', { value: mod, enumerable: true }) : target,
+    mod
+  )
+);
+var __toCommonJS = mod => __copyProps(__defProp({}, '__esModule', { value: true }), mod);
 
 // node_modules/@actions/core/lib/utils.js
 var require_utils = __commonJS({
@@ -130,514 +163,356 @@ var require_command = __commonJS({
   }
 });
 
-// node_modules/uuid/dist/rng.js
-var require_rng = __commonJS({
-  'node_modules/uuid/dist/rng.js'(exports2) {
-    'use strict';
-    Object.defineProperty(exports2, '__esModule', {
-      value: true
-    });
-    exports2.default = rng;
-    var _crypto = _interopRequireDefault(require('crypto'));
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : { default: obj };
-    }
-    var rnds8Pool = new Uint8Array(256);
-    var poolPtr = rnds8Pool.length;
-    function rng() {
-      if (poolPtr > rnds8Pool.length - 16) {
-        _crypto.default.randomFillSync(rnds8Pool);
-        poolPtr = 0;
-      }
-      return rnds8Pool.slice(poolPtr, (poolPtr += 16));
-    }
+// node_modules/uuid/dist/esm-node/rng.js
+function rng() {
+  if (poolPtr > rnds8Pool.length - 16) {
+    import_crypto.default.randomFillSync(rnds8Pool);
+    poolPtr = 0;
+  }
+  return rnds8Pool.slice(poolPtr, (poolPtr += 16));
+}
+var import_crypto, rnds8Pool, poolPtr;
+var init_rng = __esm({
+  'node_modules/uuid/dist/esm-node/rng.js'() {
+    import_crypto = __toESM(require('crypto'));
+    rnds8Pool = new Uint8Array(256);
+    poolPtr = rnds8Pool.length;
   }
 });
 
-// node_modules/uuid/dist/regex.js
-var require_regex = __commonJS({
-  'node_modules/uuid/dist/regex.js'(exports2) {
-    'use strict';
-    Object.defineProperty(exports2, '__esModule', {
-      value: true
-    });
-    exports2.default = void 0;
-    var _default = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
-    exports2.default = _default;
+// node_modules/uuid/dist/esm-node/regex.js
+var regex_default;
+var init_regex = __esm({
+  'node_modules/uuid/dist/esm-node/regex.js'() {
+    regex_default = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
   }
 });
 
-// node_modules/uuid/dist/validate.js
-var require_validate = __commonJS({
-  'node_modules/uuid/dist/validate.js'(exports2) {
-    'use strict';
-    Object.defineProperty(exports2, '__esModule', {
-      value: true
-    });
-    exports2.default = void 0;
-    var _regex = _interopRequireDefault(require_regex());
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : { default: obj };
-    }
-    function validate(uuid) {
-      return typeof uuid === 'string' && _regex.default.test(uuid);
-    }
-    var _default = validate;
-    exports2.default = _default;
+// node_modules/uuid/dist/esm-node/validate.js
+function validate(uuid) {
+  return typeof uuid === 'string' && regex_default.test(uuid);
+}
+var validate_default;
+var init_validate = __esm({
+  'node_modules/uuid/dist/esm-node/validate.js'() {
+    init_regex();
+    validate_default = validate;
   }
 });
 
-// node_modules/uuid/dist/stringify.js
-var require_stringify = __commonJS({
-  'node_modules/uuid/dist/stringify.js'(exports2) {
-    'use strict';
-    Object.defineProperty(exports2, '__esModule', {
-      value: true
-    });
-    exports2.default = void 0;
-    var _validate = _interopRequireDefault(require_validate());
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : { default: obj };
-    }
-    var byteToHex = [];
+// node_modules/uuid/dist/esm-node/stringify.js
+function stringify(arr, offset = 0) {
+  const uuid = (
+    byteToHex[arr[offset + 0]] +
+    byteToHex[arr[offset + 1]] +
+    byteToHex[arr[offset + 2]] +
+    byteToHex[arr[offset + 3]] +
+    '-' +
+    byteToHex[arr[offset + 4]] +
+    byteToHex[arr[offset + 5]] +
+    '-' +
+    byteToHex[arr[offset + 6]] +
+    byteToHex[arr[offset + 7]] +
+    '-' +
+    byteToHex[arr[offset + 8]] +
+    byteToHex[arr[offset + 9]] +
+    '-' +
+    byteToHex[arr[offset + 10]] +
+    byteToHex[arr[offset + 11]] +
+    byteToHex[arr[offset + 12]] +
+    byteToHex[arr[offset + 13]] +
+    byteToHex[arr[offset + 14]] +
+    byteToHex[arr[offset + 15]]
+  ).toLowerCase();
+  if (!validate_default(uuid)) {
+    throw TypeError('Stringified UUID is invalid');
+  }
+  return uuid;
+}
+var byteToHex, stringify_default;
+var init_stringify = __esm({
+  'node_modules/uuid/dist/esm-node/stringify.js'() {
+    init_validate();
+    byteToHex = [];
     for (let i = 0; i < 256; ++i) {
       byteToHex.push((i + 256).toString(16).substr(1));
     }
-    function stringify(arr, offset = 0) {
-      const uuid = (
-        byteToHex[arr[offset + 0]] +
-        byteToHex[arr[offset + 1]] +
-        byteToHex[arr[offset + 2]] +
-        byteToHex[arr[offset + 3]] +
-        '-' +
-        byteToHex[arr[offset + 4]] +
-        byteToHex[arr[offset + 5]] +
-        '-' +
-        byteToHex[arr[offset + 6]] +
-        byteToHex[arr[offset + 7]] +
-        '-' +
-        byteToHex[arr[offset + 8]] +
-        byteToHex[arr[offset + 9]] +
-        '-' +
-        byteToHex[arr[offset + 10]] +
-        byteToHex[arr[offset + 11]] +
-        byteToHex[arr[offset + 12]] +
-        byteToHex[arr[offset + 13]] +
-        byteToHex[arr[offset + 14]] +
-        byteToHex[arr[offset + 15]]
-      ).toLowerCase();
-      if (!(0, _validate.default)(uuid)) {
-        throw TypeError('Stringified UUID is invalid');
-      }
-      return uuid;
-    }
-    var _default = stringify;
-    exports2.default = _default;
+    stringify_default = stringify;
   }
 });
 
-// node_modules/uuid/dist/v1.js
-var require_v1 = __commonJS({
-  'node_modules/uuid/dist/v1.js'(exports2) {
-    'use strict';
-    Object.defineProperty(exports2, '__esModule', {
-      value: true
-    });
-    exports2.default = void 0;
-    var _rng = _interopRequireDefault(require_rng());
-    var _stringify = _interopRequireDefault(require_stringify());
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : { default: obj };
+// node_modules/uuid/dist/esm-node/v1.js
+function v1(options, buf, offset) {
+  let i = (buf && offset) || 0;
+  const b = buf || new Array(16);
+  options = options || {};
+  let node = options.node || _nodeId;
+  let clockseq = options.clockseq !== void 0 ? options.clockseq : _clockseq;
+  if (node == null || clockseq == null) {
+    const seedBytes = options.random || (options.rng || rng)();
+    if (node == null) {
+      node = _nodeId = [seedBytes[0] | 1, seedBytes[1], seedBytes[2], seedBytes[3], seedBytes[4], seedBytes[5]];
     }
-    var _nodeId;
-    var _clockseq;
-    var _lastMSecs = 0;
-    var _lastNSecs = 0;
-    function v1(options, buf, offset) {
-      let i = (buf && offset) || 0;
-      const b = buf || new Array(16);
-      options = options || {};
-      let node = options.node || _nodeId;
-      let clockseq = options.clockseq !== void 0 ? options.clockseq : _clockseq;
-      if (node == null || clockseq == null) {
-        const seedBytes = options.random || (options.rng || _rng.default)();
-        if (node == null) {
-          node = _nodeId = [seedBytes[0] | 1, seedBytes[1], seedBytes[2], seedBytes[3], seedBytes[4], seedBytes[5]];
-        }
-        if (clockseq == null) {
-          clockseq = _clockseq = ((seedBytes[6] << 8) | seedBytes[7]) & 16383;
-        }
-      }
-      let msecs = options.msecs !== void 0 ? options.msecs : Date.now();
-      let nsecs = options.nsecs !== void 0 ? options.nsecs : _lastNSecs + 1;
-      const dt = msecs - _lastMSecs + (nsecs - _lastNSecs) / 1e4;
-      if (dt < 0 && options.clockseq === void 0) {
-        clockseq = (clockseq + 1) & 16383;
-      }
-      if ((dt < 0 || msecs > _lastMSecs) && options.nsecs === void 0) {
-        nsecs = 0;
-      }
-      if (nsecs >= 1e4) {
-        throw new Error("uuid.v1(): Can't create more than 10M uuids/sec");
-      }
-      _lastMSecs = msecs;
-      _lastNSecs = nsecs;
-      _clockseq = clockseq;
-      msecs += 122192928e5;
-      const tl = ((msecs & 268435455) * 1e4 + nsecs) % 4294967296;
-      b[i++] = (tl >>> 24) & 255;
-      b[i++] = (tl >>> 16) & 255;
-      b[i++] = (tl >>> 8) & 255;
-      b[i++] = tl & 255;
-      const tmh = ((msecs / 4294967296) * 1e4) & 268435455;
-      b[i++] = (tmh >>> 8) & 255;
-      b[i++] = tmh & 255;
-      b[i++] = ((tmh >>> 24) & 15) | 16;
-      b[i++] = (tmh >>> 16) & 255;
-      b[i++] = (clockseq >>> 8) | 128;
-      b[i++] = clockseq & 255;
-      for (let n = 0; n < 6; ++n) {
-        b[i + n] = node[n];
-      }
-      return buf || (0, _stringify.default)(b);
+    if (clockseq == null) {
+      clockseq = _clockseq = ((seedBytes[6] << 8) | seedBytes[7]) & 16383;
     }
-    var _default = v1;
-    exports2.default = _default;
+  }
+  let msecs = options.msecs !== void 0 ? options.msecs : Date.now();
+  let nsecs = options.nsecs !== void 0 ? options.nsecs : _lastNSecs + 1;
+  const dt = msecs - _lastMSecs + (nsecs - _lastNSecs) / 1e4;
+  if (dt < 0 && options.clockseq === void 0) {
+    clockseq = (clockseq + 1) & 16383;
+  }
+  if ((dt < 0 || msecs > _lastMSecs) && options.nsecs === void 0) {
+    nsecs = 0;
+  }
+  if (nsecs >= 1e4) {
+    throw new Error("uuid.v1(): Can't create more than 10M uuids/sec");
+  }
+  _lastMSecs = msecs;
+  _lastNSecs = nsecs;
+  _clockseq = clockseq;
+  msecs += 122192928e5;
+  const tl = ((msecs & 268435455) * 1e4 + nsecs) % 4294967296;
+  b[i++] = (tl >>> 24) & 255;
+  b[i++] = (tl >>> 16) & 255;
+  b[i++] = (tl >>> 8) & 255;
+  b[i++] = tl & 255;
+  const tmh = ((msecs / 4294967296) * 1e4) & 268435455;
+  b[i++] = (tmh >>> 8) & 255;
+  b[i++] = tmh & 255;
+  b[i++] = ((tmh >>> 24) & 15) | 16;
+  b[i++] = (tmh >>> 16) & 255;
+  b[i++] = (clockseq >>> 8) | 128;
+  b[i++] = clockseq & 255;
+  for (let n = 0; n < 6; ++n) {
+    b[i + n] = node[n];
+  }
+  return buf || stringify_default(b);
+}
+var _nodeId, _clockseq, _lastMSecs, _lastNSecs, v1_default;
+var init_v1 = __esm({
+  'node_modules/uuid/dist/esm-node/v1.js'() {
+    init_rng();
+    init_stringify();
+    _lastMSecs = 0;
+    _lastNSecs = 0;
+    v1_default = v1;
   }
 });
 
-// node_modules/uuid/dist/parse.js
-var require_parse = __commonJS({
-  'node_modules/uuid/dist/parse.js'(exports2) {
-    'use strict';
-    Object.defineProperty(exports2, '__esModule', {
-      value: true
-    });
-    exports2.default = void 0;
-    var _validate = _interopRequireDefault(require_validate());
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : { default: obj };
-    }
-    function parse(uuid) {
-      if (!(0, _validate.default)(uuid)) {
-        throw TypeError('Invalid UUID');
-      }
-      let v;
-      const arr = new Uint8Array(16);
-      arr[0] = (v = parseInt(uuid.slice(0, 8), 16)) >>> 24;
-      arr[1] = (v >>> 16) & 255;
-      arr[2] = (v >>> 8) & 255;
-      arr[3] = v & 255;
-      arr[4] = (v = parseInt(uuid.slice(9, 13), 16)) >>> 8;
-      arr[5] = v & 255;
-      arr[6] = (v = parseInt(uuid.slice(14, 18), 16)) >>> 8;
-      arr[7] = v & 255;
-      arr[8] = (v = parseInt(uuid.slice(19, 23), 16)) >>> 8;
-      arr[9] = v & 255;
-      arr[10] = ((v = parseInt(uuid.slice(24, 36), 16)) / 1099511627776) & 255;
-      arr[11] = (v / 4294967296) & 255;
-      arr[12] = (v >>> 24) & 255;
-      arr[13] = (v >>> 16) & 255;
-      arr[14] = (v >>> 8) & 255;
-      arr[15] = v & 255;
-      return arr;
-    }
-    var _default = parse;
-    exports2.default = _default;
+// node_modules/uuid/dist/esm-node/parse.js
+function parse(uuid) {
+  if (!validate_default(uuid)) {
+    throw TypeError('Invalid UUID');
+  }
+  let v;
+  const arr = new Uint8Array(16);
+  arr[0] = (v = parseInt(uuid.slice(0, 8), 16)) >>> 24;
+  arr[1] = (v >>> 16) & 255;
+  arr[2] = (v >>> 8) & 255;
+  arr[3] = v & 255;
+  arr[4] = (v = parseInt(uuid.slice(9, 13), 16)) >>> 8;
+  arr[5] = v & 255;
+  arr[6] = (v = parseInt(uuid.slice(14, 18), 16)) >>> 8;
+  arr[7] = v & 255;
+  arr[8] = (v = parseInt(uuid.slice(19, 23), 16)) >>> 8;
+  arr[9] = v & 255;
+  arr[10] = ((v = parseInt(uuid.slice(24, 36), 16)) / 1099511627776) & 255;
+  arr[11] = (v / 4294967296) & 255;
+  arr[12] = (v >>> 24) & 255;
+  arr[13] = (v >>> 16) & 255;
+  arr[14] = (v >>> 8) & 255;
+  arr[15] = v & 255;
+  return arr;
+}
+var parse_default;
+var init_parse = __esm({
+  'node_modules/uuid/dist/esm-node/parse.js'() {
+    init_validate();
+    parse_default = parse;
   }
 });
 
-// node_modules/uuid/dist/v35.js
-var require_v35 = __commonJS({
-  'node_modules/uuid/dist/v35.js'(exports2) {
-    'use strict';
-    Object.defineProperty(exports2, '__esModule', {
-      value: true
-    });
-    exports2.default = _default;
-    exports2.URL = exports2.DNS = void 0;
-    var _stringify = _interopRequireDefault(require_stringify());
-    var _parse = _interopRequireDefault(require_parse());
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : { default: obj };
+// node_modules/uuid/dist/esm-node/v35.js
+function stringToBytes(str) {
+  str = unescape(encodeURIComponent(str));
+  const bytes = [];
+  for (let i = 0; i < str.length; ++i) {
+    bytes.push(str.charCodeAt(i));
+  }
+  return bytes;
+}
+function v35_default(name, version2, hashfunc) {
+  function generateUUID(value, namespace, buf, offset) {
+    if (typeof value === 'string') {
+      value = stringToBytes(value);
     }
-    function stringToBytes(str) {
-      str = unescape(encodeURIComponent(str));
-      const bytes = [];
-      for (let i = 0; i < str.length; ++i) {
-        bytes.push(str.charCodeAt(i));
+    if (typeof namespace === 'string') {
+      namespace = parse_default(namespace);
+    }
+    if (namespace.length !== 16) {
+      throw TypeError('Namespace must be array-like (16 iterable integer values, 0-255)');
+    }
+    let bytes = new Uint8Array(16 + value.length);
+    bytes.set(namespace);
+    bytes.set(value, namespace.length);
+    bytes = hashfunc(bytes);
+    bytes[6] = (bytes[6] & 15) | version2;
+    bytes[8] = (bytes[8] & 63) | 128;
+    if (buf) {
+      offset = offset || 0;
+      for (let i = 0; i < 16; ++i) {
+        buf[offset + i] = bytes[i];
       }
-      return bytes;
+      return buf;
     }
-    var DNS = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
-    exports2.DNS = DNS;
-    var URL2 = '6ba7b811-9dad-11d1-80b4-00c04fd430c8';
-    exports2.URL = URL2;
-    function _default(name, version, hashfunc) {
-      function generateUUID(value, namespace, buf, offset) {
-        if (typeof value === 'string') {
-          value = stringToBytes(value);
-        }
-        if (typeof namespace === 'string') {
-          namespace = (0, _parse.default)(namespace);
-        }
-        if (namespace.length !== 16) {
-          throw TypeError('Namespace must be array-like (16 iterable integer values, 0-255)');
-        }
-        let bytes = new Uint8Array(16 + value.length);
-        bytes.set(namespace);
-        bytes.set(value, namespace.length);
-        bytes = hashfunc(bytes);
-        bytes[6] = (bytes[6] & 15) | version;
-        bytes[8] = (bytes[8] & 63) | 128;
-        if (buf) {
-          offset = offset || 0;
-          for (let i = 0; i < 16; ++i) {
-            buf[offset + i] = bytes[i];
-          }
-          return buf;
-        }
-        return (0, _stringify.default)(bytes);
-      }
-      try {
-        generateUUID.name = name;
-      } catch (err) {}
-      generateUUID.DNS = DNS;
-      generateUUID.URL = URL2;
-      return generateUUID;
-    }
+    return stringify_default(bytes);
+  }
+  try {
+    generateUUID.name = name;
+  } catch (err) {}
+  generateUUID.DNS = DNS;
+  generateUUID.URL = URL2;
+  return generateUUID;
+}
+var DNS, URL2;
+var init_v35 = __esm({
+  'node_modules/uuid/dist/esm-node/v35.js'() {
+    init_stringify();
+    init_parse();
+    DNS = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
+    URL2 = '6ba7b811-9dad-11d1-80b4-00c04fd430c8';
   }
 });
 
-// node_modules/uuid/dist/md5.js
-var require_md5 = __commonJS({
-  'node_modules/uuid/dist/md5.js'(exports2) {
-    'use strict';
-    Object.defineProperty(exports2, '__esModule', {
-      value: true
-    });
-    exports2.default = void 0;
-    var _crypto = _interopRequireDefault(require('crypto'));
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : { default: obj };
-    }
-    function md5(bytes) {
-      if (Array.isArray(bytes)) {
-        bytes = Buffer.from(bytes);
-      } else if (typeof bytes === 'string') {
-        bytes = Buffer.from(bytes, 'utf8');
-      }
-      return _crypto.default.createHash('md5').update(bytes).digest();
-    }
-    var _default = md5;
-    exports2.default = _default;
+// node_modules/uuid/dist/esm-node/md5.js
+function md5(bytes) {
+  if (Array.isArray(bytes)) {
+    bytes = Buffer.from(bytes);
+  } else if (typeof bytes === 'string') {
+    bytes = Buffer.from(bytes, 'utf8');
+  }
+  return import_crypto2.default.createHash('md5').update(bytes).digest();
+}
+var import_crypto2, md5_default;
+var init_md5 = __esm({
+  'node_modules/uuid/dist/esm-node/md5.js'() {
+    import_crypto2 = __toESM(require('crypto'));
+    md5_default = md5;
   }
 });
 
-// node_modules/uuid/dist/v3.js
-var require_v3 = __commonJS({
-  'node_modules/uuid/dist/v3.js'(exports2) {
-    'use strict';
-    Object.defineProperty(exports2, '__esModule', {
-      value: true
-    });
-    exports2.default = void 0;
-    var _v = _interopRequireDefault(require_v35());
-    var _md = _interopRequireDefault(require_md5());
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : { default: obj };
-    }
-    var v3 = (0, _v.default)('v3', 48, _md.default);
-    var _default = v3;
-    exports2.default = _default;
+// node_modules/uuid/dist/esm-node/v3.js
+var v3, v3_default;
+var init_v3 = __esm({
+  'node_modules/uuid/dist/esm-node/v3.js'() {
+    init_v35();
+    init_md5();
+    v3 = v35_default('v3', 48, md5_default);
+    v3_default = v3;
   }
 });
 
-// node_modules/uuid/dist/v4.js
-var require_v4 = __commonJS({
-  'node_modules/uuid/dist/v4.js'(exports2) {
-    'use strict';
-    Object.defineProperty(exports2, '__esModule', {
-      value: true
-    });
-    exports2.default = void 0;
-    var _rng = _interopRequireDefault(require_rng());
-    var _stringify = _interopRequireDefault(require_stringify());
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : { default: obj };
+// node_modules/uuid/dist/esm-node/v4.js
+function v4(options, buf, offset) {
+  options = options || {};
+  const rnds = options.random || (options.rng || rng)();
+  rnds[6] = (rnds[6] & 15) | 64;
+  rnds[8] = (rnds[8] & 63) | 128;
+  if (buf) {
+    offset = offset || 0;
+    for (let i = 0; i < 16; ++i) {
+      buf[offset + i] = rnds[i];
     }
-    function v4(options, buf, offset) {
-      options = options || {};
-      const rnds = options.random || (options.rng || _rng.default)();
-      rnds[6] = (rnds[6] & 15) | 64;
-      rnds[8] = (rnds[8] & 63) | 128;
-      if (buf) {
-        offset = offset || 0;
-        for (let i = 0; i < 16; ++i) {
-          buf[offset + i] = rnds[i];
-        }
-        return buf;
-      }
-      return (0, _stringify.default)(rnds);
-    }
-    var _default = v4;
-    exports2.default = _default;
+    return buf;
+  }
+  return stringify_default(rnds);
+}
+var v4_default;
+var init_v4 = __esm({
+  'node_modules/uuid/dist/esm-node/v4.js'() {
+    init_rng();
+    init_stringify();
+    v4_default = v4;
   }
 });
 
-// node_modules/uuid/dist/sha1.js
-var require_sha1 = __commonJS({
-  'node_modules/uuid/dist/sha1.js'(exports2) {
-    'use strict';
-    Object.defineProperty(exports2, '__esModule', {
-      value: true
-    });
-    exports2.default = void 0;
-    var _crypto = _interopRequireDefault(require('crypto'));
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : { default: obj };
-    }
-    function sha1(bytes) {
-      if (Array.isArray(bytes)) {
-        bytes = Buffer.from(bytes);
-      } else if (typeof bytes === 'string') {
-        bytes = Buffer.from(bytes, 'utf8');
-      }
-      return _crypto.default.createHash('sha1').update(bytes).digest();
-    }
-    var _default = sha1;
-    exports2.default = _default;
+// node_modules/uuid/dist/esm-node/sha1.js
+function sha1(bytes) {
+  if (Array.isArray(bytes)) {
+    bytes = Buffer.from(bytes);
+  } else if (typeof bytes === 'string') {
+    bytes = Buffer.from(bytes, 'utf8');
+  }
+  return import_crypto3.default.createHash('sha1').update(bytes).digest();
+}
+var import_crypto3, sha1_default;
+var init_sha1 = __esm({
+  'node_modules/uuid/dist/esm-node/sha1.js'() {
+    import_crypto3 = __toESM(require('crypto'));
+    sha1_default = sha1;
   }
 });
 
-// node_modules/uuid/dist/v5.js
-var require_v5 = __commonJS({
-  'node_modules/uuid/dist/v5.js'(exports2) {
-    'use strict';
-    Object.defineProperty(exports2, '__esModule', {
-      value: true
-    });
-    exports2.default = void 0;
-    var _v = _interopRequireDefault(require_v35());
-    var _sha = _interopRequireDefault(require_sha1());
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : { default: obj };
-    }
-    var v5 = (0, _v.default)('v5', 80, _sha.default);
-    var _default = v5;
-    exports2.default = _default;
+// node_modules/uuid/dist/esm-node/v5.js
+var v5, v5_default;
+var init_v5 = __esm({
+  'node_modules/uuid/dist/esm-node/v5.js'() {
+    init_v35();
+    init_sha1();
+    v5 = v35_default('v5', 80, sha1_default);
+    v5_default = v5;
   }
 });
 
-// node_modules/uuid/dist/nil.js
-var require_nil = __commonJS({
-  'node_modules/uuid/dist/nil.js'(exports2) {
-    'use strict';
-    Object.defineProperty(exports2, '__esModule', {
-      value: true
-    });
-    exports2.default = void 0;
-    var _default = '00000000-0000-0000-0000-000000000000';
-    exports2.default = _default;
+// node_modules/uuid/dist/esm-node/nil.js
+var nil_default;
+var init_nil = __esm({
+  'node_modules/uuid/dist/esm-node/nil.js'() {
+    nil_default = '00000000-0000-0000-0000-000000000000';
   }
 });
 
-// node_modules/uuid/dist/version.js
-var require_version = __commonJS({
-  'node_modules/uuid/dist/version.js'(exports2) {
-    'use strict';
-    Object.defineProperty(exports2, '__esModule', {
-      value: true
-    });
-    exports2.default = void 0;
-    var _validate = _interopRequireDefault(require_validate());
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : { default: obj };
-    }
-    function version(uuid) {
-      if (!(0, _validate.default)(uuid)) {
-        throw TypeError('Invalid UUID');
-      }
-      return parseInt(uuid.substr(14, 1), 16);
-    }
-    var _default = version;
-    exports2.default = _default;
+// node_modules/uuid/dist/esm-node/version.js
+function version(uuid) {
+  if (!validate_default(uuid)) {
+    throw TypeError('Invalid UUID');
+  }
+  return parseInt(uuid.substr(14, 1), 16);
+}
+var version_default;
+var init_version = __esm({
+  'node_modules/uuid/dist/esm-node/version.js'() {
+    init_validate();
+    version_default = version;
   }
 });
 
-// node_modules/uuid/dist/index.js
-var require_dist = __commonJS({
-  'node_modules/uuid/dist/index.js'(exports2) {
-    'use strict';
-    Object.defineProperty(exports2, '__esModule', {
-      value: true
-    });
-    Object.defineProperty(exports2, 'v1', {
-      enumerable: true,
-      get: function () {
-        return _v.default;
-      }
-    });
-    Object.defineProperty(exports2, 'v3', {
-      enumerable: true,
-      get: function () {
-        return _v2.default;
-      }
-    });
-    Object.defineProperty(exports2, 'v4', {
-      enumerable: true,
-      get: function () {
-        return _v3.default;
-      }
-    });
-    Object.defineProperty(exports2, 'v5', {
-      enumerable: true,
-      get: function () {
-        return _v4.default;
-      }
-    });
-    Object.defineProperty(exports2, 'NIL', {
-      enumerable: true,
-      get: function () {
-        return _nil.default;
-      }
-    });
-    Object.defineProperty(exports2, 'version', {
-      enumerable: true,
-      get: function () {
-        return _version.default;
-      }
-    });
-    Object.defineProperty(exports2, 'validate', {
-      enumerable: true,
-      get: function () {
-        return _validate.default;
-      }
-    });
-    Object.defineProperty(exports2, 'stringify', {
-      enumerable: true,
-      get: function () {
-        return _stringify.default;
-      }
-    });
-    Object.defineProperty(exports2, 'parse', {
-      enumerable: true,
-      get: function () {
-        return _parse.default;
-      }
-    });
-    var _v = _interopRequireDefault(require_v1());
-    var _v2 = _interopRequireDefault(require_v3());
-    var _v3 = _interopRequireDefault(require_v4());
-    var _v4 = _interopRequireDefault(require_v5());
-    var _nil = _interopRequireDefault(require_nil());
-    var _version = _interopRequireDefault(require_version());
-    var _validate = _interopRequireDefault(require_validate());
-    var _stringify = _interopRequireDefault(require_stringify());
-    var _parse = _interopRequireDefault(require_parse());
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : { default: obj };
-    }
+// node_modules/uuid/dist/esm-node/index.js
+var esm_node_exports = {};
+__export(esm_node_exports, {
+  NIL: () => nil_default,
+  parse: () => parse_default,
+  stringify: () => stringify_default,
+  v1: () => v1_default,
+  v3: () => v3_default,
+  v4: () => v4_default,
+  v5: () => v5_default,
+  validate: () => validate_default,
+  version: () => version_default
+});
+var init_esm_node = __esm({
+  'node_modules/uuid/dist/esm-node/index.js'() {
+    init_v1();
+    init_v3();
+    init_v4();
+    init_v5();
+    init_nil();
+    init_version();
+    init_validate();
+    init_stringify();
+    init_parse();
   }
 });
 
@@ -685,7 +560,7 @@ var require_file_command = __commonJS({
     exports2.prepareKeyValueMessage = exports2.issueFileCommand = void 0;
     var fs = __importStar(require('fs'));
     var os = __importStar(require('os'));
-    var uuid_1 = require_dist();
+    var uuid_1 = (init_esm_node(), __toCommonJS(esm_node_exports));
     var utils_1 = require_utils();
     function issueFileCommand(command, message) {
       const filePath = process.env[`GITHUB_${command}`];
@@ -1143,12 +1018,12 @@ var require_lib = __commonJS({
     var RetryableHttpVerbs = ['OPTIONS', 'GET', 'DELETE', 'HEAD'];
     var ExponentialBackoffCeiling = 10;
     var ExponentialBackoffTimeSlice = 5;
-    var HttpClientError = class extends Error {
+    var HttpClientError = class _HttpClientError extends Error {
       constructor(message, statusCode) {
         super(message);
         this.name = 'HttpClientError';
         this.statusCode = statusCode;
-        Object.setPrototypeOf(this, HttpClientError.prototype);
+        Object.setPrototypeOf(this, _HttpClientError.prototype);
       }
     };
     exports2.HttpClientError = HttpClientError;
@@ -1256,6 +1131,10 @@ var require_lib = __commonJS({
           return this.request(verb, requestUrl, stream, additionalHeaders);
         });
       }
+      /**
+       * Gets a typed object from an endpoint
+       * Be aware that not found returns a null.  Other errors (4xx, 5xx) reject the promise
+       */
       getJson(requestUrl, additionalHeaders = {}) {
         return __awaiter(this, void 0, void 0, function* () {
           additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
@@ -1302,6 +1181,11 @@ var require_lib = __commonJS({
           return this._processResponse(res, this.requestOptions);
         });
       }
+      /**
+       * Makes a raw http request.
+       * All other methods such as get, post, patch, and request ultimately call this.
+       * Prefer get, del, post and patch
+       */
       request(verb, requestUrl, data, headers) {
         return __awaiter(this, void 0, void 0, function* () {
           if (this._disposed) {
@@ -1369,12 +1253,20 @@ var require_lib = __commonJS({
           return response;
         });
       }
+      /**
+       * Needs to be called if keepAlive is set to true in request options.
+       */
       dispose() {
         if (this._agent) {
           this._agent.destroy();
         }
         this._disposed = true;
       }
+      /**
+       * Raw request.
+       * @param info
+       * @param data
+       */
       requestRaw(info, data) {
         return __awaiter(this, void 0, void 0, function* () {
           return new Promise((resolve, reject) => {
@@ -1391,6 +1283,12 @@ var require_lib = __commonJS({
           });
         });
       }
+      /**
+       * Raw request with callback.
+       * @param info
+       * @param data
+       * @param onResult
+       */
       requestRawWithCallback(info, data, onResult) {
         if (typeof data === 'string') {
           if (!info.options.headers) {
@@ -1434,6 +1332,11 @@ var require_lib = __commonJS({
           req.end();
         }
       }
+      /**
+       * Gets an http agent. This function is useful when you need an http agent that handles
+       * routing through a proxy server - depending upon the url and proxy environment variables.
+       * @param serverUrl  The server URL where the request will be sent. For example, https://api.github.com
+       */
       getAgent(serverUrl) {
         const parsedUrl = new URL(serverUrl);
         return this._getAgent(parsedUrl);
@@ -1647,6 +1550,7 @@ var require_auth = __commonJS({
         }
         options.headers['Authorization'] = `Basic ${Buffer.from(`${this.username}:${this.password}`).toString('base64')}`;
       }
+      // This handler cannot handle 401
       canHandleAuthentication() {
         return false;
       }
@@ -1661,12 +1565,15 @@ var require_auth = __commonJS({
       constructor(token) {
         this.token = token;
       }
+      // currently implements pre-authorization
+      // TODO: support preAuth = false where it hooks on 401
       prepareRequest(options) {
         if (!options.headers) {
           throw Error('The request has no headers');
         }
         options.headers['Authorization'] = `Bearer ${this.token}`;
       }
+      // This handler cannot handle 401
       canHandleAuthentication() {
         return false;
       }
@@ -1681,12 +1588,15 @@ var require_auth = __commonJS({
       constructor(token) {
         this.token = token;
       }
+      // currently implements pre-authorization
+      // TODO: support preAuth = false where it hooks on 401
       prepareRequest(options) {
         if (!options.headers) {
           throw Error('The request has no headers');
         }
         options.headers['Authorization'] = `Basic ${Buffer.from(`PAT:${this.token}`).toString('base64')}`;
       }
+      // This handler cannot handle 401
       canHandleAuthentication() {
         return false;
       }
@@ -1740,7 +1650,7 @@ var require_oidc_utils = __commonJS({
     var http_client_1 = require_lib();
     var auth_1 = require_auth();
     var core_1 = require_core();
-    var OidcClient = class {
+    var OidcClient = class _OidcClient {
       static createHttpClient(allowRetry = true, maxRetry = 10) {
         const requestOptions = {
           allowRetries: allowRetry,
@@ -1748,7 +1658,7 @@ var require_oidc_utils = __commonJS({
         };
         return new http_client_1.HttpClient(
           'actions/oidc-client',
-          [new auth_1.BearerCredentialHandler(OidcClient.getRequestToken())],
+          [new auth_1.BearerCredentialHandler(_OidcClient.getRequestToken())],
           requestOptions
         );
       }
@@ -1769,7 +1679,7 @@ var require_oidc_utils = __commonJS({
       static getCall(id_token_url) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
-          const httpclient = OidcClient.createHttpClient();
+          const httpclient = _OidcClient.createHttpClient();
           const res = yield httpclient.getJson(id_token_url).catch(error => {
             throw new Error(`Failed to get ID Token. 
  
@@ -1787,13 +1697,13 @@ var require_oidc_utils = __commonJS({
       static getIDToken(audience) {
         return __awaiter(this, void 0, void 0, function* () {
           try {
-            let id_token_url = OidcClient.getIDTokenUrl();
+            let id_token_url = _OidcClient.getIDTokenUrl();
             if (audience) {
               const encodedAudience = encodeURIComponent(audience);
               id_token_url = `${id_token_url}&audience=${encodedAudience}`;
             }
             core_1.debug(`ID token url is ${id_token_url}`);
-            const id_token = yield OidcClient.getCall(id_token_url);
+            const id_token = yield _OidcClient.getCall(id_token_url);
             core_1.setSecret(id_token);
             return id_token;
           } catch (error) {
@@ -1852,6 +1762,12 @@ var require_summary = __commonJS({
       constructor() {
         this._buffer = '';
       }
+      /**
+       * Finds the summary file path from the environment, rejects if env var is not found or file does not exist
+       * Also checks r/w permissions.
+       *
+       * @returns step summary file path
+       */
       filePath() {
         return __awaiter(this, void 0, void 0, function* () {
           if (this._filePath) {
@@ -1872,6 +1788,15 @@ var require_summary = __commonJS({
           return this._filePath;
         });
       }
+      /**
+       * Wraps content in an HTML tag, adding any HTML attributes
+       *
+       * @param {string} tag HTML tag to wrap
+       * @param {string | null} content content within the tag
+       * @param {[attribute: string]: string} attrs key-value list of HTML attributes to add
+       *
+       * @returns {string} content wrapped in HTML element
+       */
       wrap(tag, content, attrs = {}) {
         const htmlAttrs = Object.entries(attrs)
           .map(([key, value]) => ` ${key}="${value}"`)
@@ -1881,6 +1806,13 @@ var require_summary = __commonJS({
         }
         return `<${tag}${htmlAttrs}>${content}</${tag}>`;
       }
+      /**
+       * Writes text in the buffer to the summary buffer file and empties buffer. Will append by default.
+       *
+       * @param {SummaryWriteOptions} [options] (optional) options for write operation
+       *
+       * @returns {Promise<Summary>} summary instance
+       */
       write(options) {
         return __awaiter(this, void 0, void 0, function* () {
           const overwrite = !!(options === null || options === void 0 ? void 0 : options.overwrite);
@@ -1890,39 +1822,95 @@ var require_summary = __commonJS({
           return this.emptyBuffer();
         });
       }
+      /**
+       * Clears the summary buffer and wipes the summary file
+       *
+       * @returns {Summary} summary instance
+       */
       clear() {
         return __awaiter(this, void 0, void 0, function* () {
           return this.emptyBuffer().write({ overwrite: true });
         });
       }
+      /**
+       * Returns the current summary buffer as a string
+       *
+       * @returns {string} string of summary buffer
+       */
       stringify() {
         return this._buffer;
       }
+      /**
+       * If the summary buffer is empty
+       *
+       * @returns {boolen} true if the buffer is empty
+       */
       isEmptyBuffer() {
         return this._buffer.length === 0;
       }
+      /**
+       * Resets the summary buffer without writing to summary file
+       *
+       * @returns {Summary} summary instance
+       */
       emptyBuffer() {
         this._buffer = '';
         return this;
       }
+      /**
+       * Adds raw text to the summary buffer
+       *
+       * @param {string} text content to add
+       * @param {boolean} [addEOL=false] (optional) append an EOL to the raw text (default: false)
+       *
+       * @returns {Summary} summary instance
+       */
       addRaw(text, addEOL = false) {
         this._buffer += text;
         return addEOL ? this.addEOL() : this;
       }
+      /**
+       * Adds the operating system-specific end-of-line marker to the buffer
+       *
+       * @returns {Summary} summary instance
+       */
       addEOL() {
         return this.addRaw(os_1.EOL);
       }
+      /**
+       * Adds an HTML codeblock to the summary buffer
+       *
+       * @param {string} code content to render within fenced code block
+       * @param {string} lang (optional) language to syntax highlight code
+       *
+       * @returns {Summary} summary instance
+       */
       addCodeBlock(code, lang) {
         const attrs = Object.assign({}, lang && { lang });
         const element = this.wrap('pre', this.wrap('code', code), attrs);
         return this.addRaw(element).addEOL();
       }
+      /**
+       * Adds an HTML list to the summary buffer
+       *
+       * @param {string[]} items list of items to render
+       * @param {boolean} [ordered=false] (optional) if the rendered list should be ordered or not (default: false)
+       *
+       * @returns {Summary} summary instance
+       */
       addList(items, ordered = false) {
         const tag = ordered ? 'ol' : 'ul';
         const listItems = items.map(item => this.wrap('li', item)).join('');
         const element = this.wrap(tag, listItems);
         return this.addRaw(element).addEOL();
       }
+      /**
+       * Adds an HTML table to the summary buffer
+       *
+       * @param {SummaryTableCell[]} rows table rows
+       *
+       * @returns {Summary} summary instance
+       */
       addTable(rows) {
         const tableBody = rows
           .map(row => {
@@ -1943,35 +1931,86 @@ var require_summary = __commonJS({
         const element = this.wrap('table', tableBody);
         return this.addRaw(element).addEOL();
       }
+      /**
+       * Adds a collapsable HTML details element to the summary buffer
+       *
+       * @param {string} label text for the closed state
+       * @param {string} content collapsable content
+       *
+       * @returns {Summary} summary instance
+       */
       addDetails(label, content) {
         const element = this.wrap('details', this.wrap('summary', label) + content);
         return this.addRaw(element).addEOL();
       }
+      /**
+       * Adds an HTML image tag to the summary buffer
+       *
+       * @param {string} src path to the image you to embed
+       * @param {string} alt text description of the image
+       * @param {SummaryImageOptions} options (optional) addition image attributes
+       *
+       * @returns {Summary} summary instance
+       */
       addImage(src, alt, options) {
         const { width, height } = options || {};
         const attrs = Object.assign(Object.assign({}, width && { width }), height && { height });
         const element = this.wrap('img', null, Object.assign({ src, alt }, attrs));
         return this.addRaw(element).addEOL();
       }
+      /**
+       * Adds an HTML section heading element
+       *
+       * @param {string} text heading text
+       * @param {number | string} [level=1] (optional) the heading level, default: 1
+       *
+       * @returns {Summary} summary instance
+       */
       addHeading(text, level) {
         const tag = `h${level}`;
         const allowedTag = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(tag) ? tag : 'h1';
         const element = this.wrap(allowedTag, text);
         return this.addRaw(element).addEOL();
       }
+      /**
+       * Adds an HTML thematic break (<hr>) to the summary buffer
+       *
+       * @returns {Summary} summary instance
+       */
       addSeparator() {
         const element = this.wrap('hr', null);
         return this.addRaw(element).addEOL();
       }
+      /**
+       * Adds an HTML line break (<br>) to the summary buffer
+       *
+       * @returns {Summary} summary instance
+       */
       addBreak() {
         const element = this.wrap('br', null);
         return this.addRaw(element).addEOL();
       }
+      /**
+       * Adds an HTML blockquote to the summary buffer
+       *
+       * @param {string} text quote text
+       * @param {string} cite (optional) citation url
+       *
+       * @returns {Summary} summary instance
+       */
       addQuote(text, cite) {
         const attrs = Object.assign({}, cite && { cite });
         const element = this.wrap('blockquote', text, attrs);
         return this.addRaw(element).addEOL();
       }
+      /**
+       * Adds an HTML anchor tag to the summary buffer
+       *
+       * @param {string} text link text/content
+       * @param {string} href hyperlink
+       *
+       * @returns {Summary} summary instance
+       */
       addLink(text, href) {
         const element = this.wrap('a', text, { href });
         return this.addRaw(element).addEOL();
@@ -2361,6 +2400,7 @@ var require_Node = __commonJS({
       constructor(type) {
         Object.defineProperty(this, NODE_TYPE, { value: type });
       }
+      /** Create a copy of this node.  */
       clone() {
         const copy = Object.create(Object.getPrototypeOf(this), Object.getOwnPropertyDescriptors(this));
         if (this.range) copy.range = this.range.slice();
@@ -2541,20 +2581,24 @@ var require_directives = __commonJS({
       '}': '%7D'
     };
     var escapeTagName = tn => tn.replace(/[!,[\]{}]/g, ch => escapeChars[ch]);
-    var Directives = class {
+    var Directives = class _Directives {
       constructor(yaml, tags) {
         this.docStart = null;
         this.docEnd = false;
-        this.yaml = Object.assign({}, Directives.defaultYaml, yaml);
-        this.tags = Object.assign({}, Directives.defaultTags, tags);
+        this.yaml = Object.assign({}, _Directives.defaultYaml, yaml);
+        this.tags = Object.assign({}, _Directives.defaultTags, tags);
       }
       clone() {
-        const copy = new Directives(this.yaml, this.tags);
+        const copy = new _Directives(this.yaml, this.tags);
         copy.docStart = this.docStart;
         return copy;
       }
+      /**
+       * During parsing, get a Directives instance for the current document and
+       * update the stream state according to the current version's spec.
+       */
       atDocument() {
-        const res = new Directives(this.yaml, this.tags);
+        const res = new _Directives(this.yaml, this.tags);
         switch (this.yaml.version) {
           case '1.1':
             this.atNextDocument = true;
@@ -2562,18 +2606,22 @@ var require_directives = __commonJS({
           case '1.2':
             this.atNextDocument = false;
             this.yaml = {
-              explicit: Directives.defaultYaml.explicit,
+              explicit: _Directives.defaultYaml.explicit,
               version: '1.2'
             };
-            this.tags = Object.assign({}, Directives.defaultTags);
+            this.tags = Object.assign({}, _Directives.defaultTags);
             break;
         }
         return res;
       }
+      /**
+       * @param onError - May be called even if the action was successful
+       * @returns `true` on success
+       */
       add(line, onError) {
         if (this.atNextDocument) {
-          this.yaml = { explicit: Directives.defaultYaml.explicit, version: '1.1' };
-          this.tags = Object.assign({}, Directives.defaultTags);
+          this.yaml = { explicit: _Directives.defaultYaml.explicit, version: '1.1' };
+          this.tags = Object.assign({}, _Directives.defaultTags);
           this.atNextDocument = false;
         }
         const parts = line.trim().split(/[ \t]+/);
@@ -2594,13 +2642,13 @@ var require_directives = __commonJS({
               onError(0, '%YAML directive should contain exactly one part');
               return false;
             }
-            const [version] = parts;
-            if (version === '1.1' || version === '1.2') {
-              this.yaml.version = version;
+            const [version2] = parts;
+            if (version2 === '1.1' || version2 === '1.2') {
+              this.yaml.version = version2;
               return true;
             } else {
-              const isValid = /^\d+\.\d+$/.test(version);
-              onError(6, `Unsupported YAML version ${version}`, isValid);
+              const isValid = /^\d+\.\d+$/.test(version2);
+              onError(6, `Unsupported YAML version ${version2}`, isValid);
               return false;
             }
           }
@@ -2609,6 +2657,12 @@ var require_directives = __commonJS({
             return false;
         }
       }
+      /**
+       * Resolves a tag, matching handles to those defined in %TAG directives.
+       *
+       * @returns Resolved tag, which may also be the non-specific tag `'!'` or a
+       *   `'!local'` tag, or `null` if unresolvable.
+       */
       tagName(source, onError) {
         if (source === '!') return '!';
         if (source[0] !== '!') {
@@ -2632,6 +2686,10 @@ var require_directives = __commonJS({
         onError(`Could not resolve tag: ${source}`);
         return null;
       }
+      /**
+       * Given a fully resolved tag, returns its printable string form,
+       * taking into account current tag prefixes and defaults.
+       */
       tagString(tag) {
         for (const [handle, prefix] of Object.entries(this.tags)) {
           if (tag.startsWith(prefix)) return handle + escapeTagName(tag.substring(prefix.length));
@@ -2677,7 +2735,7 @@ var require_anchors = __commonJS({
       return true;
     }
     function anchorNames(root) {
-      const anchors = new Set();
+      const anchors = /* @__PURE__ */ new Set();
       visit.visit(root, {
         Value(_key, node) {
           if (node.anchor) anchors.add(node.anchor);
@@ -2693,7 +2751,7 @@ var require_anchors = __commonJS({
     }
     function createNodeAnchors(doc, prefix) {
       const aliasObjects = [];
-      const sourceObjects = new Map();
+      const sourceObjects = /* @__PURE__ */ new Map();
       let prevAnchors = null;
       return {
         onAnchor: source => {
@@ -2703,6 +2761,11 @@ var require_anchors = __commonJS({
           prevAnchors.add(anchor);
           return anchor;
         },
+        /**
+         * With circular references, the source node is only resolved after all
+         * of its child nodes are. This is why anchors are set only after all of
+         * the nodes have been created.
+         */
         setAnchors: () => {
           for (const source of aliasObjects) {
             const ref = sourceObjects.get(source);
@@ -2742,6 +2805,10 @@ var require_Alias = __commonJS({
           }
         });
       }
+      /**
+       * Resolve the value of this alias within `doc`, finding the last
+       * instance of the `source` anchor before this node.
+       */
       resolve(doc) {
         let found = void 0;
         visit.visit(doc, {
@@ -2952,7 +3019,7 @@ var require_Collection = __commonJS({
           a[k] = v;
           v = a;
         } else {
-          v = new Map([[k, v]]);
+          v = /* @__PURE__ */ new Map([[k, v]]);
         }
       }
       return createNode.createNode(v, void 0, {
@@ -2962,7 +3029,7 @@ var require_Collection = __commonJS({
           throw new Error('This should not happen, please report a bug.');
         },
         schema,
-        sourceObjects: new Map()
+        sourceObjects: /* @__PURE__ */ new Map()
       });
     }
     var isEmptyPath = path => path == null || (typeof path === 'object' && !!path[Symbol.iterator]().next().done);
@@ -2976,6 +3043,11 @@ var require_Collection = __commonJS({
           writable: true
         });
       }
+      /**
+       * Create a copy of this collection.
+       *
+       * @param schema - If defined, overwrites the original's schema
+       */
       clone(schema) {
         const copy = Object.create(Object.getPrototypeOf(this), Object.getOwnPropertyDescriptors(this));
         if (schema) copy.schema = schema;
@@ -2983,6 +3055,11 @@ var require_Collection = __commonJS({
         if (this.range) copy.range = this.range.slice();
         return copy;
       }
+      /**
+       * Adds a value to the collection. For `!!map` and `!!omap` the value must
+       * be a Pair instance or a `{ key, value }` object, which may not have a key
+       * that already exists in the map.
+       */
       addIn(path, value) {
         if (isEmptyPath(path)) this.add(value);
         else {
@@ -2993,6 +3070,10 @@ var require_Collection = __commonJS({
           else throw new Error(`Expected YAML collection at ${key}. Remaining path: ${rest}`);
         }
       }
+      /**
+       * Removes a value from the collection.
+       * @returns `true` if the item was found and removed.
+       */
       deleteIn(path) {
         const [key, ...rest] = path;
         if (rest.length === 0) return this.delete(key);
@@ -3000,6 +3081,11 @@ var require_Collection = __commonJS({
         if (Node.isCollection(node)) return node.deleteIn(rest);
         else throw new Error(`Expected YAML collection at ${key}. Remaining path: ${rest}`);
       }
+      /**
+       * Returns item at `key`, or `undefined` if not found. By default unwraps
+       * scalar values from their surrounding node; to disable set `keepScalar` to
+       * `true` (collections are always returned intact).
+       */
       getIn(path, keepScalar) {
         const [key, ...rest] = path;
         const node = this.get(key, true);
@@ -3013,12 +3099,19 @@ var require_Collection = __commonJS({
           return n == null || (allowScalar && Node.isScalar(n) && n.value == null && !n.commentBefore && !n.comment && !n.tag);
         });
       }
+      /**
+       * Checks if the collection includes a value with the key `key`.
+       */
       hasIn(path) {
         const [key, ...rest] = path;
         if (rest.length === 0) return this.has(key);
         const node = this.get(key, true);
         return Node.isCollection(node) ? node.hasIn(rest) : false;
       }
+      /**
+       * Sets a value in this collection. For `!!set`, `value` needs to be a
+       * boolean to add/remove the item from the set.
+       */
       setIn(path, value) {
         const [key, ...rest] = path;
         if (rest.length === 0) {
@@ -3439,7 +3532,7 @@ ${indent}`
 });
 
 // node_modules/yaml/dist/stringify/stringify.js
-var require_stringify2 = __commonJS({
+var require_stringify = __commonJS({
   'node_modules/yaml/dist/stringify/stringify.js'(exports2) {
     'use strict';
     var anchors = require_anchors();
@@ -3482,7 +3575,7 @@ var require_stringify2 = __commonJS({
           inFlow = null;
       }
       return {
-        anchors: new Set(),
+        anchors: /* @__PURE__ */ new Set(),
         doc,
         flowCollectionPadding: opt.flowCollectionPadding ? ' ' : '',
         indent: '',
@@ -3524,7 +3617,7 @@ var require_stringify2 = __commonJS({
       if (tag) props.push(doc.directives.tagString(tag));
       return props.join(' ');
     }
-    function stringify(item, ctx, onComment, onChompKeep) {
+    function stringify2(item, ctx, onComment, onChompKeep) {
       if (Node.isPair(item)) return item.toString(ctx, onComment, onChompKeep);
       if (Node.isAlias(item)) {
         if (ctx.doc.directives) return item.toString(ctx);
@@ -3532,7 +3625,7 @@ var require_stringify2 = __commonJS({
           throw new TypeError(`Cannot stringify circular structure without alias nodes`);
         } else {
           if (ctx.resolvedAliases) ctx.resolvedAliases.add(item);
-          else ctx.resolvedAliases = new Set([item]);
+          else ctx.resolvedAliases = /* @__PURE__ */ new Set([item]);
           item = item.resolve(ctx.doc);
         }
       }
@@ -3554,7 +3647,7 @@ var require_stringify2 = __commonJS({
 ${ctx.indent}${str}`;
     }
     exports2.createStringifyContext = createStringifyContext;
-    exports2.stringify = stringify;
+    exports2.stringify = stringify2;
   }
 });
 
@@ -3564,7 +3657,7 @@ var require_stringifyPair = __commonJS({
     'use strict';
     var Node = require_Node();
     var Scalar = require_Scalar();
-    var stringify = require_stringify2();
+    var stringify2 = require_stringify();
     var stringifyComment = require_stringifyComment();
     function stringifyPair({ key, value }, ctx, onComment, onChompKeep) {
       const {
@@ -3597,7 +3690,7 @@ var require_stringifyPair = __commonJS({
       });
       let keyCommentDone = false;
       let chompKeep = false;
-      let str = stringify.stringify(
+      let str = stringify2.stringify(
         key,
         ctx,
         () => (keyCommentDone = true),
@@ -3646,7 +3739,7 @@ ${indent}:`;
         ctx.indent = ctx.indent.substring(2);
       }
       let valueCommentDone = false;
-      const valueStr = stringify.stringify(
+      const valueStr = stringify2.stringify(
         value,
         ctx,
         () => (valueCommentDone = true),
@@ -3724,7 +3817,7 @@ var require_addPairToJSMap = __commonJS({
   'node_modules/yaml/dist/nodes/addPairToJSMap.js'(exports2) {
     'use strict';
     var log = require_log();
-    var stringify = require_stringify2();
+    var stringify2 = require_stringify();
     var Node = require_Node();
     var Scalar = require_Scalar();
     var toJS = require_toJS();
@@ -3781,8 +3874,8 @@ var require_addPairToJSMap = __commonJS({
       if (jsKey === null) return '';
       if (typeof jsKey !== 'object') return String(jsKey);
       if (Node.isNode(key) && ctx && ctx.doc) {
-        const strCtx = stringify.createStringifyContext(ctx.doc, {});
-        strCtx.anchors = new Set();
+        const strCtx = stringify2.createStringifyContext(ctx.doc, {});
+        strCtx.anchors = /* @__PURE__ */ new Set();
         for (const node of ctx.anchors.keys()) strCtx.anchors.add(node.anchor);
         strCtx.inFlow = true;
         strCtx.inStringifyKey = true;
@@ -3817,7 +3910,7 @@ var require_Pair = __commonJS({
       const v = createNode.createNode(value, void 0, ctx);
       return new Pair(k, v);
     }
-    var Pair = class {
+    var Pair = class _Pair {
       constructor(key, value = null) {
         Object.defineProperty(this, Node.NODE_TYPE, { value: Node.PAIR });
         this.key = key;
@@ -3827,10 +3920,10 @@ var require_Pair = __commonJS({
         let { key, value } = this;
         if (Node.isNode(key)) key = key.clone(schema);
         if (Node.isNode(value)) value = value.clone(schema);
-        return new Pair(key, value);
+        return new _Pair(key, value);
       }
       toJSON(_, ctx) {
-        const pair = ctx?.mapAsMap ? new Map() : {};
+        const pair = ctx?.mapAsMap ? /* @__PURE__ */ new Map() : {};
         return addPairToJSMap.addPairToJSMap(ctx, pair, this);
       }
       toString(ctx, onComment, onChompKeep) {
@@ -3848,12 +3941,12 @@ var require_stringifyCollection = __commonJS({
     'use strict';
     var Collection = require_Collection();
     var Node = require_Node();
-    var stringify = require_stringify2();
+    var stringify2 = require_stringify();
     var stringifyComment = require_stringifyComment();
     function stringifyCollection(collection, ctx, options) {
       const flow = ctx.inFlow ?? collection.flow;
-      const stringify2 = flow ? stringifyFlowCollection : stringifyBlockCollection;
-      return stringify2(collection, ctx, options);
+      const stringify3 = flow ? stringifyFlowCollection : stringifyBlockCollection;
+      return stringify3(collection, ctx, options);
     }
     function stringifyBlockCollection({ comment, items }, ctx, { blockItemPrefix, flowChars, itemIndent, onChompKeep, onComment }) {
       const {
@@ -3878,7 +3971,7 @@ var require_stringifyCollection = __commonJS({
           }
         }
         chompKeep = false;
-        let str2 = stringify.stringify(
+        let str2 = stringify2.stringify(
           item,
           itemCtx,
           () => (comment2 = null),
@@ -3946,7 +4039,7 @@ ${indent}${line}`
           }
         }
         if (comment2) reqNewline = true;
-        let str2 = stringify.stringify(item, itemCtx, () => (comment2 = null));
+        let str2 = stringify2.stringify(item, itemCtx, () => (comment2 = null));
         if (i < items.length - 1) str2 += ',';
         if (comment2) str2 += stringifyComment.lineComment(str2, itemIndent, commentString(comment2));
         if (!reqNewline && (lines.length > linesAtValue || str2.includes('\n'))) reqNewline = true;
@@ -4020,6 +4113,12 @@ var require_YAMLMap = __commonJS({
         super(Node.MAP, schema);
         this.items = [];
       }
+      /**
+       * Adds a value to the collection.
+       *
+       * @param overwrite - If not set `true`, using a key that is already in the
+       *   collection will throw. Otherwise, overwrites the previous value.
+       */
       add(pair, overwrite) {
         let _pair;
         if (Node.isPair(pair)) _pair = pair;
@@ -4057,8 +4156,13 @@ var require_YAMLMap = __commonJS({
       set(key, value) {
         this.add(new Pair.Pair(key, value), true);
       }
+      /**
+       * @param ctx - Conversion context, originally set in Document#toJS()
+       * @param {Class} Type - If set, forces the returned collection type
+       * @returns Instance of Type, Map, or Object
+       */
       toJSON(_, ctx, Type) {
-        const map = Type ? new Type() : ctx?.mapAsMap ? new Map() : {};
+        const map = Type ? new Type() : ctx?.mapAsMap ? /* @__PURE__ */ new Map() : {};
         if (ctx?.onCreate) ctx.onCreate(map);
         for (const item of this.items) addPairToJSMap.addPairToJSMap(ctx, map, item);
         return map;
@@ -4143,6 +4247,14 @@ var require_YAMLSeq = __commonJS({
       add(value) {
         this.items.push(value);
       }
+      /**
+       * Removes a value from the collection.
+       *
+       * `key` must contain a representation of an integer for this to succeed.
+       * It may be wrapped in a `Scalar`.
+       *
+       * @returns `true` if the item was found and removed.
+       */
       delete(key) {
         const idx = asItemIndex(key);
         if (typeof idx !== 'number') return false;
@@ -4155,10 +4267,23 @@ var require_YAMLSeq = __commonJS({
         const it = this.items[idx];
         return !keepScalar && Node.isScalar(it) ? it.value : it;
       }
+      /**
+       * Checks if the collection includes a value with the key `key`.
+       *
+       * `key` must contain a representation of an integer for this to succeed.
+       * It may be wrapped in a `Scalar`.
+       */
       has(key) {
         const idx = asItemIndex(key);
         return typeof idx === 'number' && idx < this.items.length;
       }
+      /**
+       * Sets a value in this collection. For `!!set`, `value` needs to be a
+       * boolean to add/remove the item from the set.
+       *
+       * If `key` does not contain a representation of an integer, this will throw.
+       * It may be wrapped in a `Scalar`.
+       */
       set(key, value) {
         const idx = asItemIndex(key);
         if (typeof idx !== 'number') throw new Error(`Expected a valid index, not ${key}.`);
@@ -4508,6 +4633,14 @@ var require_binary = __commonJS({
       identify: value => value instanceof Uint8Array,
       default: false,
       tag: 'tag:yaml.org,2002:binary',
+      /**
+       * Returns a Buffer in node and an Uint8Array in browsers
+       *
+       * To use the resulting buffer as an image, you'll want to do something like:
+       *
+       *   const blob = new Blob([buffer], { type: 'image/jpeg' })
+       *   document.querySelector('#photo').src = URL.createObjectURL(blob)
+       */
       resolve(src, onError) {
         if (typeof Buffer === 'function') {
           return Buffer.from(src, 'base64');
@@ -4634,7 +4767,7 @@ var require_omap = __commonJS({
     var Node = require_Node();
     var YAMLMap = require_YAMLMap();
     var pairs = require_pairs();
-    var YAMLOMap = class extends YAMLSeq.YAMLSeq {
+    var YAMLOMap = class _YAMLOMap extends YAMLSeq.YAMLSeq {
       constructor() {
         super();
         this.add = YAMLMap.YAMLMap.prototype.add.bind(this);
@@ -4642,11 +4775,15 @@ var require_omap = __commonJS({
         this.get = YAMLMap.YAMLMap.prototype.get.bind(this);
         this.has = YAMLMap.YAMLMap.prototype.has.bind(this);
         this.set = YAMLMap.YAMLMap.prototype.set.bind(this);
-        this.tag = YAMLOMap.tag;
+        this.tag = _YAMLOMap.tag;
       }
+      /**
+       * If `ctx` is given, the return type is actually `Map<unknown, unknown>`,
+       * but TypeScript won't allow widening the signature of a child method.
+       */
       toJSON(_, ctx) {
         if (!ctx) return super.toJSON(_);
-        const map = new Map();
+        const map = /* @__PURE__ */ new Map();
         if (ctx?.onCreate) ctx.onCreate(map);
         for (const pair of this.items) {
           let key, value;
@@ -4859,10 +4996,10 @@ var require_set = __commonJS({
     var Node = require_Node();
     var Pair = require_Pair();
     var YAMLMap = require_YAMLMap();
-    var YAMLSet = class extends YAMLMap.YAMLMap {
+    var YAMLSet = class _YAMLSet extends YAMLMap.YAMLMap {
       constructor(schema) {
         super(schema);
-        this.tag = YAMLSet.tag;
+        this.tag = _YAMLSet.tag;
       }
       add(key) {
         let pair;
@@ -4872,6 +5009,10 @@ var require_set = __commonJS({
         const prev = YAMLMap.findPair(this.items, pair.key);
         if (!prev) this.items.push(pair);
       }
+      /**
+       * If `keepPair` is `true`, returns the Pair matching `key`.
+       * Otherwise, returns the value of that Pair's key.
+       */
       get(key, keepPair) {
         const pair = YAMLMap.findPair(this.items, key);
         return !keepPair && Node.isPair(pair) ? (Node.isScalar(pair.key) ? pair.key.value : pair.key) : pair;
@@ -4991,6 +5132,9 @@ var require_timestamp = __commonJS({
       identify: value => value instanceof Date,
       default: true,
       tag: 'tag:yaml.org,2002:timestamp',
+      // If the time zone is omitted, the timestamp is assumed to be specified in UTC. The time part
+      // may be omitted altogether, resulting in a date format. In such a case, the time part is
+      // assumed to be 00:00:00Z (start of day, UTC).
       test: RegExp(
         '^([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})(?:(?:t|T|[ \\t]+)([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}(\\.[0-9]+)?)(?:[ \\t]*(Z|[-+][012]?[0-9](?::[0-9]{2})?))?)?$'
       ),
@@ -5077,7 +5221,7 @@ var require_tags = __commonJS({
     var schema$2 = require_schema3();
     var set = require_set();
     var timestamp = require_timestamp();
-    var schemas = new Map([
+    var schemas = /* @__PURE__ */ new Map([
       ['core', schema.schema],
       ['failsafe', [map.map, seq.seq, string.string]],
       ['json', schema$1.schema],
@@ -5152,7 +5296,7 @@ var require_Schema = __commonJS({
     var string = require_string();
     var tags = require_tags();
     var sortMapEntriesByKey = (a, b) => (a.key < b.key ? -1 : a.key > b.key ? 1 : 0);
-    var Schema = class {
+    var Schema = class _Schema {
       constructor({ compat, customTags, merge, resolveKnownTags, schema, sortMapEntries, toStringDefaults }) {
         this.compat = Array.isArray(compat) ? tags.getTags(compat, 'compat') : compat ? tags.getTags(null, compat) : null;
         this.merge = !!merge;
@@ -5166,7 +5310,7 @@ var require_Schema = __commonJS({
         this.sortMapEntries = typeof sortMapEntries === 'function' ? sortMapEntries : sortMapEntries === true ? sortMapEntriesByKey : null;
       }
       clone() {
-        const copy = Object.create(Schema.prototype, Object.getOwnPropertyDescriptors(this));
+        const copy = Object.create(_Schema.prototype, Object.getOwnPropertyDescriptors(this));
         copy.tags = this.tags.slice();
         return copy;
       }
@@ -5180,7 +5324,7 @@ var require_stringifyDocument = __commonJS({
   'node_modules/yaml/dist/stringify/stringifyDocument.js'(exports2) {
     'use strict';
     var Node = require_Node();
-    var stringify = require_stringify2();
+    var stringify2 = require_stringify();
     var stringifyComment = require_stringifyComment();
     function stringifyDocument(doc, options) {
       const lines = [];
@@ -5193,7 +5337,7 @@ var require_stringifyDocument = __commonJS({
         } else if (doc.directives.docStart) hasDirectives = true;
       }
       if (hasDirectives) lines.push('---');
-      const ctx = stringify.createStringifyContext(doc, options);
+      const ctx = stringify2.createStringifyContext(doc, options);
       const { commentString } = ctx.options;
       if (doc.commentBefore) {
         if (lines.length !== 1) lines.unshift('');
@@ -5213,13 +5357,13 @@ var require_stringifyDocument = __commonJS({
           contentComment = doc.contents.comment;
         }
         const onChompKeep = contentComment ? void 0 : () => (chompKeep = true);
-        let body = stringify.stringify(doc.contents, ctx, () => (contentComment = null), onChompKeep);
+        let body = stringify2.stringify(doc.contents, ctx, () => (contentComment = null), onChompKeep);
         if (contentComment) body += stringifyComment.lineComment(body, '', commentString(contentComment));
         if ((body[0] === '|' || body[0] === '>') && lines[lines.length - 1] === '---') {
           lines[lines.length - 1] = `--- ${body}`;
         } else lines.push(body);
       } else {
-        lines.push(stringify.stringify(doc.contents, ctx));
+        lines.push(stringify2.stringify(doc.contents, ctx));
       }
       if (doc.directives?.docEnd) {
         if (doc.comment) {
@@ -5256,31 +5400,31 @@ var require_applyReviver = __commonJS({
         if (Array.isArray(val)) {
           for (let i = 0, len = val.length; i < len; ++i) {
             const v0 = val[i];
-            const v1 = applyReviver(reviver, val, String(i), v0);
-            if (v1 === void 0) delete val[i];
-            else if (v1 !== v0) val[i] = v1;
+            const v12 = applyReviver(reviver, val, String(i), v0);
+            if (v12 === void 0) delete val[i];
+            else if (v12 !== v0) val[i] = v12;
           }
         } else if (val instanceof Map) {
           for (const k of Array.from(val.keys())) {
             const v0 = val.get(k);
-            const v1 = applyReviver(reviver, val, k, v0);
-            if (v1 === void 0) val.delete(k);
-            else if (v1 !== v0) val.set(k, v1);
+            const v12 = applyReviver(reviver, val, k, v0);
+            if (v12 === void 0) val.delete(k);
+            else if (v12 !== v0) val.set(k, v12);
           }
         } else if (val instanceof Set) {
           for (const v0 of Array.from(val)) {
-            const v1 = applyReviver(reviver, val, v0, v0);
-            if (v1 === void 0) val.delete(v0);
-            else if (v1 !== v0) {
+            const v12 = applyReviver(reviver, val, v0, v0);
+            if (v12 === void 0) val.delete(v0);
+            else if (v12 !== v0) {
               val.delete(v0);
-              val.add(v1);
+              val.add(v12);
             }
           }
         } else {
           for (const [k, v0] of Object.entries(val)) {
-            const v1 = applyReviver(reviver, val, k, v0);
-            if (v1 === void 0) delete val[k];
-            else if (v1 !== v0) val[k] = v1;
+            const v12 = applyReviver(reviver, val, k, v0);
+            if (v12 === void 0) delete val[k];
+            else if (v12 !== v0) val[k] = v12;
           }
         }
       }
@@ -5300,13 +5444,13 @@ var require_Document = __commonJS({
     var Pair = require_Pair();
     var toJS = require_toJS();
     var Schema = require_Schema();
-    var stringify = require_stringify2();
+    var stringify2 = require_stringify();
     var stringifyDocument = require_stringifyDocument();
     var anchors = require_anchors();
     var applyReviver = require_applyReviver();
     var createNode = require_createNode();
     var directives = require_directives();
-    var Document = class {
+    var Document = class _Document {
       constructor(value, replacer, options) {
         this.commentBefore = null;
         this.comment = null;
@@ -5333,19 +5477,24 @@ var require_Document = __commonJS({
           options
         );
         this.options = opt;
-        let { version } = opt;
+        let { version: version2 } = opt;
         if (options?._directives) {
           this.directives = options._directives.atDocument();
-          if (this.directives.yaml.explicit) version = this.directives.yaml.version;
-        } else this.directives = new directives.Directives({ version });
-        this.setSchema(version, options);
+          if (this.directives.yaml.explicit) version2 = this.directives.yaml.version;
+        } else this.directives = new directives.Directives({ version: version2 });
+        this.setSchema(version2, options);
         if (value === void 0) this.contents = null;
         else {
           this.contents = this.createNode(value, _replacer, options);
         }
       }
+      /**
+       * Create a deep copy of this Document and its contents.
+       *
+       * Custom Node values that inherit from `Object` still refer to their original instances.
+       */
       clone() {
-        const copy = Object.create(Document.prototype, {
+        const copy = Object.create(_Document.prototype, {
           [Node.NODE_TYPE]: { value: Node.DOC }
         });
         copy.commentBefore = this.commentBefore;
@@ -5359,16 +5508,27 @@ var require_Document = __commonJS({
         if (this.range) copy.range = this.range.slice();
         return copy;
       }
+      /** Adds a value to the document. */
       add(value) {
         if (assertCollection(this.contents)) this.contents.add(value);
       }
+      /** Adds a value to the document. */
       addIn(path, value) {
         if (assertCollection(this.contents)) this.contents.addIn(path, value);
       }
+      /**
+       * Create a new `Alias` node, ensuring that the target `node` has the required anchor.
+       *
+       * If `node` already has an anchor, `name` is ignored.
+       * Otherwise, the `node.anchor` value will be set to `name`,
+       * or if an anchor with that name is already present in the document,
+       * `name` will be used as a prefix for a new unique anchor.
+       * If `name` is undefined, the generated anchor will use 'a' as a prefix.
+       */
       createAlias(node, name) {
         if (!node.anchor) {
           const prev = anchors.anchorNames(this);
-          node.anchor = !name || prev.has(name) ? anchors.findNewAnchor(name || 'a', prev) : name;
+          node.anchor = !name || prev.has(name) ? anchors.findNewAnchor(name || 'a', prev) : name; // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         }
         return new Alias.Alias(node.anchor);
       }
@@ -5387,7 +5547,11 @@ var require_Document = __commonJS({
           replacer = void 0;
         }
         const { aliasDuplicateObjects, anchorPrefix, flow, keepUndefined, onTagObj, tag } = options ?? {};
-        const { onAnchor, setAnchors, sourceObjects } = anchors.createNodeAnchors(this, anchorPrefix || 'a');
+        const { onAnchor, setAnchors, sourceObjects } = anchors.createNodeAnchors(
+          this,
+          // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+          anchorPrefix || 'a'
+        );
         const ctx = {
           aliasDuplicateObjects: aliasDuplicateObjects ?? true,
           keepUndefined: keepUndefined ?? false,
@@ -5402,14 +5566,26 @@ var require_Document = __commonJS({
         setAnchors();
         return node;
       }
+      /**
+       * Convert a key and a value into a `Pair` using the current schema,
+       * recursively wrapping all values as `Scalar` or `Collection` nodes.
+       */
       createPair(key, value, options = {}) {
         const k = this.createNode(key, null, options);
         const v = this.createNode(value, null, options);
         return new Pair.Pair(k, v);
       }
+      /**
+       * Removes a value from the document.
+       * @returns `true` if the item was found and removed.
+       */
       delete(key) {
         return assertCollection(this.contents) ? this.contents.delete(key) : false;
       }
+      /**
+       * Removes a value from the document.
+       * @returns `true` if the item was found and removed.
+       */
       deleteIn(path) {
         if (Collection.isEmptyPath(path)) {
           if (this.contents == null) return false;
@@ -5418,20 +5594,40 @@ var require_Document = __commonJS({
         }
         return assertCollection(this.contents) ? this.contents.deleteIn(path) : false;
       }
+      /**
+       * Returns item at `key`, or `undefined` if not found. By default unwraps
+       * scalar values from their surrounding node; to disable set `keepScalar` to
+       * `true` (collections are always returned intact).
+       */
       get(key, keepScalar) {
         return Node.isCollection(this.contents) ? this.contents.get(key, keepScalar) : void 0;
       }
+      /**
+       * Returns item at `path`, or `undefined` if not found. By default unwraps
+       * scalar values from their surrounding node; to disable set `keepScalar` to
+       * `true` (collections are always returned intact).
+       */
       getIn(path, keepScalar) {
         if (Collection.isEmptyPath(path)) return !keepScalar && Node.isScalar(this.contents) ? this.contents.value : this.contents;
         return Node.isCollection(this.contents) ? this.contents.getIn(path, keepScalar) : void 0;
       }
+      /**
+       * Checks if the document includes a value with the key `key`.
+       */
       has(key) {
         return Node.isCollection(this.contents) ? this.contents.has(key) : false;
       }
+      /**
+       * Checks if the document includes a value at `path`.
+       */
       hasIn(path) {
         if (Collection.isEmptyPath(path)) return this.contents !== void 0;
         return Node.isCollection(this.contents) ? this.contents.hasIn(path) : false;
       }
+      /**
+       * Sets a value in this document. For `!!set`, `value` needs to be a
+       * boolean to add/remove the item from the set.
+       */
       set(key, value) {
         if (this.contents == null) {
           this.contents = Collection.collectionFromPath(this.schema, [key], value);
@@ -5439,6 +5635,10 @@ var require_Document = __commonJS({
           this.contents.set(key, value);
         }
       }
+      /**
+       * Sets a value in this document. For `!!set`, `value` needs to be a
+       * boolean to add/remove the item from the set.
+       */
       setIn(path, value) {
         if (Collection.isEmptyPath(path)) this.contents = value;
         else if (this.contents == null) {
@@ -5447,10 +5647,17 @@ var require_Document = __commonJS({
           this.contents.setIn(path, value);
         }
       }
-      setSchema(version, options = {}) {
-        if (typeof version === 'number') version = String(version);
+      /**
+       * Change the YAML version and schema used by the document.
+       * A `null` version disables support for directives, explicit tags, anchors, and aliases.
+       * It also requires the `schema` option to be given as a `Schema` instance value.
+       *
+       * Overrides all previously set schema options.
+       */
+      setSchema(version2, options = {}) {
+        if (typeof version2 === 'number') version2 = String(version2);
         let opt;
-        switch (version) {
+        switch (version2) {
           case '1.1':
             if (this.directives) this.directives.yaml.version = '1.1';
             else this.directives = new directives.Directives({ version: '1.1' });
@@ -5458,8 +5665,8 @@ var require_Document = __commonJS({
             break;
           case '1.2':
           case 'next':
-            if (this.directives) this.directives.yaml.version = version;
-            else this.directives = new directives.Directives({ version });
+            if (this.directives) this.directives.yaml.version = version2;
+            else this.directives = new directives.Directives({ version: version2 });
             opt = { merge: false, resolveKnownTags: true, schema: 'core' };
             break;
           case null:
@@ -5467,7 +5674,7 @@ var require_Document = __commonJS({
             opt = null;
             break;
           default: {
-            const sv = JSON.stringify(version);
+            const sv = JSON.stringify(version2);
             throw new Error(`Expected '1.1', '1.2' or null as first argument, but found: ${sv}`);
           }
         }
@@ -5475,23 +5682,31 @@ var require_Document = __commonJS({
         else if (opt) this.schema = new Schema.Schema(Object.assign(opt, options));
         else throw new Error(`With a null YAML version, the { schema: Schema } option is required`);
       }
+      // json & jsonArg are only used from toJSON()
       toJS({ json, jsonArg, mapAsMap, maxAliasCount, onAnchor, reviver } = {}) {
         const ctx = {
-          anchors: new Map(),
+          anchors: /* @__PURE__ */ new Map(),
           doc: this,
           keep: !json,
           mapAsMap: mapAsMap === true,
           mapKeyWarned: false,
           maxAliasCount: typeof maxAliasCount === 'number' ? maxAliasCount : 100,
-          stringify: stringify.stringify
+          stringify: stringify2.stringify
         };
         const res = toJS.toJS(this.contents, jsonArg ?? '', ctx);
         if (typeof onAnchor === 'function') for (const { count, res: res2 } of ctx.anchors.values()) onAnchor(res2, count);
         return typeof reviver === 'function' ? applyReviver.applyReviver(reviver, { '': res }, '', res) : res;
       }
+      /**
+       * A JSON representation of the document `contents`.
+       *
+       * @param jsonArg Used by `JSON.stringify` to indicate the array index or
+       *   property name.
+       */
       toJSON(jsonArg, onAnchor) {
         return this.toJS({ json: true, jsonArg, mapAsMap: false, onAnchor });
       }
+      /** A YAML representation of the document. */
       toString(options = {}) {
         if (this.errors.length > 0) throw new Error('Document with errors cannot be stringified');
         if ('indent' in options && (!Number.isInteger(options.indent) || Number(options.indent) <= 0)) {
@@ -5653,6 +5868,7 @@ var require_resolve_props = __commonJS({
               hasSpace = false;
               break;
             }
+          // else fallthrough
           default:
             onError(token, 'UNEXPECTED_TOKEN', `Unexpected ${token.type} token`);
             atNewline = false;
@@ -5975,7 +6191,12 @@ var require_resolve_flow_collection = __commonJS({
             continue;
           }
           if (!isMap && ctx.options.strict && utilContainsNewline.containsNewline(key))
-            onError(key, 'MULTILINE_IMPLICIT_KEY', 'Implicit keys of flow sequence pairs need to be on a single line');
+            onError(
+              key,
+              // checked by containsNewline()
+              'MULTILINE_IMPLICIT_KEY',
+              'Implicit keys of flow sequence pairs need to be on a single line'
+            );
         }
         if (i === 0) {
           if (props.comma) onError(props.comma, 'UNEXPECTED_TOKEN', `Unexpected , in ${fcName}`);
@@ -6271,6 +6492,7 @@ var require_resolve_block_scalar = __commonJS({
         switch (token.type) {
           case 'space':
             hasSpace = true;
+          // fallthrough
           case 'newline':
             length += token.source.length;
             break;
@@ -6286,6 +6508,7 @@ var require_resolve_block_scalar = __commonJS({
             onError(token, 'UNEXPECTED_TOKEN', token.message);
             length += token.source.length;
             break;
+          /* istanbul ignore next should not happen */
           default: {
             const message = `Unexpected token in block scalar header: ${token.type}`;
             onError(token, 'UNEXPECTED_TOKEN', message);
@@ -6333,6 +6556,7 @@ var require_resolve_flow_scalar = __commonJS({
           _type = Scalar.Scalar.QUOTE_DOUBLE;
           value = doubleQuotedValue(source, _onError);
           break;
+        /* istanbul ignore next should not happen */
         default:
           onError(scalar, 'UNEXPECTED_TOKEN', `Expected a flow scalar value, but found: ${type}`);
           return {
@@ -6354,6 +6578,7 @@ var require_resolve_flow_scalar = __commonJS({
     function plainValue(source, onError) {
       let badChar = '';
       switch (source[0]) {
+        /* istanbul ignore next should not happen */
         case '	':
           badChar = 'a tab character';
           break;
@@ -6467,7 +6692,7 @@ var require_resolve_flow_scalar = __commonJS({
       0: '\0',
       a: '\x07',
       b: '\b',
-      e: '',
+      e: '\x1B',
       f: '\f',
       n: '\n',
       r: '\r',
@@ -6816,6 +7041,11 @@ ${cb}`
         this.errors = [];
         this.warnings = [];
       }
+      /**
+       * Current stream status information.
+       *
+       * Mostly useful at the end of input for an empty stream.
+       */
       streamInfo() {
         return {
           comment: parsePrelude(this.prelude).comment,
@@ -6824,10 +7054,17 @@ ${cb}`
           warnings: this.warnings
         };
       }
+      /**
+       * Compose tokens into documents.
+       *
+       * @param forceDoc - If the stream contains no document, still emit a final document including any comments and directives that would be applied to a subsequent document.
+       * @param endOffset - Should be set if `forceDoc` is also set, to set the document range end and to indicate errors correctly.
+       */
       *compose(tokens, forceDoc = false, endOffset = -1) {
         for (const token of tokens) yield* this.next(token);
         yield* this.end(forceDoc, endOffset);
       }
+      /** Advance the composer by one CST token. */
       *next(token) {
         if (process.env.LOG_STREAM) console.dir(token, { depth: null });
         switch (token.type) {
@@ -6886,6 +7123,12 @@ ${end.comment}`
             this.errors.push(new errors.YAMLParseError(getErrorPos(token), 'UNEXPECTED_TOKEN', `Unsupported token ${token.type}`));
         }
       }
+      /**
+       * Call at end of input to yield any remaining document.
+       *
+       * @param forceDoc - If the stream contains no document, still emit a final document including any comments and directives that would be applied to a subsequent document.
+       * @param endOffset - Should be set if `forceDoc` is also set, to set the document range end and to indicate errors correctly.
+       */
       *end(forceDoc = false, endOffset = -1) {
         if (this.doc) {
           this.decorate(this.doc, true);
@@ -7084,7 +7327,7 @@ var require_cst_scalar = __commonJS({
 var require_cst_stringify = __commonJS({
   'node_modules/yaml/dist/parse/cst-stringify.js'(exports2) {
     'use strict';
-    var stringify = cst => ('type' in cst ? stringifyToken(cst) : stringifyItem(cst));
+    var stringify2 = cst => ('type' in cst ? stringifyToken(cst) : stringifyItem(cst));
     function stringifyToken(token) {
       switch (token.type) {
         case 'block-scalar': {
@@ -7124,7 +7367,7 @@ var require_cst_stringify = __commonJS({
       if (value) res += stringifyToken(value);
       return res;
     }
-    exports2.stringify = stringify;
+    exports2.stringify = stringify2;
   }
 });
 
@@ -7323,6 +7566,12 @@ var require_lexer = __commonJS({
         this.next = null;
         this.pos = 0;
       }
+      /**
+       * Generate YAML tokens from the `source` string. If `incomplete`,
+       * a part of the last line may be left as a buffer for the next call.
+       *
+       * @returns A generator of lexical tokens
+       */
       *lex(source, incomplete = false) {
         if (source) {
           this.buffer = this.buffer ? this.buffer + source : source;
@@ -7475,6 +7724,7 @@ var require_lexer = __commonJS({
         switch (line[n]) {
           case '#':
             yield* this.pushCount(line.length - n);
+          // fallthrough
           case void 0:
             yield* this.pushNewline();
             return yield* this.parseLineStart();
@@ -7572,6 +7822,7 @@ var require_lexer = __commonJS({
               return 'flow';
             }
           }
+          // fallthrough
           default:
             this.flowKey = false;
             return yield* this.parsePlainScalar();
@@ -7639,6 +7890,7 @@ var require_lexer = __commonJS({
               if (!next && !this.atEnd) return this.setNext('block-scalar');
               if (next === '\n') break;
             }
+            // fallthrough
             default:
               break loop;
           }
@@ -7731,7 +7983,9 @@ var require_lexer = __commonJS({
           case '&':
             return (yield* this.pushUntil(isNotAnchorChar)) + (yield* this.pushSpaces(true)) + (yield* this.pushIndicators());
           case '-':
+          // this is an error
           case '?':
+          // this is an error outside flow collections
           case ':': {
             const inFlow = this.flowLevel > 0;
             const ch1 = this.charAt(1);
@@ -7864,6 +8118,7 @@ var require_parser = __commonJS({
         }
         case 'block-seq':
           return parent.items[parent.items.length - 1].start;
+        /* istanbul ignore next should not happen */
         default:
           return [];
       }
@@ -7900,6 +8155,10 @@ var require_parser = __commonJS({
       }
     }
     var Parser = class {
+      /**
+       * @param onNewLine - If defined, called separately with the start position of
+       *   each new line (in `parse()`, including the start of input).
+       */
       constructor(onNewLine) {
         this.atNewLine = true;
         this.atScalar = false;
@@ -7912,11 +8171,22 @@ var require_parser = __commonJS({
         this.lexer = new lexer.Lexer();
         this.onNewLine = onNewLine;
       }
+      /**
+       * Parse `source` as a YAML stream.
+       * If `incomplete`, a part of the last line may be left as a buffer for the next call.
+       *
+       * Errors are not thrown, but yielded as `{ type: 'error', message }` tokens.
+       *
+       * @returns A generator of tokens representing each directive, document, and other structure.
+       */
       *parse(source, incomplete = false) {
         if (this.onNewLine && this.offset === 0) this.onNewLine(0);
         for (const lexeme of this.lexer.lex(source, incomplete)) yield* this.next(lexeme);
         if (!incomplete) yield* this.end();
       }
+      /**
+       * Advance the parser by the `source` of one lexical token.
+       */
       *next(source) {
         this.source = source;
         if (process.env.LOG_TOKENS) console.log('|', cst.prettyToken(source));
@@ -7961,6 +8231,7 @@ var require_parser = __commonJS({
           this.offset += source.length;
         }
       }
+      /** Call at end of input to push out any remaining constructions */
       *end() {
         while (this.stack.length > 0) yield* this.pop();
       }
@@ -8059,6 +8330,7 @@ var require_parser = __commonJS({
               else Object.assign(it, { key: token, sep: [] });
               return;
             }
+            /* istanbul ignore next should not happen */
             default:
               yield* this.pop();
               yield* this.pop(token);
@@ -8182,6 +8454,7 @@ var require_parser = __commonJS({
             }
             yield* this.pop();
             break;
+          /* istanbul ignore next should not happen */
           default:
             yield* this.pop();
             yield* this.step();
@@ -8589,6 +8862,7 @@ var require_parser = __commonJS({
             break;
           case 'newline':
             this.onKeyLine = false;
+          // fallthrough
           case 'space':
           case 'comment':
           default:
@@ -8654,7 +8928,7 @@ var require_public_api = __commonJS({
       }
       return doc;
     }
-    function parse(src, reviver, options) {
+    function parse2(src, reviver, options) {
       let _reviver = void 0;
       if (typeof reviver === 'function') {
         _reviver = reviver;
@@ -8670,7 +8944,7 @@ var require_public_api = __commonJS({
       }
       return doc.toJS(Object.assign({ reviver: _reviver }, options));
     }
-    function stringify(value, replacer, options) {
+    function stringify2(value, replacer, options) {
       let _replacer = null;
       if (typeof replacer === 'function' || Array.isArray(replacer)) {
         _replacer = replacer;
@@ -8688,15 +8962,15 @@ var require_public_api = __commonJS({
       }
       return new Document.Document(value, _replacer, options).toString(options);
     }
-    exports2.parse = parse;
+    exports2.parse = parse2;
     exports2.parseAllDocuments = parseAllDocuments;
     exports2.parseDocument = parseDocument;
-    exports2.stringify = stringify;
+    exports2.stringify = stringify2;
   }
 });
 
 // node_modules/yaml/dist/index.js
-var require_dist2 = __commonJS({
+var require_dist = __commonJS({
   'node_modules/yaml/dist/index.js'(exports2) {
     'use strict';
     var composer = require_composer();
@@ -8753,7 +9027,7 @@ var require_action_library = __commonJS({
     var core2 = require_core();
     var fs = require('fs');
     var { env } = require('process');
-    var yaml = require_dist2();
+    var yaml = require_dist();
     var action_library2 = class {
       getFileYaml = path => {
         const fileData = fs.readFileSync(path, 'utf8');

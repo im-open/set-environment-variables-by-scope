@@ -60,6 +60,7 @@ jobs:
       # The npm script to run to build the action.  This is typically 'npm run build' if the
       # action needs to be compiled.  For composite-run-steps actions this is typically empty.
       build-command: 'npm run build'
+      node-version: '24.x'
 
   test:
     runs-on: ubuntu-latest
@@ -78,7 +79,7 @@ jobs:
       NO_MATCH_SETTING_4: ''
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       #---------------------------------------------------------
       # MATCHING SCOPE WITH CREATE-OUTPUT-VARIABLES SET TO FALSE
