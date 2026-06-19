@@ -13,12 +13,15 @@
   "author": "wtw",
   "license": "ISC",
   "dependencies": {
-    "@actions/core": "^1.10.0",
-    "yaml": "^2.2.2"
+    "@actions/core": "^3.0.1",
+    "yaml": "^2.9.0"
   },
   "devDependencies": {
-    "esbuild": "^0.25.0",
+    "esbuild": "^0.28.1",
     "install": "^0.13.0",
     "prettier": "^2.3.0"
+  },
+  "overrides": {
+      "undici": "^8.5.0"
   }
 }

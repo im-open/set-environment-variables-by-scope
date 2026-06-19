@@ -1,5 +1,5 @@
-const core = require('@actions/core');
-const { action_library } = require('./action_library');
+import * as core from '@actions/core';
+import action_library from './action_library';
 
 const library = new action_library();
 
