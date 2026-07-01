@@ -1,9 +1,9 @@
-const core = require('@actions/core');
-const fs = require('fs');
-const { env } = require('process');
-const yaml = require('yaml');
+import * as core from '@actions/core';
+import fs from 'fs';
+import { env } from 'process';
+import yaml from 'yaml';
 
-class action_library {
+export default class action_library {
   getFileYaml = path => {
     const fileData = fs.readFileSync(path, 'utf8');
     const fileYaml = yaml.parse(fileData);
@@ -86,5 +86,3 @@ class action_library {
     core.info(`Set output var: ${key} = ${value}`);
   };
 }
-
-module.exports = { action_library };

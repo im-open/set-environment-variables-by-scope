@@ -66,7 +66,7 @@ jobs:
     steps:
       - name: Set environment
         id: env-scope
-        uses: im-open/set-environment-variables-by-scope@v1.2.2
+        uses: im-open/set-environment-variables-by-scope@v2.0.0
         with:
           scope: ${{ workflow.inputs.environment }}
           create-output-variables: true
@@ -85,13 +85,13 @@ jobs:
     needs: [setup]
       steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
 
       # The set-environment-variables-by-scope action uses both the input-file and
       # the supplied env variables to create the resulting environment and output vars
       - name: Build Workflow Environment Variables
         # You may also reference just the major or major.minor version
-        uses: im-open/set-environment-variables-by-scope@v1.2.2
+        uses: im-open/set-environment-variables-by-scope@v2.0.0
         with:
           scope: ${{ needs.setup.outputs.env-scope }}
           input-file: ./env-vars.yml
@@ -101,7 +101,7 @@ jobs:
           keyName2@stage prod: 'key value 2 upper'
 
       - name: Display Env Var
-        uses: actions/github-script@v5
+        uses: actions/github-script@v9
         with:
           script: |
             console.log("Env", ${{ needs.setup.outputs.env-scope }})
@@ -158,7 +158,7 @@ GitHub actions expressions can be used in the _`key-value`_ when supplying input
 
 ```yaml
 - name: Build DB Connection
-  uses: im-open/set-environment-variables-by-scope@v1.2.2
+  uses: im-open/set-environment-variables-by-scope@v2.0.0
   with:
     scope: ${{ needs.setup.outputs.env-scope }}
   env:
